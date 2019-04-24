@@ -1,1 +1,2 @@
 # mosis-project
+Student project :)
