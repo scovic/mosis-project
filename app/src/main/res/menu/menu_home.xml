@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Home">
+    <item
+        android:id="@+id/show_user_profile"
+        android:orderInCategory="100"
+        android:title="Profile"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/show_user_profile_icon"
+        />
+    <item
+        android:id="@+id/show_leaderboard"
+        android:orderInCategory="100"
+        android:title="Leaderboard"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/show_leaderboard_icon"
+        />
+    <item
+        android:id="@+id/show_friends"
+        android:orderInCategory="100"
+        android:title="Friends"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/show_settings"
+        android:orderInCategory="100"
+        android:title="Settings"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/signout"
+        android:orderInCategory="100"
+        android:title="Sign out"
+        app:showAsAction="ifRoom"
+        />
+
+</menu>

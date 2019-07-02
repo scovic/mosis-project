@@ -19,10 +19,19 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         Button noAccountButton = (Button) findViewById(R.id.button_no_account);
+        Button signInButton = (Button) findViewById(R.id.button_sign_in);
+
         noAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Login.this, Register.class);
+                startActivity(i);
+            }
+        });
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Login.this, Home.class);
                 startActivity(i);
             }
         });
