@@ -22,12 +22,14 @@
         android:orderInCategory="100"
         android:title="Friends"
         app:showAsAction="ifRoom"
+        android:icon="@drawable/show_friends_icon"
         />
     <item
         android:id="@+id/show_settings"
         android:orderInCategory="100"
         android:title="Settings"
         app:showAsAction="ifRoom"
+        android:icon="@drawable/show_settings_icon"
         />
     <item
         android:id="@+id/signout"
