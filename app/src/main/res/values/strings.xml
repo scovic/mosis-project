@@ -14,4 +14,9 @@
     <string name="label_hunts_completed">Hunts completed:</string>
     <string name="label_hunts_created">Hunts created:</string>
     <string name="label_points">Points:</string>
+    <string-array name="type_of_hunts_array">
+        <item>Active Hunts</item>
+        <item>Completed Hunts</item>
+        <item>My Hunts</item>
+    </string-array>
 </resources>
