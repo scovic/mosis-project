@@ -6,7 +6,7 @@
     android:background="@drawable/wallpaper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register">
+    tools:context=".RegisterActivity">
 
     <ImageButton
         android:id="@+id/add_prof_image"
@@ -45,7 +45,7 @@
         style="@style/EditText"
         android:layout_below="@+id/edit_register_lastname"
         android:layout_marginTop="20dp"
-        android:hint="@string/email"
+        android:hint="@string/mEmail"
         android:inputType="textEmailAddress" />
 
     <EditText

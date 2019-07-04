@@ -1,5 +1,5 @@
 <resources>
-    <string name="email">Email</string>
+    <string name="mEmail">Email</string>
     <string name="password">Password</string>
     <string name="app_name">Treasure Hunt</string>
     <string name="login_button">Sign In</string>

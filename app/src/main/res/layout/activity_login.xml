@@ -6,14 +6,14 @@
     android:background="@drawable/wallpaper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login">
+    tools:context=".LoginActivity">
 
     <EditText
         android:id="@+id/edit_login_email"
         style="@style/EditText"
         android:layout_alignParentTop="true"
         android:layout_marginTop="340dp"
-        android:hint="@string/email"
+        android:hint="@string/mEmail"
         android:inputType="textEmailAddress" />
 
     <EditText
