@@ -19,4 +19,5 @@
         <item>Completed Hunts</item>
         <item>My Hunts</item>
     </string-array>
+    <string name="title_activity_hunt">HuntActivity</string>
 </resources>
