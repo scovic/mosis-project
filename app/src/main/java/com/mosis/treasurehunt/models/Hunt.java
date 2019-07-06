@@ -1,9 +1,21 @@
 package com.mosis.treasurehunt.models;
 
+import java.util.ArrayList;
+
 public class Hunt {
-    private String mName;
+    private String mTitle;
+    public ArrayList<Clue> clues;
 
-    public void setmName(String name) { this.mName = name; }
+    public Hunt() {
+        clues = new ArrayList<>();
+    }
 
-    public String getmName() { return this.mName; }
+    public Hunt(String title) {
+        mTitle = title;
+        clues = new ArrayList<>();
+    }
+
+    public void setTitle(String title) { this.mTitle = title;  }
+
+    public String getTitle() { return this.mTitle; }
 }

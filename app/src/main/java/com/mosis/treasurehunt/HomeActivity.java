@@ -1,6 +1,7 @@
 package com.mosis.treasurehunt;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,13 +10,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+
+import com.mosis.treasurehunt.adapters.FeedAdapter;
+import com.mosis.treasurehunt.models.Feed;
+import com.mosis.treasurehunt.models.Hunt;
+import com.mosis.treasurehunt.models.User;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
+    private ListView mFeedsList;
+    private FeedAdapter mFeedsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -27,6 +39,23 @@ public class HomeActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        mFeedsList = (ListView) findViewById(R.id.feeds_list);
+        ArrayList<Feed> feedslist = new ArrayList<>();
+        feedslist.add(new Feed(
+                new User("Stefan", "Covic", "scovic996@gmail.com"),
+                new Hunt("Hunt1"),
+                Feed.Type.FINISH
+        ));
+        feedslist.add(new Feed(
+                new User("Nevena", "Colic", "scovic996@gmail.com"),
+                new Hunt("Hunt1"),
+                Feed.Type.FINISH
+        ));
+
+        mFeedsAdapter = new FeedAdapter(this, feedslist);
+        mFeedsList.setAdapter(mFeedsAdapter);
+
     }
 
     @Override

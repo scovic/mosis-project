@@ -3,25 +3,32 @@ package com.mosis.treasurehunt.models;
 import android.media.Image;
 
 public class User {
-    private String mFirstName;
-    private String mLastName;
-    private String mEmail;
-    public Image mProfileImage;
+    public String firstName;
+    public String lastName;
+    public String mEmail;
+    public Image profileImage;
 
-    public String getmFirstName() {
-        return mFirstName;
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mEmail = email;
     }
 
-    public void setmFirstName(String mFirstName) {
-        this.mFirstName = mFirstName;
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getmLastName() {
-        return mLastName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setmLastName(String mLastName) {
-        this.mLastName = mLastName;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getmEmail() {
@@ -31,4 +38,6 @@ public class User {
     public void setmEmail(String mEmail) {
         this.mEmail = mEmail;
     }
+
+    public String getFullName() { return String.format("%s %s", firstName, lastName); }
 }
