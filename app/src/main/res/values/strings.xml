@@ -19,5 +19,13 @@
         <item>Completed Hunts</item>
         <item>My Hunts</item>
     </string-array>
-    <string name="title_activity_hunt">HuntActivity</string>
+    <string name="title_activity_hunt">Hunt</string>
+    <string name="title_activity_new_hunt">New Hunt</string>
+    <string name="label_clues">Clues</string>
+    <string name="button_add_clue">Add clue</string>
+    <string name="button_save">Save</string>
+    <string name="title_activity_add_clue">Add Clue</string>
+    <string name="button_choose_location">Choose location</string>
+    <string name="button_my_location">My Location</string>
+    <string name="button_cancel">Cancel</string>
 </resources>

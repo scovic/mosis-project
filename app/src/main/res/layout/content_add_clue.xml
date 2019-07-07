@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".AddClueActivity"
+    tools:showIn="@layout/activity_add_clue">
+
+            <EditText
+                android:id="@+id/et_clue_question"
+                android:hint="Write your question here..."
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                style="@style/EditText"
+                android:textColor="@color/colorWhite"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/round_edit"/>
+
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="130dp"
+                android:layout_alignParentRight="true">
+
+                <RadioButton
+                    android:id="@+id/rdbtn_answer1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="23dp"/>
+
+                <RadioButton
+                    android:id="@+id/rdbtn_answer2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="23dp"/>
+
+                <RadioButton
+                    android:id="@+id/rdbtn_answer3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="23dp"/>
+
+                <RadioButton
+                    android:id="@+id/rdbtn_answer4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"/>
+
+            </RadioGroup>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_answer1"
+                android:layout_width="250dp"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="13dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_clue_question"
+                android:layout_marginBottom="10dp">
+
+                <EditText
+                    android:id="@+id/et_answer1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_answer2"
+                android:layout_width="250dp"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="13dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cv_answer1"
+                android:layout_marginBottom="10dp">
+
+                <EditText
+                    android:id="@+id/et_answer2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_answer3"
+                android:layout_width="250dp"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="13dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cv_answer2"
+                android:layout_marginBottom="10dp">
+
+                <EditText
+                    android:id="@+id/et_answer3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_answer4"
+                android:layout_width="250dp"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="13dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cv_answer3"
+                android:layout_marginBottom="10dp">
+
+                <EditText
+                    android:id="@+id/et_answer4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_choose_location"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/button_choose_location"
+                android:layout_marginRight="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_below="@id/cv_answer4"
+                android:textColor="@color/colorWhite"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/round_button_profile" />
+
+            <Button
+                android:id="@+id/btn_my_location"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/button_my_location"
+                android:layout_marginRight="15dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_toRightOf="@+id/btn_choose_location"
+                android:layout_below="@id/cv_answer4"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/round_button_profile" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_latitude"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/btn_choose_location"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="15dp">
+
+                <TextView
+                    android:id="@+id/tv_latitude"
+                    android:hint="Latitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_longitude"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/cv_latitude"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="15dp">
+
+                <TextView
+                    android:id="@+id/tv_longitude"
+                    android:hint="Longitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/button_cancel"
+                android:layout_toLeftOf="@id/btn_save_clue"
+                android:layout_marginRight="15dp"
+                android:layout_below="@id/cv_longitude"
+                android:textColor="@color/colorWhite"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/round_button_profile" />
+
+            <Button
+                android:id="@+id/btn_save_clue"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/button_save"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_below="@id/cv_longitude"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/round_button_profile" />
+
+</RelativeLayout>

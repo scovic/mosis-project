@@ -103,7 +103,7 @@
             <Button
                 android:id="@+id/btn_new_hunt"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="New Hunt"
                 android:layout_marginRight="15dp"
                 android:layout_below="@id/iv_user_profile"
@@ -115,7 +115,7 @@
             <Button
                 android:id="@+id/btn_discover_friends"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="Discover Friends"
                 android:layout_below="@id/iv_user_profile"
                 android:layout_toRightOf="@id/btn_new_hunt"
