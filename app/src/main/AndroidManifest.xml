@@ -12,7 +12,7 @@
         <activity
             android:name=".AddClueActivity"
             android:label="@string/title_activity_add_clue"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
         <activity
             android:name=".NewHuntActivity"
             android:label="@string/title_activity_new_hunt"

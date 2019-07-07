@@ -1,7 +1,6 @@
 package com.mosis.treasurehunt;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -35,12 +34,12 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent i = new Intent(HomeActivity.this, NewHuntActivity.class);
+                startActivity(i);
             }
         });
 
-        mFeedsList = (ListView) findViewById(R.id.feeds_list);
+        mFeedsList = findViewById(R.id.feeds_list);
         ArrayList<Feed> feedslist = new ArrayList<>();
         feedslist.add(new Feed(
                 new User("Stefan", "Covic", "scovic996@gmail.com"),

@@ -12,13 +12,12 @@
                 android:id="@+id/et_clue_question"
                 android:hint="Write your question here..."
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="65dp"
                 style="@style/EditText"
                 android:textColor="@color/colorWhite"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/round_edit"/>
 
@@ -27,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="130dp"
+                android:layout_marginTop="110dp"
                 android:layout_alignParentRight="true">
 
                 <RadioButton
@@ -56,74 +55,47 @@
 
             </RadioGroup>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_answer1"
-                android:layout_width="250dp"
-                android:layout_marginLeft="55dp"
-                android:layout_marginRight="13dp"
+            <EditText
+                android:id="@+id/et_answer1"
+                android:layout_width="220dp"
+                android:layout_marginLeft="25dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/et_clue_question"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp" />
 
-                <EditText
-                    android:id="@+id/et_answer1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_answer2"
-                android:layout_width="250dp"
-                android:layout_marginLeft="55dp"
-                android:layout_marginRight="13dp"
+            <EditText
+                android:id="@+id/et_answer2"
+                android:layout_width="220dp"
+                android:layout_marginLeft="25dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cv_answer1"
-                android:layout_marginBottom="10dp">
+                android:layout_below="@id/et_answer1"
+                android:layout_marginBottom="10dp" />
 
-                <EditText
-                    android:id="@+id/et_answer2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_answer3"
-                android:layout_width="250dp"
-                android:layout_marginLeft="55dp"
-                android:layout_marginRight="13dp"
+            <EditText
+                android:id="@+id/et_answer3"
+                android:layout_width="220dp"
+                android:layout_marginLeft="25dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cv_answer2"
-                android:layout_marginBottom="10dp">
+                android:layout_below="@id/et_answer2"
+                android:layout_marginBottom="10dp" />
 
-                <EditText
-                    android:id="@+id/et_answer3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_answer4"
-                android:layout_width="250dp"
-                android:layout_marginLeft="55dp"
-                android:layout_marginRight="13dp"
+            <EditText
+                android:id="@+id/et_answer4"
+                android:layout_width="220dp"
+                android:layout_marginLeft="25dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cv_answer3"
-                android:layout_marginBottom="10dp">
+                android:layout_below="@id/et_answer3"
+                android:layout_marginBottom="10dp" />
 
-                <EditText
-                    android:id="@+id/et_answer4"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </android.support.v7.widget.CardView>
 
             <Button
                 android:id="@+id/btn_choose_location"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="@string/button_choose_location"
-                android:layout_marginRight="35dp"
-                android:layout_marginLeft="35dp"
-                android:layout_below="@id/cv_answer4"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_below="@id/et_answer4"
                 android:textColor="@color/colorWhite"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -134,11 +106,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="@string/button_my_location"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:layout_toRightOf="@+id/btn_choose_location"
-                android:layout_below="@id/cv_answer4"
+                android:layout_below="@id/et_answer4"
                 android:textColor="@color/colorWhite"
                 android:background="@drawable/round_button_profile" />
 
@@ -176,7 +148,7 @@
             </android.support.v7.widget.CardView>
 
             <Button
-                android:id="@+id/btn_cancel"
+                android:id="@+id/btn_cancel_new_clue"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="@string/button_cancel"
