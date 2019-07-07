@@ -28,4 +28,5 @@
     <string name="button_choose_location">Choose location</string>
     <string name="button_my_location">My Location</string>
     <string name="button_cancel">Cancel</string>
+    <string name="join_hunt">Join hunt</string>
 </resources>
