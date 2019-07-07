@@ -18,4 +18,6 @@ public class Hunt {
     public void setTitle(String title) { this.mTitle = title;  }
 
     public String getTitle() { return this.mTitle; }
+
+    public int getNumberOfClues() { return this.clues.size(); }
 }

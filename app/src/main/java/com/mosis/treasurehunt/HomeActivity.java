@@ -50,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
         feedslist.add(new Feed(
                 new User("Nevena", "Colic", "scovic996@gmail.com"),
                 new Hunt("Hunt1"),
-                Feed.Type.FINISH
+                Feed.Type.CREATE
         ));
 
         mFeedsAdapter = new FeedAdapter(this, feedslist);
