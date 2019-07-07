@@ -1,5 +1,6 @@
 package com.mosis.treasurehunt;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
+    Button btnAddHunt;
 
 
     @Override
@@ -27,7 +30,7 @@ public class UserProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        spinner = (Spinner) findViewById(R.id.spinner_user_profile);
+        spinner = findViewById(R.id.spinner_user_profile);
         adapter = ArrayAdapter.createFromResource(this, R.array.type_of_hunts_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -42,6 +45,15 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        btnAddHunt = findViewById(R.id.btn_new_hunt);
+        btnAddHunt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(UserProfileActivity.this, NewHuntActivity.class);
+                startActivity(i);
             }
         });
     }
