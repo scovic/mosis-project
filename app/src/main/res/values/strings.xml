@@ -29,4 +29,7 @@
     <string name="button_my_location">My Location</string>
     <string name="button_cancel">Cancel</string>
     <string name="join_hunt">Join hunt</string>
+    <string name="title_activity_leaderboard">LeaderboardActivity</string>
+    <string name="global">Global</string>
+    <string name="friends">Friends</string>
 </resources>

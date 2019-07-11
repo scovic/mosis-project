@@ -14,15 +14,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class UserProfileActivity extends AppCompatActivity {
-
     Spinner spinner;
     ArrayAdapter<CharSequence> adapter;
     Button btnAddHunt;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         Toolbar toolbar = findViewById(R.id.toolbar);

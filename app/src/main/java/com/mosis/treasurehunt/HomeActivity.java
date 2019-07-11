@@ -18,6 +18,7 @@ import com.mosis.treasurehunt.models.Hunt;
 import com.mosis.treasurehunt.models.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     private ListView mFeedsList;
@@ -41,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         mFeedsList = (ListView) findViewById(R.id.feeds_list);
-        ArrayList<Feed> feedslist = new ArrayList<>();
+        List<Feed> feedslist = new ArrayList<>();
         feedslist.add(new Feed(
                 new User("Stefan", "Covic", "scovic996@gmail.com"),
                 new Hunt("Hunt1"),
@@ -70,6 +71,9 @@ public class HomeActivity extends AppCompatActivity {
 
         if (id == R.id.show_user_profile) {
             Intent i = new Intent(this, UserProfileActivity.class);
+            startActivity(i);
+        } else if (id == R.id.show_leaderboard) {
+            Intent i = new Intent(this, LeaderboardActivity.class);
             startActivity(i);
         }
 

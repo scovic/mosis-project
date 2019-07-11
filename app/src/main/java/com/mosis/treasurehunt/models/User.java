@@ -7,13 +7,21 @@ public class User {
     public String lastName;
     public String mEmail;
     public Image profileImage;
+    private int mPoints;
 
     public User(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mEmail = email;
+        this.mPoints = 0;
     }
 
+    public User(String firstName, String lastName, String email, int points) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mEmail = email;
+        this.mPoints = points;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -40,4 +48,8 @@ public class User {
     }
 
     public String getFullName() { return String.format("%s %s", firstName, lastName); }
+
+    public void setPoints(int points) { this.mPoints = points; }
+
+    public int getPoints() { return this.mPoints; }
 }

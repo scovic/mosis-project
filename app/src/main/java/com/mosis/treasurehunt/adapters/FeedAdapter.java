@@ -21,7 +21,7 @@ public class FeedAdapter extends ArrayAdapter<Feed> {
     private Context mContext;
     private List<Feed> feedsList = new ArrayList<>();
 
-    public FeedAdapter(@NonNull Context context, ArrayList<Feed> list) {
+    public FeedAdapter(@NonNull Context context, List<Feed> list) {
         super(context, 0, list);
         mContext = context;
         feedsList = list;
