@@ -40,13 +40,9 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-<<<<<<< HEAD
-        mFeedsList = (ListView) findViewById(R.id.feeds_list);
-        List<Feed> feedslist = new ArrayList<>();
-=======
         mFeedsList = findViewById(R.id.feeds_list);
         ArrayList<Feed> feedslist = new ArrayList<>();
->>>>>>> f29fe70bfad8803b2f3dcb296c63fe1ad924c386
+
         feedslist.add(new Feed(
                 new User("Stefan", "Covic", "scovic996@gmail.com"),
                 new Hunt("Hunt1"),
