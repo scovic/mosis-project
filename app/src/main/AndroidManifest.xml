@@ -16,11 +16,7 @@
         <activity
             android:name=".AddClueActivity"
             android:label="@string/title_activity_add_clue"
-<<<<<<< HEAD
-            android:theme="@style/AppTheme.NoActionBar" />
-=======
-            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
->>>>>>> f29fe70bfad8803b2f3dcb296c63fe1ad924c386
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
         <activity
             android:name=".NewHuntActivity"
             android:label="@string/title_activity_new_hunt"

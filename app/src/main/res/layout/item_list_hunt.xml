@@ -10,7 +10,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/lbl_completed_hunt_name"
+                android:id="@+id/lbl_item_hunt_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -20,7 +20,7 @@
                 />
 
             <TextView
-                android:id="@+id/lbl_completed_hunt_points"
+                android:id="@+id/lbl_item_hunt_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"

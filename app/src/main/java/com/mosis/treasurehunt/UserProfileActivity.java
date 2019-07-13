@@ -10,13 +10,21 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.mosis.treasurehunt.adapters.HuntAdapter;
+import com.mosis.treasurehunt.models.Hunt;
+
+import java.util.ArrayList;
+
 public class UserProfileActivity extends AppCompatActivity {
-    Spinner spinner;
-    ArrayAdapter<CharSequence> adapter;
-    Button btnAddHunt;
+    private Spinner spinner;
+    private ArrayAdapter<CharSequence> adapter;
+    private Button btnAddHunt;
+    private ListView mHuntsList;
+    private HuntAdapter mHuntsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +44,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(adapterView.getContext(), "SELECTED: " + item, Toast.LENGTH_SHORT).show();
+                setHuntAdapter(item);
             }
 
             @Override
@@ -70,5 +78,27 @@ public class UserProfileActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setHuntAdapter(String item) {
+        mHuntsList = findViewById(R.id.hunts_list);
+        ArrayList<Hunt> huntsList = new ArrayList<>();
+
+        if (item == "Active Hunts") {
+            // filter baze za huntove kod kojih je completed=false
+            huntsList.add(new Hunt("Test Active Hunt"));
+            mHuntsAdapter = new HuntAdapter(this, huntsList);
+            mHuntsList.setAdapter(mHuntsAdapter);
+        } else if (item == "Completed Hunts") {
+            // ovde filter svih huntova kod kojih je completed=true
+            huntsList.add(new Hunt("Test Completed Hunt"));
+            mHuntsAdapter = new HuntAdapter(this, huntsList);
+            mHuntsList.setAdapter(mHuntsAdapter);
+        } else if (item == "My Hunts") {
+            // filter gde je user == ulogovani user
+            huntsList.add(new Hunt("Test My Hunt"));
+            mHuntsAdapter = new HuntAdapter(this, huntsList);
+            mHuntsList.setAdapter(mHuntsAdapter);
+        }
     }
 }
