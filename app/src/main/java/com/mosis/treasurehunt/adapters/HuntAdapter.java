@@ -30,16 +30,28 @@ public class HuntAdapter extends ArrayAdapter<Hunt> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
         Hunt currentHunt = huntList.get(position);
+        // OVO TREBA DA SE IZMENI, POGLEDAJ UserProfile.java
+        // u zavisnosti sta je selektovano spinnerom se filtriraju i prikazu huntovi
 
         if(currentHunt.checkCompleted() == true) {
             if(listItem == null)
-                listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_completed_hunt, parent, false);
+                listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_hunt, parent, false);
 
-            TextView hunt_name = listItem.findViewById(R.id.lbl_completed_hunt_name);
+            TextView hunt_name = listItem.findViewById(R.id.lbl_item_hunt_name);
             hunt_name.setText(currentHunt.getTitle());
 
-            TextView hunt_points = listItem.findViewById(R.id.lbl_completed_hunt_points);
-//            hunt_points.setText(currentHunt.getPoints());
+            TextView hunt_points = listItem.findViewById(R.id.lbl_item_hunt_details);
+            hunt_points.setText(currentHunt.getmPoints());
+        } else {
+            // if still active
+            if(listItem == null)
+                listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_hunt, parent, false);
+
+            TextView hunt_name = listItem.findViewById(R.id.lbl_item_hunt_name);
+            hunt_name.setText(currentHunt.getTitle());
+
+            TextView hunt_points = listItem.findViewById(R.id.lbl_item_hunt_details);
+            hunt_points.setText(currentHunt.getNumberOfHunters());
         }
 
 
