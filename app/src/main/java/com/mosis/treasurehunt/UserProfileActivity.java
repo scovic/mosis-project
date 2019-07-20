@@ -86,21 +86,18 @@ public class UserProfileActivity extends AppCompatActivity {
         ArrayList<Hunt> huntsList = new ArrayList<>();
 
         if (item.equals("Active Hunts")) {
-            Toast.makeText(this, "usoooo", Toast.LENGTH_SHORT).show();
             // filter baze za huntove kod kojih je completed=false
             huntsList.add(new Hunt("Test Active Hunt"));
             mHuntsAdapter = new HuntAdapter(this, huntsList);
             mHuntsAdapter.setmFilter(HuntAdapter.FilterType.ACTIVE);
             mHuntsList.setAdapter(mHuntsAdapter);
         } else if (item.equals("Completed Hunts")) {
-            Toast.makeText(this, "usoooo", Toast.LENGTH_SHORT).show();
             // ovde filter svih huntova kod kojih je completed=true
             huntsList.add(new Hunt("Test Completed Hunt"));
             mHuntsAdapter = new HuntAdapter(this, huntsList);
             mHuntsAdapter.setmFilter(HuntAdapter.FilterType.COMPLETED);
             mHuntsList.setAdapter(mHuntsAdapter);
         } else if (item.equals("My Hunts")) {
-            Toast.makeText(this, "usoooo", Toast.LENGTH_SHORT).show();
             // filter gde je user == ulogovani user
             huntsList.add(new Hunt("Test My Hunt"));
             mHuntsAdapter = new HuntAdapter(this, huntsList);
