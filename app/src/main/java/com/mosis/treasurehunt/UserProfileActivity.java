@@ -88,16 +88,19 @@ public class UserProfileActivity extends AppCompatActivity {
             // filter baze za huntove kod kojih je completed=false
             huntsList.add(new Hunt("Test Active Hunt"));
             mHuntsAdapter = new HuntAdapter(this, huntsList);
+            mHuntsAdapter.setmFilter(HuntAdapter.FilterType.ACTIVE);
             mHuntsList.setAdapter(mHuntsAdapter);
         } else if (item == "Completed Hunts") {
             // ovde filter svih huntova kod kojih je completed=true
             huntsList.add(new Hunt("Test Completed Hunt"));
             mHuntsAdapter = new HuntAdapter(this, huntsList);
+            mHuntsAdapter.setmFilter(HuntAdapter.FilterType.COMPLETED);
             mHuntsList.setAdapter(mHuntsAdapter);
         } else if (item == "My Hunts") {
             // filter gde je user == ulogovani user
             huntsList.add(new Hunt("Test My Hunt"));
             mHuntsAdapter = new HuntAdapter(this, huntsList);
+            mHuntsAdapter.setmFilter(HuntAdapter.FilterType.MINE);
             mHuntsList.setAdapter(mHuntsAdapter);
         }
     }
