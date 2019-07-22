@@ -1,4 +1,4 @@
-package com.mosis.treasurehunt;
+package com.mosis.treasurehunt.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.HuntAdapter;
 import com.mosis.treasurehunt.models.Hunt;
 

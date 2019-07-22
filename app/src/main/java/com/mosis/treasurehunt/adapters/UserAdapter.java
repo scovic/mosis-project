@@ -32,7 +32,7 @@ public class UserAdapter extends ArrayAdapter<User> {
         User currentUser = userList.get(position);
 
         if (listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_leaderboard, parent, false);
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_user, parent, false);
 
         TextView user_name = listItem.findViewById(R.id.text_user_name);
         user_name.setText(currentUser.getFullName());

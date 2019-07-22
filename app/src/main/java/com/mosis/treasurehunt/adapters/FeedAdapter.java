@@ -1,6 +1,7 @@
 package com.mosis.treasurehunt.adapters;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,8 +12,6 @@ import android.widget.TextView;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.models.Feed;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class FeedAdapter extends ArrayAdapter<Feed> {
 
         if (currentFeed.getType() == Feed.Type.FINISH) {
             if (listItem == null)
-                listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_finish_feeds, parent, false);
+                listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_finish_feed, parent, false);
 
 //        ImageView avatar_pic = (ImageView) listItem.findViewById(R.id.image_avatar);
 //        avatar_pic.setImageResource(currentFeed.getOwner().profileImage);
@@ -47,7 +46,7 @@ public class FeedAdapter extends ArrayAdapter<Feed> {
             info.setText("successful completed the hunt");
         } else {
             if (listItem == null)
-                listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_create_feeds, parent, false);
+                listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_create_feed, parent, false);
 
 //        ImageView avatar_pic = (ImageView) listItem.findViewById(R.id.image_avatar);
 //        avatar_pic.setImageResource(currentFeed.getOwner().profileImage);

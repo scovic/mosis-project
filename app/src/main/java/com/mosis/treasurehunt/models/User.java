@@ -1,13 +1,21 @@
 package com.mosis.treasurehunt.models;
 
 import android.media.Image;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
+@IgnoreExtraProperties
 public class User {
     public String firstName;
     public String lastName;
     public String mEmail;
-    public Image profileImage;
     private int mPoints;
+    @Exclude
+    private String mKey;
+    @Exclude
+    public Image profileImage;
+
+    public User() {}
 
     public User(String firstName, String lastName, String email) {
         this.firstName = firstName;
@@ -39,11 +47,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getmEmail() {
+    public String getEmail() {
         return mEmail;
     }
 
-    public void setmEmail(String mEmail) {
+    public void setEmail(String mEmail) {
         this.mEmail = mEmail;
     }
 
@@ -52,4 +60,11 @@ public class User {
     public void setPoints(int points) { this.mPoints = points; }
 
     public int getPoints() { return this.mPoints; }
+
+    public String getKey() { return this.mKey; }
+
+    public void setKey(String key) { this.mKey = key; }
+
+    @Override
+    public String toString() { return String.format("%s %s", firstName, lastName); }
 }

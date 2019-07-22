@@ -29,4 +29,10 @@ public class Feed {
     public Type getType() {
         return  this.mType;
     }
+
+    public String getText() {
+        return mType == Type.CREATE
+                ? "created a new hunt"
+                : "successfuly completed the hunt";
+    }
 }

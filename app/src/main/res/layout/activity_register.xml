@@ -6,7 +6,7 @@
     android:background="@drawable/wallpaper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".activities.RegisterActivity">
 
     <ImageButton
         android:id="@+id/add_prof_image"
