@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="45dp"
         android:layout_marginBottom="15dp">
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -13,8 +13,8 @@
                 android:id="@+id/lbl_item_hunt_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="20sp"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp"
                 android:layout_gravity="center_vertical"
                 android:text="Completed Hunt #1"
                 />
@@ -23,8 +23,8 @@
                 android:id="@+id/lbl_item_hunt_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_marginTop="20dp"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="10dp"
                 android:layout_alignParentRight="true"

@@ -16,12 +16,13 @@ import android.widget.Spinner;
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.HuntAdapter;
 import com.mosis.treasurehunt.models.Hunt;
+import com.mosis.treasurehunt.models.User;
 
 import java.util.ArrayList;
 
 public class UserProfileActivity extends AppCompatActivity {
     private Spinner spinner;
-    private ArrayAdapter<CharSequence> adapter;
+    private ArrayAdapter<CharSequence> spinnerAdapter;
     private Button btnAddHunt;
     private ListView mHuntsList;
     private HuntAdapter mHuntsAdapter;
@@ -36,9 +37,9 @@ public class UserProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         spinner = findViewById(R.id.spinner_user_profile);
-        adapter = ArrayAdapter.createFromResource(this, R.array.type_of_hunts_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.type_of_hunts_array, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -84,20 +85,23 @@ public class UserProfileActivity extends AppCompatActivity {
         mHuntsList = findViewById(R.id.hunts_list);
         ArrayList<Hunt> huntsList = new ArrayList<>();
 
-        if (item == "Active Hunts") {
+        if (item.equals("Active Hunts")) {
             // filter baze za huntove kod kojih je completed=false
             huntsList.add(new Hunt("Test Active Hunt"));
             mHuntsAdapter = new HuntAdapter(this, huntsList);
+            mHuntsAdapter.setmFilter(HuntAdapter.FilterType.ACTIVE);
             mHuntsList.setAdapter(mHuntsAdapter);
-        } else if (item == "Completed Hunts") {
+        } else if (item.equals("Completed Hunts")) {
             // ovde filter svih huntova kod kojih je completed=true
             huntsList.add(new Hunt("Test Completed Hunt"));
             mHuntsAdapter = new HuntAdapter(this, huntsList);
+            mHuntsAdapter.setmFilter(HuntAdapter.FilterType.COMPLETED);
             mHuntsList.setAdapter(mHuntsAdapter);
-        } else if (item == "My Hunts") {
+        } else if (item.equals("My Hunts")) {
             // filter gde je user == ulogovani user
             huntsList.add(new Hunt("Test My Hunt"));
             mHuntsAdapter = new HuntAdapter(this, huntsList);
+            mHuntsAdapter.setmFilter(HuntAdapter.FilterType.MINE);
             mHuntsList.setAdapter(mHuntsAdapter);
         }
     }
