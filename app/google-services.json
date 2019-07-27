@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "792041939294-dshefueogaod7l699gtdajbv9glctjb3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mosis.treasurehunt",
+            "certificate_hash": "a7462e207096e3bc5d2a6d80817d4a2ae8684a17"
+          }
+        },
+        {
           "client_id": "792041939294-1099ckhgrro5jhf5ev4lp3ej9fba9jj8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

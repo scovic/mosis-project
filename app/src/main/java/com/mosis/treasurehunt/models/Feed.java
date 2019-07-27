@@ -1,6 +1,7 @@
 package com.mosis.treasurehunt.models;
 
 
+import com.google.firebase.database.Exclude;
 
 public class Feed {
     public enum Type {
@@ -11,6 +12,8 @@ public class Feed {
     private User mOwner;
     private Hunt mHunt;
     private Type mType;
+    @Exclude
+    private String mKey;
 
     public Feed (User user, Hunt hunt, Type type) {
         this.mOwner = user;
@@ -35,4 +38,8 @@ public class Feed {
                 ? "created a new hunt"
                 : "successfuly completed the hunt";
     }
+
+    public String getKey() { return this.mKey; }
+
+    public void setKey(String key) { this.mKey = key; }
 }

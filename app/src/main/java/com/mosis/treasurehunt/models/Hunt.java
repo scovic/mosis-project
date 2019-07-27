@@ -1,5 +1,7 @@
 package com.mosis.treasurehunt.models;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 
 public class Hunt {
@@ -9,6 +11,8 @@ public class Hunt {
     private User mOwner;
     public ArrayList<Clue> clues;
     public ArrayList<User> hunters;
+    @Exclude
+    private String mKey;
 
     public Hunt() {
         clues = new ArrayList<>();
@@ -47,4 +51,8 @@ public class Hunt {
     public int getNumberOfClues() { return this.clues.size(); }
 
     public int getNumberOfHunters() { return this.hunters.size(); }
+
+    public String getKey() { return this.mKey; }
+
+    public void setKey(String key) { this.mKey = key; }
 }

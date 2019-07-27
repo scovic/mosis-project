@@ -9,18 +9,21 @@ public class User {
     public String firstName;
     public String lastName;
     public String mEmail;
-    private int mPoints;
+    public String mPassword;
+    public int mPoints;
     @Exclude
     private String mKey;
     @Exclude
     public Image profileImage;
 
+
     public User() {}
 
-    public User(String firstName, String lastName, String email) {
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mEmail = email;
+        this.mPassword = password;
         this.mPoints = 0;
     }
 
@@ -67,4 +70,5 @@ public class User {
 
     @Override
     public String toString() { return String.format("%s %s", firstName, lastName); }
+
 }
