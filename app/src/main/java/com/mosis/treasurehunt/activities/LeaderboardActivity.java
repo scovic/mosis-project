@@ -36,13 +36,13 @@ public class LeaderboardActivity extends AppCompatActivity {
                 mUserListView = findViewById(R.id.user_list);
                 if (tab.getPosition() == 0) {
                     mUsersList = new ArrayList<>();
-                    mUsersList.add(new User("Stefan", "Covic", "scovic996@gmail.com", 1005));
-                    mUsersList.add(new User("Nevena", "Colic", "nensika996@gmail.com", 100));
-                    mUsersList.add(new User("Jon", "Snow", "snowflake@gmail.com", 65));
+                    mUsersList.add(new User("Stefan", "Covic", "scovic996@gmail.com", "pass",1005));
+                    mUsersList.add(new User("Nevena", "Colic", "nensika996@gmail.com", "pass",100));
+                    mUsersList.add(new User("Jon", "Snow", "snowflake@gmail.com", "pass",65));
                 } else {
                     mUsersList = new ArrayList<>();
-                    mUsersList.add(new User("Stefan", "Covic", "scovic996@gmail.com", 1005));
-                    mUsersList.add(new User("Nevena", "Colic", "nensika996@gmail.com", 100));
+                    mUsersList.add(new User("Stefan", "Covic", "scovic996@gmail.com", "pass",1005));
+                    mUsersList.add(new User("Nevena", "Colic", "nensika996@gmail.com", "pass",100));
                 }
                 mUserAdapter = new UserAdapter(LeaderboardActivity.this, mUsersList);
                 mUserListView.setAdapter(mUserAdapter);
@@ -61,9 +61,9 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         mUserListView = findViewById(R.id.user_list);
         List<User> usersList = new ArrayList<>();
-        usersList.add(new User("Stefan", "Covic", "scovic996@gmail.com", 1005));
-        usersList.add(new User("Nevena", "Colic", "nensika996@gmail.com", 100));
-        usersList.add(new User("Jon", "Snow", "snowflake@gmail.com", 65));
+        usersList.add(new User("Stefan", "Covic", "scovic996@gmail.com", "pass", 1005));
+        usersList.add(new User("Nevena", "Colic", "nensika996@gmail.com", "pass", 100));
+        usersList.add(new User("Jon", "Snow", "snowflake@gmail.com", "pass", 65));
         mUserAdapter = new UserAdapter(this, usersList);
         mUserListView.setAdapter(mUserAdapter);
     }

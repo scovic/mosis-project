@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mosis.treasurehunt">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -10,9 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".activities.LogOutActivity"
+            android:label=""
+            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+        <activity
             android:name=".activities.LeaderboardActivity"
             android:label="@string/title_activity_leaderboard"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.AddClueActivity"
             android:label="@string/title_activity_add_clue"

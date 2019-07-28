@@ -6,11 +6,11 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class User {
-    public String firstName;
-    public String lastName;
-    public String mEmail;
-    public String mPassword;
-    public int mPoints;
+    private String firstName;
+    private String lastName;
+    private String mUsername;
+    private String mPassword;
+    private int mPoints;
     @Exclude
     private String mKey;
     @Exclude
@@ -19,19 +19,27 @@ public class User {
 
     public User() {}
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String firstName, String lastName, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.mEmail = email;
+        this.mUsername = username;
         this.mPassword = password;
         this.mPoints = 0;
     }
 
-    public User(String firstName, String lastName, String email, int points) {
+    public User(String firstName, String lastName, String username, String password, int points) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.mEmail = email;
+        this.mUsername = username;
+        this.mPassword = password;
         this.mPoints = points;
+    }
+
+    public User(String firstName, String lastName, String username) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mUsername = username;
+        this.mPoints = 0;
     }
 
     public String getFirstName() {
@@ -50,12 +58,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return mEmail;
+    public String getUsername() {
+        return mUsername;
     }
 
-    public void setEmail(String mEmail) {
-        this.mEmail = mEmail;
+    public void setUsername(String username) {
+        this.mUsername = username;
     }
 
     public String getFullName() { return String.format("%s %s", firstName, lastName); }
@@ -63,6 +71,12 @@ public class User {
     public void setPoints(int points) { this.mPoints = points; }
 
     public int getPoints() { return this.mPoints; }
+
+    public void setPassword(String password) {
+        this.mPassword = password;
+    }
+
+    public String getPassword() { return this.mPassword; }
 
     public String getKey() { return this.mKey; }
 

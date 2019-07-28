@@ -1,8 +1,10 @@
 package com.mosis.treasurehunt.data;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,10 +18,12 @@ public class HuntDao implements Dao<Hunt> {
 
     private ArrayList<Hunt> mHunts;
     private DatabaseReference mDatabase;
-    private final String COLLECTION = "hunts";
+    private static final String COLLECTION = "hunts";
 
     public HuntDao() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child(COLLECTION).addChildEventListener(childEventListener);
+        mDatabase.child(COLLECTION).addValueEventListener(huntListener);
         this.mHunts = new ArrayList<>();
     }
 
@@ -47,6 +51,35 @@ public class HuntDao implements Dao<Hunt> {
         public void onCancelled(@NonNull DatabaseError databaseError) {
             final String TAG = "HuntDao";
             Log.w(TAG, "huntListener:onCancelled", databaseError.toException());
+        }
+    };
+
+    ChildEventListener childEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Hunt hunt = dataSnapshot.getValue(Hunt.class);
+            mHunts.add(hunt);
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            Hunt hunt = dataSnapshot.getValue(Hunt.class);
+            mHunts.remove(hunt);
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
         }
     };
 

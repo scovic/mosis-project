@@ -74,6 +74,9 @@ public class HomeActivity extends AppCompatActivity {
         } else if (id == R.id.show_leaderboard) {
             Intent i = new Intent(this, LeaderboardActivity.class);
             startActivity(i);
+        } else if (id == R.id.signout) {
+            Intent i = new Intent(this, LogOutActivity.class);
+            startActivity(i);
         }
 
 
