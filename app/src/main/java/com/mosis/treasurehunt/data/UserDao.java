@@ -98,13 +98,13 @@ public class UserDao implements Dao<User> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        setQuerySuccess(true);
+                        QUERY_SUCCESS = true;
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        setQuerySuccess(false);
+                        QUERY_SUCCESS = false;
                     }
                 });
 
