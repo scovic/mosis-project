@@ -114,35 +114,30 @@ public class UserDao implements Dao<User> {
     @Override
     public void update(User user) {
         this.mDatabase.child(COLLECTION).child(user.getUsername()).setValue(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        QUERY_SUCCESS = true;
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        QUERY_SUCCESS = false;
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            QUERY_SUCCESS = true;
+                        } else {
+                            QUERY_SUCCESS = false;
+                        }
                     }
                 });
-
         if (updateListener != null) updateListener.onListUpdated();
     }
 
     @Override
     public void delete(User user) {
         this.mDatabase.child(COLLECTION).child(user.getUsername()).removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        QUERY_SUCCESS = true;
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        QUERY_SUCCESS = false;
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            QUERY_SUCCESS = true;
+                        } else {
+                            QUERY_SUCCESS = false;
+                        }
                     }
                 });
 
