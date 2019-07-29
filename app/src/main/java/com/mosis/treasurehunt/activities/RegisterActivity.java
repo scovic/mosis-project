@@ -1,10 +1,8 @@
 package com.mosis.treasurehunt.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -14,10 +12,8 @@ import android.widget.Toast;
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.data.UserDao;
 import com.mosis.treasurehunt.models.User;
-import com.mosis.treasurehunt.network.NetworkRequestTaskRegisterUser;
 
 import java.util.ArrayList;
-import java.util.Observable;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -76,9 +72,6 @@ public class RegisterActivity extends AppCompatActivity {
                 if (!userAlreadyExists) {
                     if (password.equals(repeatedPassword)) {
                         User user = new User(firstName, lastName, username, password);
-                        // NEPOTREBAN ASYNC TASK ZA REGISTRACIJU, SAMO PROBA, OBRISACU GA
-//                        Context context = getApplicationContext();
-//                        new NetworkRequestTaskRegisterUser(user, context).execute();
                         userDao.save(user);
                         if(userDao.getQuerySuccess() == true) {
                             Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_SHORT).show();
