@@ -73,9 +73,10 @@ public class RegisterActivity extends AppCompatActivity {
                     if (password.equals(repeatedPassword)) {
                         User user = new User(firstName, lastName, username, password);
                         userDao.save(user);
-                        if(userDao.getQuerySuccess() == true) {
+
+                        if(RegisterActivity.this.userDao.getQuerySuccess() == true) {
                             Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_SHORT).show();
-                            userDao.setQuerySuccess(false);
+                            RegisterActivity.this.userDao.setQuerySuccess(false);
                             Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(i);
                         } else {
@@ -85,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Passwords don't match", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "User with that username already exists", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "UserDao with that username already exists", Toast.LENGTH_LONG).show();
                 }
 
             }

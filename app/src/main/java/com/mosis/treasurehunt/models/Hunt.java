@@ -5,14 +5,14 @@ import com.google.firebase.database.Exclude;
 import java.util.ArrayList;
 
 public class Hunt {
-    private String mTitle;
-    private boolean mCompleted;
-    private int mPoints;
-    private User mOwner;
+    private String title;
+    private boolean completed;
+    private int points;
+    private User owner;
     public ArrayList<Clue> clues;
     public ArrayList<User> hunters;
     @Exclude
-    private String mKey;
+    private String key;
 
     public Hunt() {
         clues = new ArrayList<>();
@@ -20,39 +20,47 @@ public class Hunt {
     }
 
     public Hunt(String title) {
-        mTitle = title;
+        this.title = title;
         clues = new ArrayList<>();
         hunters = new ArrayList<>();
     }
 
     public Hunt(String title, User owner) {
-        mTitle = title;
-        mOwner = owner;
+        this.title = title;
+        this.owner = owner;
         clues = new ArrayList<>();
         hunters = new ArrayList<>();
     }
 
-    public void setTitle(String title) { this.mTitle = title;  }
+    public void setTitle(String title) { this.title = title;  }
 
-    public String getTitle() { return this.mTitle; }
+    public String getTitle() { return this.title; }
 
-    public boolean checkCompleted() { return this.mCompleted; }
+    public boolean checkCompleted() { return this.completed; }
 
-    public void setmCompleted() { this.mCompleted = true; }
+    public void setmCompleted() { this.completed = true; }
 
-    public User getmOwner() { return this.mOwner; }
+    public User getOwner() { return this.owner; }
 
-    public void setmOwner(User owner) { this.mOwner = owner; }
+    public void setOwner(User owner) { this.owner = owner; }
 
-    public int getmPoints() { return this.mPoints; }
+    public int getPoints() { return this.points; }
 
-    public void setmPoints(int pts) { this.mPoints = pts; }
+    public void setPoints(int pts) { this.points = pts; }
 
     public int getNumberOfClues() { return this.clues.size(); }
 
     public int getNumberOfHunters() { return this.hunters.size(); }
 
-    public String getKey() { return this.mKey; }
+    public String getKey() { return this.key; }
 
-    public void setKey(String key) { this.mKey = key; }
+    public void setKey(String key) { this.key = key; }
+
+    public void addClue(Clue clue) { this.clues.add(clue); }
+
+    public ArrayList<Clue> getClues() { return this.clues; }
+
+    public void deleteClue(Clue clue) {
+        this.clues.remove(clue);
+    }
 }

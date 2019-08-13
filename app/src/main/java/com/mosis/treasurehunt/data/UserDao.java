@@ -24,15 +24,8 @@ public class UserDao implements Dao<User> {
     private DatabaseReference mDatabase;
     private static final String COLLECTION = "users";
     private boolean QUERY_SUCCESS;
-
-    public UserDao() {
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child(COLLECTION).addChildEventListener(childEventListener);
-        mDatabase.child(COLLECTION).addValueEventListener(userListener);
-        this.mUsers = new ArrayList<>();
-    }
-
     ListUpdatedEventListener updateListener;
+
     public void setEventListener(ListUpdatedEventListener listener) {
         updateListener = listener;
     }
@@ -41,15 +34,18 @@ public class UserDao implements Dao<User> {
         void onListUpdated();
     }
 
+    public UserDao() {
+        this.mUsers = new ArrayList<>();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child(COLLECTION).addChildEventListener(childEventListener);
+        mDatabase.child(COLLECTION).addValueEventListener(userListener);
+    }
+
     ValueEventListener userListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            for(DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                User user = userSnapshot.getValue(User.class);
-                mUsers.add(user);
-            }
-
-            if (updateListener != null) updateListener.onListUpdated();
+            if (updateListener != null)
+                updateListener.onListUpdated();
         }
 
         @Override
@@ -64,6 +60,8 @@ public class UserDao implements Dao<User> {
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             User user = dataSnapshot.getValue(User.class);
             mUsers.add(user);
+            if (updateListener != null)
+                updateListener.onListUpdated();
         }
 
         @Override
@@ -75,6 +73,9 @@ public class UserDao implements Dao<User> {
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
             User user = dataSnapshot.getValue(User.class);
             mUsers.remove(user);
+
+            if (updateListener != null)
+                updateListener.onListUpdated();
         }
 
         @Override
@@ -108,7 +109,7 @@ public class UserDao implements Dao<User> {
                     }
                 });
 
-        if (updateListener != null) updateListener.onListUpdated();
+//        if (updateListener != null) updateListener.onListUpdated();
     }
 
     @Override
@@ -124,7 +125,7 @@ public class UserDao implements Dao<User> {
                         }
                     }
                 });
-        if (updateListener != null) updateListener.onListUpdated();
+//        if (updateListener != null) updateListener.onListUpdated();
     }
 
     @Override
@@ -141,7 +142,7 @@ public class UserDao implements Dao<User> {
                     }
                 });
 
-        if (updateListener != null) updateListener.onListUpdated();
+//        if (updateListener != null) updateListener.onListUpdated();
     }
 
     public void setQuerySuccess(boolean b) {

@@ -4,42 +4,56 @@ import android.media.Image;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @IgnoreExtraProperties
 public class User {
     private String firstName;
     private String lastName;
-    private String mUsername;
-    private String mPassword;
-    private int mPoints;
+    private String username;
+    private String password;
+    private int points;
+    private List<Hunt> createdHunts;
+    private List<Hunt> joinedHunts;
+    // Array of usernames
+    private List<String> friendList;
     @Exclude
-    private String mKey;
+    private String key;
     @Exclude
     public Image profileImage;
 
 
-    public User() {}
+    public User() {
+        createdHunts = new ArrayList<>();
+        joinedHunts = new ArrayList<>();
+        friendList = new ArrayList<>();
+    }
 
     public User(String firstName, String lastName, String username, String password) {
+        this();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.mUsername = username;
-        this.mPassword = password;
-        this.mPoints = 0;
+        this.username = username;
+        this.password = password;
+        this.points = 0;
     }
 
     public User(String firstName, String lastName, String username, String password, int points) {
+        this();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.mUsername = username;
-        this.mPassword = password;
-        this.mPoints = points;
+        this.username = username;
+        this.password = password;
+        this.points = points;
     }
 
     public User(String firstName, String lastName, String username) {
+        this();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.mUsername = username;
-        this.mPoints = 0;
+        this.username = username;
+        this.points = 0;
     }
 
     public String getFirstName() {
@@ -59,30 +73,44 @@ public class User {
     }
 
     public String getUsername() {
-        return mUsername;
+        return username;
     }
 
     public void setUsername(String username) {
-        this.mUsername = username;
+        this.username = username;
     }
 
     public String getFullName() { return String.format("%s %s", firstName, lastName); }
 
-    public void setPoints(int points) { this.mPoints = points; }
+    public void setPoints(int points) { this.points = points; }
 
-    public int getPoints() { return this.mPoints; }
+    public int getPoints() { return this.points; }
 
     public void setPassword(String password) {
-        this.mPassword = password;
+        this.password = password;
     }
 
-    public String getPassword() { return this.mPassword; }
+    public String getPassword() { return this.password; }
 
-    public String getKey() { return this.mKey; }
+    public String getKey() { return this.key; }
 
-    public void setKey(String key) { this.mKey = key; }
+    public void setKey(String key) { this.key = key; }
 
     @Override
     public String toString() { return String.format("%s %s", firstName, lastName); }
+
+    public List<Hunt> getCreatedHunts() { return this.createdHunts; }
+
+    public void addHunt(Hunt hunt) { this.createdHunts.add(hunt); }
+
+    public List<Hunt> getJoinedHunst() { return this.joinedHunts; }
+
+    public void joinHunt(Hunt hunt) { this.joinedHunts.add(hunt); }
+
+    public int getNumOfCreatedHunts() { return  this.createdHunts.size(); }
+
+    public int getNumOfJoinedHunts() { return this.joinedHunts.size(); }
+
+   public List<String> getFriendList() { return this.friendList; }
 
 }

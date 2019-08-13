@@ -11,15 +11,18 @@ import android.view.View;
 import android.widget.Button;
 
 import com.mosis.treasurehunt.R;
+import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 public class LogOutActivity extends AppCompatActivity {
     Button cancelButton;
     Button logoutButton;
+    SharedPreferencesWrapper sharedPrefWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_out);
+        sharedPrefWrapper = SharedPreferencesWrapper.getInstance();
 
         cancelButton = findViewById(R.id.btn_logout_cancel);
         logoutButton = findViewById(R.id.btn_logout_submit);
@@ -34,14 +37,10 @@ public class LogOutActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences pref = getSharedPreferences("user_details", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.clear();
-                editor.commit();
+                sharedPrefWrapper.clearUserDetails();
+                Intent i = new Intent();
+                setResult(RESULT_OK, i);
                 finish();
-
-                Intent i = new Intent(LogOutActivity.this, LoginActivity.class);
-                startActivity(i);
             }
         });
 

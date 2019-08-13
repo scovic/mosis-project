@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.HuntAdapter;
@@ -74,7 +75,13 @@ public class UserProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == android.R.id.home) {
+        if (id == R.id.show_friends) {
+            Intent i = new Intent(this, FriendListActivity.class);
+            startActivity(i);
+        } else if (id == R.id.show_leaderboard) {
+            Intent i = new Intent(this, LeaderboardActivity.class);
+            startActivity(i);
+        } else if (id == android.R.id.home) {
             finish();
         }
 

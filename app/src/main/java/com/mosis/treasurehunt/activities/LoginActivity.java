@@ -1,30 +1,28 @@
 package com.mosis.treasurehunt.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.data.UserDao;
 import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
-
-    SharedPreferences pref;
     Button noAccountButton;
     Button signInButton;
     EditText usernameEditText;
     EditText passwordEditText;
     Intent homeIntent;
     UserDao userDao;
+    SharedPreferencesWrapper sharedPrefWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +32,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         userDao = new UserDao();
+        sharedPrefWrapper = SharedPreferencesWrapper.getInstance();
 
-        pref = getSharedPreferences("user_details", MODE_PRIVATE);
         homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
 
-        if(pref.contains("username")) {
+        if(sharedPrefWrapper.containsUsername("username")) {
             startActivity(homeIntent);
         }
 
@@ -64,24 +62,25 @@ public class LoginActivity extends AppCompatActivity {
 
                 for (User user : registeredUsers) {
                     if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("username", username);
-                        editor.commit();
+                        sharedPrefWrapper.putUsername(username);
+                        sharedPrefWrapper.putFullName(user.getFullName());
+
                         startActivity(homeIntent);
+                        finish();
                     }
                 }
             }
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        pref = getSharedPreferences("user_details", MODE_PRIVATE);
-        homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
-
-        if(pref.contains("username")) {
-            startActivity(homeIntent);
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        pref = getSharedPreferences("user_details", MODE_PRIVATE);
+//        homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+//
+//        if(pref.contains("username")) {
+//            startActivity(homeIntent);
+//        }
+//    }
 }

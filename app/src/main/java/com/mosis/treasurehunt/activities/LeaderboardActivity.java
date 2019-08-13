@@ -1,5 +1,6 @@
 package com.mosis.treasurehunt.activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,13 +11,18 @@ import android.widget.ListView;
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.UserAdapter;
 import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.repositories.UserRepository;
+import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class LeaderboardActivity extends AppCompatActivity {
     private ListView mUserListView;
     private UserAdapter mUserAdapter;
+    private UserRepository mUserRepository;
+    private SharedPreferencesWrapper mSharedPrefWrapper;
     private List<User> mUsersList;
 
     @Override
@@ -29,22 +35,28 @@ public class LeaderboardActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
+        mUserRepository = UserRepository.getInstance();
+        mUserRepository.getUsers();
         TabLayout tabs = findViewById(R.id.tabs_layout);
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mUserListView = findViewById(R.id.user_list);
                 if (tab.getPosition() == 0) {
-                    mUsersList = new ArrayList<>();
-                    mUsersList.add(new User("Stefan", "Covic", "scovic996@gmail.com", "pass",1005));
-                    mUsersList.add(new User("Nevena", "Colic", "nensika996@gmail.com", "pass",100));
-                    mUsersList.add(new User("Jon", "Snow", "snowflake@gmail.com", "pass",65));
+                    mUsersList = mUserRepository.getUsers1();
                 } else {
-                    mUsersList = new ArrayList<>();
-                    mUsersList.add(new User("Stefan", "Covic", "scovic996@gmail.com", "pass",1005));
-                    mUsersList.add(new User("Nevena", "Colic", "nensika996@gmail.com", "pass",100));
+                    String username = mSharedPrefWrapper.getUsername();
+                    User logedInUser = mUserRepository.getUserByUsername(username);
+                    mUsersList = mUserRepository.getFriendArrayList(logedInUser);
                 }
-                mUserAdapter = new UserAdapter(LeaderboardActivity.this, mUsersList);
+                mUsersList.sort(new Comparator<User>() {
+                    @Override
+                    public int compare(User o1, User o2) {
+                        return o2.getPoints() - o1.getPoints();
+                    }
+                });
+                mUserAdapter = new UserAdapter(LeaderboardActivity.this, mUsersList, R.layout.item_list_user);
                 mUserListView.setAdapter(mUserAdapter);
             }
 
@@ -60,11 +72,14 @@ public class LeaderboardActivity extends AppCompatActivity {
         });
 
         mUserListView = findViewById(R.id.user_list);
-        List<User> usersList = new ArrayList<>();
-        usersList.add(new User("Stefan", "Covic", "scovic996@gmail.com", "pass", 1005));
-        usersList.add(new User("Nevena", "Colic", "nensika996@gmail.com", "pass", 100));
-        usersList.add(new User("Jon", "Snow", "snowflake@gmail.com", "pass", 65));
-        mUserAdapter = new UserAdapter(this, usersList);
+        mUsersList = mUserRepository.getUsers1();
+        mUsersList.sort(new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                return o2.getPoints() - o1.getPoints();
+            }
+        });
+        mUserAdapter = new UserAdapter(this, mUsersList, R.layout.item_list_user);
         mUserListView.setAdapter(mUserAdapter);
     }
 

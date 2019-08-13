@@ -18,11 +18,13 @@ import java.util.List;
 public class UserAdapter extends ArrayAdapter<User> {
     private Context mContext;
     private List<User> userList = new ArrayList<>();
+    private int mItemLayout;
 
-    public UserAdapter(@NonNull Context context, List<User> list) {
+    public UserAdapter(@NonNull Context context, List<User> list, int itemLayout) {
         super(context, 0, list);
         mContext = context;
         userList = list;
+        mItemLayout = itemLayout;
     }
 
     @NonNull
@@ -32,7 +34,7 @@ public class UserAdapter extends ArrayAdapter<User> {
         User currentUser = userList.get(position);
 
         if (listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_user, parent, false);
+            listItem = LayoutInflater.from(mContext).inflate(mItemLayout, parent, false);
 
         TextView user_name = listItem.findViewById(R.id.text_user_name);
         user_name.setText(currentUser.getFullName());
@@ -41,12 +43,16 @@ public class UserAdapter extends ArrayAdapter<User> {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Points: ");
         stringBuilder.append(currentUser.getPoints());
+        if (points != null)
         points.setText(stringBuilder.toString());
 
         TextView rank = listItem.findViewById(R.id.text_rank);
         stringBuilder = new StringBuilder();
         stringBuilder.append(position+1);
-        rank.setText(stringBuilder.toString());
+        if (rank != null) {
+            rank.setText(stringBuilder.toString());
+        }
+
 
         return listItem;
     }

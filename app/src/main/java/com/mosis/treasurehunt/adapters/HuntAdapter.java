@@ -7,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Filter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.models.Hunt;
@@ -53,7 +51,7 @@ public class HuntAdapter extends ArrayAdapter<Hunt> {
 
             TextView hunt_points = listItem.findViewById(R.id.lbl_item_hunt_details);
             stringBuilder.append("");
-            stringBuilder.append(currentHunt.getmPoints());
+            stringBuilder.append(currentHunt.getPoints());
             hunt_points.setText(stringBuilder.toString());
         } else if (this.mFilter == FilterType.ACTIVE) {
             if(listItem == null)
