@@ -1,9 +1,17 @@
 package com.mosis.treasurehunt.activities;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,17 +22,21 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.mosis.treasurehunt.BluetoothActivity;
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.HuntAdapter;
 import com.mosis.treasurehunt.models.Hunt;
-import com.mosis.treasurehunt.models.User;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.UUID;
 
 public class UserProfileActivity extends AppCompatActivity {
     private Spinner spinner;
     private ArrayAdapter<CharSequence> spinnerAdapter;
     private Button btnAddHunt;
+    private Button btnDiscoverFriends;
     private ListView mHuntsList;
     private HuntAdapter mHuntsAdapter;
 
@@ -36,6 +48,15 @@ public class UserProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        btnDiscoverFriends = findViewById(R.id.btn_discover_friends);
+        btnDiscoverFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(UserProfileActivity.this, BluetoothActivity.class);
+                startActivity(i);
+            }
+        });
 
         spinner = findViewById(R.id.spinner_user_profile);
         spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.type_of_hunts_array, android.R.layout.simple_spinner_item);

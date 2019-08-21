@@ -1,7 +1,6 @@
 package com.mosis.treasurehunt.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +22,7 @@ public class MainEmptyActivity extends AppCompatActivity {
         if (pref.containsUsername("username")) {
             activityIntent = new Intent(this, HomeActivity.class);
         } else {
-            activityIntent = new Intent(this, LoginActivity.class);
+            activityIntent = new Intent(this, LogInActivity.class);
         }
 
         startActivity(activityIntent);

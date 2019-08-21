@@ -15,7 +15,7 @@ import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import java.util.ArrayList;
 
-public class LoginActivity extends AppCompatActivity {
+public class LogInActivity extends AppCompatActivity {
     Button noAccountButton;
     Button signInButton;
     EditText usernameEditText;
@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         userDao = new UserDao();
         sharedPrefWrapper = SharedPreferencesWrapper.getInstance();
 
-        homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+        homeIntent = new Intent(LogInActivity.this, HomeActivity.class);
 
         if(sharedPrefWrapper.containsUsername("username")) {
             startActivity(homeIntent);
@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         noAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
+                Intent i = new Intent(LogInActivity.this, RegisterActivity.class);
                 startActivity(i);
             }
         });
@@ -72,15 +72,4 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        pref = getSharedPreferences("user_details", MODE_PRIVATE);
-//        homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
-//
-//        if(pref.contains("username")) {
-//            startActivity(homeIntent);
-//        }
-//    }
 }

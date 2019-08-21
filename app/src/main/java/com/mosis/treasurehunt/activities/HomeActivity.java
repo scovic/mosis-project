@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
         try {
             if (resultCode == RESULT_OK) {
                 // when you logut, this should prevent user from goind on home acivity if he pres back button
-                Intent i = new Intent(this, LoginActivity.class);
+                Intent i = new Intent(this, LogInActivity.class);
                 startActivity(i);
                 finish();
             }

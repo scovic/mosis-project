@@ -3,6 +3,9 @@
     package="com.mosis.treasurehunt">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="com.google.android.things.permission.MANAGE_BLUETOOTH" />
 
     <application
         android:allowBackup="true"
@@ -12,9 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".BluetoothActivity"
+            android:label="Paired Devices"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+        <activity
             android:name=".activities.FriendListActivity"
             android:label="@string/title_activity_friend_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.MainEmptyActivity"
             android:theme="@android:style/Theme.NoDisplay">
@@ -34,7 +41,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.AddClueActivity"
-            android:label="@string/title_activity_add_clue"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
             android:name=".activities.NewHuntActivity"
@@ -56,8 +62,8 @@
             android:name=".activities.RegisterActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.LoginActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:name=".activities.LogInActivity"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>
