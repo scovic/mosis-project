@@ -15,8 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".BluetoothActivity"
-            android:label="Paired Devices"
+            android:name=".activities.BluetoothActivity"
+            android:label="Discovered Devices"
             android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
         <activity
             android:name=".activities.FriendListActivity"

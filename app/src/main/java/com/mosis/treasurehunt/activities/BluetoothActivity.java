@@ -1,4 +1,4 @@
-package com.mosis.treasurehunt;
+package com.mosis.treasurehunt.activities;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -20,6 +20,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mosis.treasurehunt.R;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
@@ -30,8 +32,10 @@ public class BluetoothActivity extends AppCompatActivity {
     private BluetoothAdapter mBluetoothAdapter;
     private ListView mPairedDevicesList;
     private Set<BluetoothDevice> mPairedDevices;
+    ArrayList devicesList;
     private static String NAME = "TreasureHunt";
     private static UUID MY_UUID = UUID.fromString("6e668c84-b6de-4a6c-9796-9ae3a9046d9b");
+    ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class BluetoothActivity extends AppCompatActivity {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mPairedDevices = mBluetoothAdapter.getBondedDevices();
         mPairedDevicesList = findViewById(R.id.lv_paired_devices);
+        devicesList = new ArrayList();
 
         if (mBluetoothAdapter == null) {
             Toast.makeText(this, "This device doesn't support Bluetooth", Toast.LENGTH_SHORT).show();
@@ -56,25 +61,23 @@ public class BluetoothActivity extends AppCompatActivity {
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,300);
         startActivity(discoverableIntent);
 
-
-//        mPairedDevices = mBluetoothAdapter.getBondedDevices();
-//        ArrayList list = new ArrayList();
-//        if (mPairedDevices.size() == 0) {
-//            for (BluetoothDevice device : mPairedDevices) {
-//                String deviceName = device.getName();
-//                String deviceMacAddress = device.getAddress();
-//                list.add(deviceName);
-//            }
-
-        ArrayList listw = new ArrayList();
-        listw.add("Nevena");
-        listw.add("Pera");
-
-        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listw);
-        mPairedDevicesList.setAdapter(adapter);
-// }
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(receiver, filter);
+
+        if (mBluetoothAdapter.isDiscovering()) mBluetoothAdapter.cancelDiscovery();
+        mBluetoothAdapter.startDiscovery();
+
+        mPairedDevices = mBluetoothAdapter.getBondedDevices();
+        if (mPairedDevices.size() > 0) {
+            for (BluetoothDevice device : mPairedDevices) {
+                String deviceName = device.getName();
+                String deviceMacAddress = device.getAddress();
+                devicesList.add(deviceName);
+            }
+        }
+
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, devicesList);
+        mPairedDevicesList.setAdapter(adapter);
     }
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -84,6 +87,7 @@ public class BluetoothActivity extends AppCompatActivity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String deviceName = device.getName();
                 String deviceMacAddress = device.getAddress(); // MAC address
+                devicesList.add(deviceName);
             }
         }
     };
