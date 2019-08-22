@@ -18,6 +18,7 @@ public class User {
     private List<Hunt> joinedHunts;
     // Array of usernames
     private List<String> friendList;
+    private Location currentLocation;
     @Exclude
     private String key;
     @Exclude
@@ -113,4 +114,7 @@ public class User {
 
    public List<String> getFriendList() { return this.friendList; }
 
+   public void setCurrentLocation(Location loc) { this.currentLocation = loc; }
+
+   public Location getCurrentLocation() { return this.currentLocation; }
 }

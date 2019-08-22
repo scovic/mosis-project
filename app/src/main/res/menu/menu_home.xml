@@ -29,7 +29,7 @@
         android:orderInCategory="100"
         android:title="Map"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/icon_add"
+        android:icon="@drawable/map"
         />
     <item
         android:id="@+id/show_settings"

@@ -10,5 +10,12 @@
         android:title="@string/title_activity_new_hunt"
         app:showAsAction="ifRoom"
         android:icon="@drawable/icon_add"/>
+    <item
+        android:id="@+id/show_friends_on_map"
+        android:orderInCategory="100"
+        android:title="Show Friends"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/show_friends_icon"
+        />
 
 </menu>

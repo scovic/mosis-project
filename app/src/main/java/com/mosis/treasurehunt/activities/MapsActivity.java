@@ -44,7 +44,6 @@ public class MapsActivity extends AppCompatActivity {
     public static final int SHOW_MAP = 0;
     public static final int CENTER_PLACE_ON_MAP = 1;
     public static final int SELECT_COORDINATES = 2;
-    public static final int EDIT_PLACE = 3;
     public static final int SELECT_CURRENT_COORDS = 4;
 
     private int state = 0;
@@ -120,15 +119,6 @@ public class MapsActivity extends AppCompatActivity {
             setMyLocationOverlay();
             setOnMapClickOverlay();
         }
-
-//        mapController = map.getController();
-//        if (mapController != null) {
-//            mapController.setZoom(15.0);
-//            GeoPoint startPoint = new GeoPoint(43.3209, 21.8958);
-//            mapController.setCenter(startPoint);
-//        }
-        // PLACE FOR FLOATBUTTON
-        // END PLACE FOR FLOATBUTTON
     }
 
     @Override
@@ -244,6 +234,8 @@ public class MapsActivity extends AppCompatActivity {
             if (id == R.id.new_hunt_item) {
                 Intent i = new Intent(this, NewHuntActivity.class);
                 startActivity(i);
+            } else if (id == android.R.id.home) {
+                finish();
             }
         }
 
