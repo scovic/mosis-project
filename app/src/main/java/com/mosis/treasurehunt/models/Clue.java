@@ -46,17 +46,23 @@ public class Clue {
 
     public void setQuestion(String question) { this.question = question; }
 
-    private double getLatitude() { return this.latitude; }
+    public double getLatitude() { return this.latitude; }
 
-    private void setLatitude(double latitude) { this.latitude = latitude; }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
 
-    private double getLongitude() { return  this.longitude; }
+    public double getLongitude() { return  this.longitude; }
 
-    private void setLongitude(double longitude) { this.longitude = longitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 
     public void setNextClue(Clue clue) { this.nextClue = clue; }
 
     public Clue getNextClue() { return this.nextClue; }
+
+    public boolean isAnswered() { return this.answered; }
+
+    public void setAnswered() {
+        this.answered = true;
+    }
 
     @Override
     public boolean equals(Object o) {

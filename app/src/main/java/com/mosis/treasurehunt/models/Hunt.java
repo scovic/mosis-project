@@ -63,4 +63,29 @@ public class Hunt {
     public void deleteClue(Clue clue) {
         this.clues.remove(clue);
     }
+
+    // Finds first unaanswered clue and returns it
+    public Clue getUnansweredClue() {
+        Clue clue = null;
+        for (Clue c : this.clues) {
+            if (c.isAnswered()) {
+                clue = c;
+                break;
+            }
+        }
+        return clue;
+    }
+
+    public boolean isCompleted() {
+        boolean isCompleted = true;
+        for(Clue clue: this.clues) {
+            if (!clue.isAnswered()) {
+                isCompleted = false;
+                break;
+            }
+        }
+
+        return  isCompleted;
+    }
+
 }

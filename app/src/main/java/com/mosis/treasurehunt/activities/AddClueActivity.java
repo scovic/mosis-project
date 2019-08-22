@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.mosis.treasurehunt.R;
 
@@ -24,7 +25,10 @@ public class AddClueActivity extends AppCompatActivity {
     EditText etAnswer2;
     EditText etAnswer3;
     EditText etAnswer4;
+    TextView tvLatitude;
+    TextView tvLongitude;
     RadioGroup radioGroup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,25 @@ public class AddClueActivity extends AppCompatActivity {
             }
         });
 
+        Button getLocation = findViewById(R.id.btn_choose_location);
+        getLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AddClueActivity.this, MapsActivity.class);
+                i.putExtra("state", MapsActivity.SELECT_COORDINATES);
+                startActivityForResult(i, 1);
+            }
+        });
 
+        Button btnMyLocatioon = findViewById(R.id.btn_my_location);
+        btnMyLocatioon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AddClueActivity.this, MapsActivity.class);
+                i.putExtra("state", MapsActivity.SELECT_CURRENT_COORDS);
+                startActivityForResult(i, 1);
+            }
+        });
     }
 
     public void saveClue() {
@@ -57,6 +79,8 @@ public class AddClueActivity extends AppCompatActivity {
         etAnswer2 = findViewById(R.id.et_answer2);
         etAnswer3 = findViewById(R.id.et_answer3);
         etAnswer4 = findViewById(R.id.et_answer4);
+        tvLongitude = findViewById(R.id.tv_longitude);
+        tvLatitude = findViewById(R.id.tv_latitude);
 
         String question = etQuestion.getText().toString();
         String answer1 = etAnswer1.getText().toString();
@@ -64,6 +88,8 @@ public class AddClueActivity extends AppCompatActivity {
         String answer3 = etAnswer3.getText().toString();
         String answer4 = etAnswer4.getText().toString();
         String correctAnswer = getCorrectAnswer();
+        double latitude = Double.parseDouble(tvLatitude.getText().toString());
+        double longitude = Double.parseDouble(tvLongitude.getText().toString());
 
         if (correctAnswer != null) {
             Intent i = new Intent();
@@ -73,6 +99,8 @@ public class AddClueActivity extends AppCompatActivity {
             i.putExtra("answer3", answer3);
             i.putExtra("answer4", answer4);
             i.putExtra("correct_answer", correctAnswer);
+            i.putExtra("lat", latitude);
+            i.putExtra("lon", longitude);
             setResult(RESULT_OK, i);
             finish();
         }
@@ -101,5 +129,23 @@ public class AddClueActivity extends AppCompatActivity {
         }
 
         return  correctAnswer;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            String latitude = data.getExtras().getString("lat");
+            String longitude = data.getExtras().getString("lon");
+
+            tvLatitude = findViewById(R.id.tv_latitude);
+            tvLongitude = findViewById(R.id.tv_longitude);
+
+            tvLatitude.setText(latitude);
+            tvLongitude.setText(longitude);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

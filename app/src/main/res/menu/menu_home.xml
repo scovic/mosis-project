@@ -25,6 +25,13 @@
         android:icon="@drawable/show_friends_icon"
         />
     <item
+        android:id="@+id/show_map"
+        android:orderInCategory="100"
+        android:title="Map"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/icon_add"
+        />
+    <item
         android:id="@+id/show_settings"
         android:orderInCategory="100"
         android:title="Settings"

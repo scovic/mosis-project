@@ -82,6 +82,9 @@ public class HomeActivity extends AppCompatActivity {
         } else if (id == R.id.signout) {
             Intent i = new Intent(this, LogOutActivity.class);
             startActivityForResult(i, 1);
+        } else if (id == R.id.show_map) {
+            Intent i = new Intent(this, MapsActivity.class);
+            startActivity(i);
         }
 
 

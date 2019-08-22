@@ -99,8 +99,12 @@ public class NewHuntActivity extends AppCompatActivity {
             String answer3 = data.getStringExtra("answer3");
             String answer4 = data.getStringExtra("answer4");
             String correctAnswer = data.getStringExtra("correct_answer");
+            double latitude = data.getDoubleExtra("lat", 0);
+            double longitude = data.getDoubleExtra("lon", 0);
 
-            Clue clue = new Clue(question);
+            Clue clue = new Clue(question, mHunt);
+            clue.setLatitude(latitude);
+            clue.setLongitude(longitude);
             boolean isCorrect = false;
             if (correctAnswer.equals("answer1")) {
                 isCorrect = true;
