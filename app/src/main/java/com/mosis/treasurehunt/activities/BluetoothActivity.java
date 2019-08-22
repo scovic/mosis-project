@@ -34,8 +34,6 @@ public class BluetoothActivity extends AppCompatActivity {
     private ListView mDevicesListView;
     private Set<BluetoothDevice> mPairedDevices;
     ArrayList devicesList;
-    private static String NAME = "TreasureHunt";
-    private static UUID MY_UUID = UUID.fromString("6e668c84-b6de-4a6c-9796-9ae3a9046d9b");
     private static String EXTRA_DEVICE_ADDRESS = "device_address";
     ArrayAdapter adapter;
     ProgressBar discoveringProgressBar;
@@ -145,96 +143,4 @@ public class BluetoothActivity extends AppCompatActivity {
             finish();
         }
     };
-
-    private class AcceptBtThread extends Thread {
-        private final BluetoothServerSocket mmServerSocket;
-        private String TAG = "Thread_Server_Bluetooth_TAG";
-
-        public AcceptBtThread() {
-            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            BluetoothServerSocket tmp = null;
-            try {
-                tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME, MY_UUID);
-            } catch (IOException e) {
-                Log.e(TAG, "Socket's listen() method failed", e);
-            }
-            mmServerSocket = tmp;
-        }
-
-        public void run() {
-            BluetoothSocket socket = null;
-
-            while(true) {
-                try {
-                    socket = mmServerSocket.accept();
-                }  catch (IOException e) {
-                    Log.e(TAG, "Socket's accept() method failed", e);
-                    break;
-                }
-
-                if (socket != null) {
-                    try {
-                        // a connection was accepted
-//                        manageMyConnectedSocket(socket);
-                        mmServerSocket.close();
-                        break;
-                    } catch (IOException e) {
-                        Log.e(TAG, "Couldn't close the connect socket", e);
-                    }
-                }
-            }
-        }
-
-        public void cancel() {
-            try {
-                mmServerSocket.close();
-            } catch (IOException e) {
-                Log.e(TAG, "Couldn't close the connect socket", e);
-            }
-        }
-    }
-
-    private class ConnectThread extends Thread {
-        private final BluetoothSocket mmSocket;
-        private final BluetoothDevice mmDevice;
-        private String TAG = "Thread_Client_Bluetooth_TAG";
-
-        public ConnectThread(BluetoothDevice device) {
-            BluetoothSocket tmp = null;
-            mmDevice = device;
-
-            try {
-                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-            } catch (IOException e) {
-                Log.e(TAG, "Socket's create() method failed", e);
-            }
-            mmSocket = tmp;
-        }
-
-        public void run() {
-            mBluetoothAdapter.cancelDiscovery(); // cancel discovery, it slows down the  connection
-
-            try {
-                mmSocket.connect();
-            } catch (IOException connectException) {
-                // Unable to connect; close the socket and return.
-                try {
-                    mmSocket.close();
-                } catch (IOException closeException) {
-                    Log.e(TAG, "Could not close the client socket", closeException);
-                }
-                return;
-            }
-
-//            manageMyConnectedSocket(mmSocket);
-        }
-
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-                Log.e(TAG, "Could not close the client socket", e);
-            }
-        }
-    }
 }
