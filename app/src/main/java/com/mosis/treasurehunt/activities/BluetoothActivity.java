@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
+import com.mosis.treasurehunt.services.BluetoothService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ public class BluetoothActivity extends AppCompatActivity {
     private static String EXTRA_DEVICE_ADDRESS = "device_address";
     ArrayAdapter adapter;
     ProgressBar discoveringProgressBar;
+    private String mConnectedDeviceName = null;
+    private StringBuffer mOutStringBuffer;
+    private BluetoothService btService = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,17 @@ public class BluetoothActivity extends AppCompatActivity {
         }
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, devicesList);
         mDevicesListView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (btService != null) {
+            if (btService.getState() == BluetoothService.Constants.STATE_NONE) {
+                btService.start();
+            }
+        }
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
