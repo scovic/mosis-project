@@ -179,6 +179,18 @@ public class BluetoothService {
         BluetoothService.this.start();
     }
 
+    public void write(byte[] out) {
+        // Create temporary object
+        ConnectedThread r;
+        // Synchronize a copy of the ConnectedThread
+        synchronized (this) {
+            if (mState != Constants.STATE_CONNECTED) return;
+            r = mConnectedThread;
+        }
+        // Perform the write unsynchronized
+        r.write(out);
+    }
+
     /**
      * Indicate that the connection was lost and notify the UI Activity.
      */
