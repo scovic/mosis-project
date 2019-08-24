@@ -17,7 +17,7 @@ public class User {
     private List<Hunt> createdHunts;
     private List<Hunt> joinedHunts;
     // Array of usernames
-    private List<String> friendList;
+    private List<User> friendList;
     private Location currentLocation;
     @Exclude
     private String key;
@@ -97,8 +97,8 @@ public class User {
 
     public void setKey(String key) { this.key = key; }
 
-    @Override
-    public String toString() { return String.format("%s %s", firstName, lastName); }
+//    @Override
+//    public String toString() { return String.format("%s %s", firstName, lastName); }
 
     public List<Hunt> getCreatedHunts() { return this.createdHunts; }
 
@@ -112,14 +112,13 @@ public class User {
 
     public int getNumOfJoinedHunts() { return this.joinedHunts.size(); }
 
-   public List<String> getFriendList() { return this.friendList; }
+   public List<User> getFriendList() { return this.friendList; }
 
    public void setCurrentLocation(Location loc) { this.currentLocation = loc; }
 
    public Location getCurrentLocation() { return this.currentLocation; }
 
    public void addFriend(User friend) {
-        String username = friend.getUsername();
-        this.friendList.add(username);
+        this.friendList.add(friend);
    }
 }

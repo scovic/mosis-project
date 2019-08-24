@@ -86,7 +86,7 @@ public class UserRepository {
 
     public void addFriend (User friend) {
         mSharedPref = SharedPreferencesWrapper.getInstance();
-        String username = mSharedPref.getUsername(); // nadji tog usera u bazi i u polje friendList dodaj frienda
+        String username = mSharedPref.getUsername();
         for (User u : this.mDataSet) {
             if (u.getUsername().equals(username)) {
                 u.addFriend(friend);

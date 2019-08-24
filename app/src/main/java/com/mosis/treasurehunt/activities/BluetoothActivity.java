@@ -259,7 +259,8 @@ public class BluetoothActivity extends AppCompatActivity {
                         JSONObject jsonMessage = new JSONObject(readMessage);
                         if (jsonMessage.getString("intro") != null) {
                             Toast.makeText(BluetoothActivity.this, jsonMessage.getString("intro"), Toast.LENGTH_LONG).show();
-                        } else if (jsonMessage.getString("userDetails") != null) {
+                        }
+                        if (jsonMessage.getString("userDetails") != null) {
                             User user = gson.fromJson(jsonMessage.getJSONObject("userDetails").toString(), User.class);
                             mUserRepo.addFriend(user);
                         }
@@ -272,7 +273,7 @@ public class BluetoothActivity extends AppCompatActivity {
                 case BluetoothService.Constants.MESSAGE_SENT:
                     byte[] writeBuf = (byte[]) msg.obj;
                     String writeMessage = new String(writeBuf);
-                    Toast.makeText(BluetoothActivity.this, "MESSAGEEE SENT", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(BluetoothActivity.this, "MESSAGEEE SENT", Toast.LENGTH_SHORT).show();
                     break;
 
                 case BluetoothService.Constants.MESSAGE_TOAST:
