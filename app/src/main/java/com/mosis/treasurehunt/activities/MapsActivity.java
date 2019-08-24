@@ -22,6 +22,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.collect.Maps;
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.models.Clue;
+import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.repositories.UserRepository;
+import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.util.GeoPoint;
@@ -35,6 +38,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 public class MapsActivity extends AppCompatActivity {
     MapView map = null;
     Clue clue = null;
+//    UserRepository userrepo;
     IMapController mapController = null;
     MyLocationNewOverlay myLocationOverlay;
     FusedLocationProviderClient fusedLocationClient;
@@ -45,6 +49,7 @@ public class MapsActivity extends AppCompatActivity {
     public static final int CENTER_PLACE_ON_MAP = 1;
     public static final int SELECT_COORDINATES = 2;
     public static final int SELECT_CURRENT_COORDS = 4;
+    public static final int SHOW_FRIENDS = 5;
 
     private int state = 0;
     private boolean selCoordsEnabled = false;
@@ -80,6 +85,14 @@ public class MapsActivity extends AppCompatActivity {
                                         if (location != null) {
                                             double lat = location.getLatitude();
                                             double lon = location.getLongitude();
+//                                            userrepo = UserRepository.getInstance();
+//                                            com.mosis.treasurehunt.models.Location locc = new com.mosis.treasurehunt.models.Location(lat, lon);
+//                                            double latTest = locc.getLatitude();
+//                                            double lonTest = locc.getLongitude();
+//                                            String username = SharedPreferencesWrapper.getInstance().getUsername();
+//                                            User me = userrepo.getUserByUsername(username);
+//                                            me.setCurrentLocation(locc);
+//                                            userrepo.updateUser(me);
                                             Intent myLocationIntent = new Intent();
                                             myLocationIntent.putExtra("lat", Double.toString(lat));
                                             myLocationIntent.putExtra("lon", Double.toString(lon));
@@ -89,7 +102,6 @@ public class MapsActivity extends AppCompatActivity {
                                         finish();
                                     }
                                 });
-
                 }
             }
         } catch(Exception e) {

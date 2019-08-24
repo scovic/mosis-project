@@ -73,6 +73,18 @@ public class UserRepository {
         return result;
     }
 
+    public void updateUser(User user) {
+        String username = user.getUsername();
+        for (User u: this.mDataSet) {
+            if (username.equals(u.getUsername())) {
+                mDataSet.remove(u);
+                mDataSet.add(user);
+                mUserDao.update(user);
+                break;
+            }
+        }
+    }
+
     public void addHunt(User user, Hunt hunt) {
         String username = user.getUsername();
         for (User u : this.mDataSet) {
