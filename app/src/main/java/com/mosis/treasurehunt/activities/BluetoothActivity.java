@@ -152,7 +152,7 @@ public class BluetoothActivity extends AppCompatActivity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String deviceName = device.getName();
                 String deviceMacAddress = device.getAddress();
-                String deviceFullName = deviceName + " -> " + deviceMacAddress;
+                String deviceFullName = deviceName + " - " + deviceMacAddress;
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED && !devicesList.contains(deviceFullName)) {
                     devicesList.add(deviceFullName);
                 }
@@ -207,20 +207,23 @@ public class BluetoothActivity extends AppCompatActivity {
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Activity activity = BluetoothActivity.this;
             switch (msg.what) {
                 case BluetoothService.Constants.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BluetoothService.Constants.STATE_CONNECTED:
-                            Toast.makeText(BluetoothActivity.this, "CONNECTED", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BluetoothActivity.this,
+                                    "DEVICES SUCCESSFULLY CONNECTED", Toast.LENGTH_SHORT).show();
                             break;
 
                         case BluetoothService.Constants.STATE_CONNECTING:
-                            Toast.makeText(BluetoothActivity.this, "CONNECTING", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BluetoothActivity.this,
+                                    "CONNECTING...", Toast.LENGTH_SHORT).show();
                             break;
 
-                        case BluetoothService.Constants.STATE_LISTEN:
                         case BluetoothService.Constants.STATE_NONE:
-                            Toast.makeText(BluetoothActivity.this, "NOT CONNECTED", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BluetoothActivity.this,
+                                    "NOT CONNECTED", Toast.LENGTH_SHORT).show();
                             break;
                     }
                     break;
@@ -229,26 +232,44 @@ public class BluetoothActivity extends AppCompatActivity {
                     // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(BluetoothService.Constants.NAME);
                     if (null != BluetoothActivity.this) {
-                        Toast.makeText(BluetoothActivity.this, "Connected to "
-                                + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                        String introMessage = "Nice to meet you! My username is @" + mSharedPrefWrapper.getUsername();
+                        sendBtMessage(introMessage);
+                        // add friendship to DB
                     }
                     break;
 
+                case BluetoothService.Constants.MESSAGE_READ:
+                    byte[] readBuf = (byte[]) msg.obj;
+                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    Toast.makeText(BluetoothActivity.this, readMessage,
+                            Toast.LENGTH_LONG).show();
+                    break;
+
+                case BluetoothService.Constants.MESSAGE_WRITE:
+                    byte[] writeBuf = (byte[]) msg.obj;
+                    String writeMessage = new String(writeBuf);
+                    Toast.makeText(BluetoothActivity.this, "MESSAGEEE WRITE CASE", Toast.LENGTH_SHORT).show();
+                    break;
+
+                case BluetoothService.Constants.MESSAGE_TOAST:
+                    if (null != activity) {
+                        Toast.makeText(activity, msg.getData().getString(BluetoothService.Constants.TOAST),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    break;
             }
         }
     };
 
-    private void sendFriendRequest() {
+    private void sendBtMessage(String message) {
         if (mBluetoothService.getState() != BluetoothService.Constants.STATE_CONNECTED) {
             Toast.makeText(BluetoothActivity.this, "Devices not connected", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String username = mSharedPrefWrapper.getUsername();
-        String message = "User " + username + " wants to be your friend in Treasure Hunt.";
-        byte[] toSend = message.getBytes();
-        mBluetoothService.write(toSend);
-
-        mOutStringBuffer.setLength(0);
+        if (message.length() > 0) {
+            byte[] send = message.getBytes();
+            mBluetoothService.write(send);
+        }
     }
 }

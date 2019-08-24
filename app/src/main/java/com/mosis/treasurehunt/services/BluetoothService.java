@@ -219,14 +219,14 @@ public class BluetoothService {
 
     public void write(byte[] out) {
         // Create temporary object
-        ConnectedThread r;
+        ConnectedThread connectedThread;
         // Synchronize a copy of the ConnectedThread
         synchronized (this) {
             if (mState != Constants.STATE_CONNECTED) return;
-            r = mConnectedThread;
+            connectedThread = mConnectedThread;
         }
         // Perform the write unsynchronized
-        r.write(out);
+        connectedThread.write(out);
     }
 
     /**
@@ -380,6 +380,7 @@ public class BluetoothService {
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
             mState = Constants.STATE_CONNECTED;
+            updateUI();
         }
 
         public void run() {
@@ -401,11 +402,6 @@ public class BluetoothService {
             }
         }
 
-        /**
-         * Write to the connected OutStream.
-         *
-         * @param bytes The bytes to write
-         */
         public void write(byte[] bytes) {
             try {
                 mmOutStream.write(bytes);
