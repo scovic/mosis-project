@@ -12,12 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.HuntAdapter;
 import com.mosis.treasurehunt.models.Hunt;
-import com.mosis.treasurehunt.models.User;
 
 import java.util.ArrayList;
 
@@ -25,6 +23,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private Spinner spinner;
     private ArrayAdapter<CharSequence> spinnerAdapter;
     private Button btnAddHunt;
+    private Button btnDiscoverFriends;
     private ListView mHuntsList;
     private HuntAdapter mHuntsAdapter;
 
@@ -36,6 +35,15 @@ public class UserProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        btnDiscoverFriends = findViewById(R.id.btn_discover_friends);
+        btnDiscoverFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(UserProfileActivity.this, BluetoothActivity.class);
+                startActivity(i);
+            }
+        });
 
         spinner = findViewById(R.id.spinner_user_profile);
         spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.type_of_hunts_array, android.R.layout.simple_spinner_item);

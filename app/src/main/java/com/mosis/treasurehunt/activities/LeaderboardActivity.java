@@ -75,7 +75,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         mUsersList = mUserRepository.getUsers1();
         mUsersList.sort(new Comparator<User>() {
             @Override
-            public int compare(User o1, User o2) {
+            public int  compare(User o1, User o2) {
                 return o2.getPoints() - o1.getPoints();
             }
         });
