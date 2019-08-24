@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.mosis.treasurehunt.data.UserDao;
 import com.mosis.treasurehunt.models.Hunt;
 import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import java.lang.reflect.Array;
 import java.nio.file.attribute.UserPrincipalLookupService;
@@ -16,6 +17,7 @@ public class UserRepository {
     private static UserRepository instance;
     private ArrayList<User> mDataSet = new ArrayList<>();
     private UserDao mUserDao;
+    private SharedPreferencesWrapper mSharedPref;
 
     public static UserRepository getInstance() {
         if (instance == null) {
@@ -88,6 +90,18 @@ public class UserRepository {
         for (User u : this.mDataSet) {
             if (u.getUsername().equals(username)) {
                 u.addHunt(hunt);
+                mUserDao.update(u);
+                break;
+            }
+        }
+    }
+
+    public void addFriend (User friend) {
+        mSharedPref = SharedPreferencesWrapper.getInstance();
+        String username = mSharedPref.getUsername(); // nadji tog usera u bazi i u polje friendList dodaj frienda
+        for (User u : this.mDataSet) {
+            if (u.getUsername().equals(username)) {
+                u.addFriend(friend);
                 mUserDao.update(u);
                 break;
             }

@@ -117,4 +117,9 @@ public class User {
    public void setCurrentLocation(Location loc) { this.currentLocation = loc; }
 
    public Location getCurrentLocation() { return this.currentLocation; }
+
+   public void addFriend(User friend) {
+        String username = friend.getUsername();
+        this.friendList.add(username);
+   }
 }

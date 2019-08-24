@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,7 +20,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mosis.treasurehunt.R;
+import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.repositories.UserRepository;
 import com.mosis.treasurehunt.services.BluetoothService;
 import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
@@ -35,12 +43,15 @@ public class BluetoothActivity extends AppCompatActivity {
     private BluetoothService mBluetoothService = null;
     private Set<BluetoothDevice> mPairedDevices;
     private SharedPreferencesWrapper mSharedPrefWrapper;
+    private UserRepository mUserRepo;
+    private Gson gson;
 
     ArrayList devicesList;
     ArrayAdapter adapter;
     ProgressBar discoveringProgressBar;
 
     private static String EXTRA_DEVICE_ADDRESS = "device_address";
+    private static final String TAG = "Bluetooth_Activity_TAG";
     private static final int REQUEST_ENABLE_BT = 1;
 
     @Override
@@ -58,6 +69,9 @@ public class BluetoothActivity extends AppCompatActivity {
             startActivity(enableBtIntent);
         }
 
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.create();
+        mUserRepo = UserRepository.getInstance();
         mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
         mPairedDevices = mBluetoothAdapter.getBondedDevices();
         mDevicesListView = findViewById(R.id.lv_paired_devices);
@@ -206,18 +220,16 @@ public class BluetoothActivity extends AppCompatActivity {
                 case BluetoothService.Constants.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BluetoothService.Constants.STATE_CONNECTED:
-                            Toast.makeText(BluetoothActivity.this,
-                                    "DEVICES SUCCESSFULLY CONNECTED", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "DEVICES CONNECTED");
                             break;
 
                         case BluetoothService.Constants.STATE_CONNECTING:
                             Toast.makeText(BluetoothActivity.this,
-                                    "CONNECTING...", Toast.LENGTH_SHORT).show();
+                                    "Connecting devices...", Toast.LENGTH_SHORT).show();
                             break;
 
                         case BluetoothService.Constants.STATE_NONE:
-                            Toast.makeText(BluetoothActivity.this,
-                                    "NOT CONNECTED", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "DEVICES NOT CONNECTED");
                             break;
                     }
                     break;
@@ -227,16 +239,34 @@ public class BluetoothActivity extends AppCompatActivity {
                     mConnectedDeviceName = msg.getData().getString(BluetoothService.Constants.NAME);
                     if (null != BluetoothActivity.this) {
                         String introMessage = "Nice to meet you! My username is @" + mSharedPrefWrapper.getUsername();
-                        sendBtMessage(introMessage);
-                        // add friendship to DB
+                        User myDetails = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
+                        JSONObject message = new JSONObject();
+                        try {
+                            message.put("intro", introMessage);
+                            message.put("userDetails", myDetails);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        sendBtMessage(message);
                     }
                     break;
 
                 case BluetoothService.Constants.MESSAGE_RECEIVED:
                     byte[] readBuf = (byte[]) msg.obj;
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    Toast.makeText(BluetoothActivity.this, readMessage,
-                            Toast.LENGTH_LONG).show();
+                    try {
+                        JSONObject jsonMessage = new JSONObject(readMessage);
+                        if (jsonMessage.getString("intro") != null) {
+                            Toast.makeText(BluetoothActivity.this, jsonMessage.getString("intro"), Toast.LENGTH_LONG).show();
+                        } else if (jsonMessage.getString("userDetails") != null) {
+                            User user = gson.fromJson(jsonMessage.getJSONObject("userDetails").toString(), User.class);
+                            mUserRepo.addFriend(user);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        // TODO: handle if it isn't JSON
+                    }
                     break;
 
                 case BluetoothService.Constants.MESSAGE_SENT:
@@ -254,6 +284,18 @@ public class BluetoothActivity extends AppCompatActivity {
             }
         }
     };
+
+    private void sendBtMessage(JSONObject message) {
+        if (mBluetoothService.getState() != BluetoothService.Constants.STATE_CONNECTED) {
+            Toast.makeText(BluetoothActivity.this, "Devices not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (message.length() > 0) {
+            byte[] send = message.toString().getBytes();
+            mBluetoothService.write(send);
+        }
+    }
 
     private void sendBtMessage(String message) {
         if (mBluetoothService.getState() != BluetoothService.Constants.STATE_CONNECTED) {
