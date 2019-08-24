@@ -15,7 +15,6 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 import android.os.Handler;
-import android.widget.Toast;
 
 public class BluetoothService {
     private BluetoothAdapter mBluetoothAdapter;
@@ -30,8 +29,8 @@ public class BluetoothService {
 
 
     public interface Constants {
-        public static final int MESSAGE_READ = 0;
-        public static final int MESSAGE_WRITE = 1;
+        public static final int MESSAGE_RECEIVED = 0;
+        public static final int MESSAGE_SENT = 1;
         public static final int MESSAGE_TOAST = 2;
         public static final int MESSAGE_DEVICE_NAME = 3;
         public static final int MESSAGE_STATE_CHANGE = 4;
@@ -392,7 +391,7 @@ public class BluetoothService {
                     numBytes = mmInStream.read(mmBuffer);
                     // Send the obtained bytes to the UI activity.
                     Message readMsg = mHandler.obtainMessage(
-                            Constants.MESSAGE_READ, numBytes, -1,
+                            Constants.MESSAGE_RECEIVED, numBytes, -1,
                             mmBuffer);
                     readMsg.sendToTarget();
                 } catch (IOException e) {
@@ -408,7 +407,7 @@ public class BluetoothService {
 
                 // Share the sent message with the UI activity.
                 Message writtenMsg = mHandler.obtainMessage(
-                        Constants.MESSAGE_WRITE, -1, -1, mmBuffer);
+                        Constants.MESSAGE_SENT, -1, -1, mmBuffer);
                 writtenMsg.sendToTarget();
             } catch (IOException e) {
                 Log.e(TAG, "Error occurred when sending data", e);
