@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 import android.os.Handler;
+import android.widget.Toast;
 
 public class BluetoothService {
     private BluetoothAdapter mBluetoothAdapter;
@@ -33,6 +34,7 @@ public class BluetoothService {
         public static final int MESSAGE_WRITE = 1;
         public static final int MESSAGE_TOAST = 2;
         public static final int MESSAGE_DEVICE_NAME = 3;
+        public static final int MESSAGE_STATE_CHANGE = 4;
         public static final int STATE_NONE = 0;       // we're doing nothing
         public static final int STATE_LISTEN = 1;     // now listening for incoming connections
         public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
@@ -58,6 +60,14 @@ public class BluetoothService {
         return mState;
     }
 
+    private synchronized void updateUI() {
+        mState = getState();
+        mNewState = mState;
+
+        // Give the new state to the Handler so the UI Activity can update
+        mHandler.obtainMessage(Constants.MESSAGE_STATE_CHANGE, mNewState, -1).sendToTarget();
+    }
+
     /**
      * Start AcceptThread to begin a session in listening (server) mode
      * */
@@ -79,6 +89,8 @@ public class BluetoothService {
             mAcceptThread = new AcceptBtThread();
             mAcceptThread.start();
         }
+
+        updateUI();
     }
 
     /**
@@ -102,6 +114,8 @@ public class BluetoothService {
         // start the thread to connect with the given device
         mConnectThread = new ConnectThread(device);
         mConnectThread.start();
+
+        updateUI();
     }
 
     /**
@@ -139,6 +153,8 @@ public class BluetoothService {
         bundle.putString(Constants.NAME, device.getName());
         msg.setData(bundle);
         mHandler.sendMessage(msg);
+
+        updateUI();
     }
 
     /**
@@ -159,7 +175,9 @@ public class BluetoothService {
             mAcceptThread.cancel();
             mAcceptThread = null;
         }
+
         mState = Constants.STATE_NONE;
+        updateUI();
     }
 
     /**
@@ -169,11 +187,31 @@ public class BluetoothService {
         // Send a failure message back to the Activity
         Message msg = mHandler.obtainMessage(Constants.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.TOAST, "Unable to connect device");
+        bundle.putString(Constants.TOAST, "Unable to connect devices");
         msg.setData(bundle);
         mHandler.sendMessage(msg);
 
         mState = Constants.STATE_NONE;
+        updateUI();
+
+        // Start the service over to restart listening mode
+        BluetoothService.this.start();
+    }
+
+
+    /**
+     * Indicate that the connection was lost and notify the UI Activity.
+     */
+    private void connectionLost() {
+        // Send a failure message back to the Activity
+        Message msg = mHandler.obtainMessage(Constants.MESSAGE_TOAST);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.TOAST, "Device connection was lost");
+        msg.setData(bundle);
+        mHandler.sendMessage(msg);
+
+        mState = Constants.STATE_NONE;
+        updateUI();
 
         // Start the service over to restart listening mode
         BluetoothService.this.start();
@@ -189,23 +227,6 @@ public class BluetoothService {
         }
         // Perform the write unsynchronized
         r.write(out);
-    }
-
-    /**
-     * Indicate that the connection was lost and notify the UI Activity.
-     */
-    private void connectionLost() {
-        // Send a failure message back to the Activity
-        Message msg = mHandler.obtainMessage(Constants.MESSAGE_TOAST);
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.TOAST, "Device connection was lost");
-        msg.setData(bundle);
-        mHandler.sendMessage(msg);
-
-        mState = Constants.STATE_NONE;
-
-        // Start the service over to restart listening mode
-        BluetoothService.this.start();
     }
 
     /**
@@ -252,7 +273,6 @@ public class BluetoothService {
 
                             case Constants.STATE_NONE:
                             case Constants.STATE_CONNECTED:
-                                // Either not ready or already connected. Terminate new socket.
                                 try {
                                     mmServerSocket.close();
                                     break;
@@ -303,7 +323,6 @@ public class BluetoothService {
             try {
                 mmSocket.connect();
             } catch (IOException connectException) {
-                // Unable to connect; close the socket and return.
                 try {
                     mmSocket.close();
                 } catch (IOException closeException) {

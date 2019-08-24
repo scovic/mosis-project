@@ -47,31 +47,29 @@ public class BluetoothActivity extends AppCompatActivity {
     ProgressBar discoveringProgressBar;
 
     private static String EXTRA_DEVICE_ADDRESS = "device_address";
-    private static final int REQUEST_CONNECT_DEVICE = 1;
-    private static final int REQUEST_ENABLE_BT = 2;
+    private static final int REQUEST_ENABLE_BT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
 
-        mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mPairedDevices = mBluetoothAdapter.getBondedDevices();
-        mDevicesListView = findViewById(R.id.lv_paired_devices);
-        devicesList = new ArrayList();
-        mBluetoothService = new BluetoothService(BluetoothActivity.this, mHandler);
-        mOutStringBuffer = new StringBuffer(" ");
-        mDevicesListView.setOnItemClickListener(mDeviceClickListener);
-
         if (mBluetoothAdapter == null) {
             Toast.makeText(this, "This device doesn't support Bluetooth", Toast.LENGTH_SHORT).show();
         }
 
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            startActivity(enableBtIntent);
         }
+
+        mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
+        mPairedDevices = mBluetoothAdapter.getBondedDevices();
+        mDevicesListView = findViewById(R.id.lv_paired_devices);
+        devicesList = new ArrayList();
+        mOutStringBuffer = new StringBuffer(" ");
+        mDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,300);
@@ -91,11 +89,37 @@ public class BluetoothActivity extends AppCompatActivity {
             discoveringProgressBar.setVisibility(View.GONE);
             for (BluetoothDevice device : mPairedDevices) {
                 String deviceName = device.getName();
-                devicesList.add(deviceName);
+                String deviceMacAddress = device.getAddress();
+                if (!devicesList.contains(deviceName)) {
+                    devicesList.add(deviceName + " - " + deviceMacAddress);
+                }
             }
         }
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, devicesList);
         mDevicesListView.setAdapter(adapter);
+
+        if (mBluetoothService != null) {
+            if (mBluetoothService.getState() == BluetoothService.Constants.STATE_NONE) {
+                mBluetoothService.start();
+            }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (mBluetoothAdapter.isEnabled()) {
+            mBluetoothService = new BluetoothService(BluetoothActivity.this, mHandler);
+
+            if (mBluetoothService.getState() == BluetoothService.Constants.STATE_NONE) {
+                mBluetoothService.start();
+            }
+
+        } else {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
     }
 
     @Override
@@ -109,6 +133,15 @@ public class BluetoothActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBluetoothService != null) mBluetoothService.stop();
+        if (mBluetoothAdapter != null) mBluetoothAdapter.cancelDiscovery();
+
+        unregisterReceiver(mReceiver);
+    }
+
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -118,8 +151,10 @@ public class BluetoothActivity extends AppCompatActivity {
 
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String deviceName = device.getName();
-                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    devicesList.add(deviceName);
+                String deviceMacAddress = device.getAddress();
+                String deviceFullName = deviceName + " -> " + deviceMacAddress;
+                if (device.getBondState() != BluetoothDevice.BOND_BONDED && !devicesList.contains(deviceFullName)) {
+                    devicesList.add(deviceFullName);
                 }
                 adapter = new ArrayAdapter(BluetoothActivity.this, android.R.layout.simple_list_item_1, devicesList);
                 mDevicesListView.setAdapter(adapter);
@@ -145,52 +180,25 @@ public class BluetoothActivity extends AppCompatActivity {
         mBluetoothAdapter.startDiscovery();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mBluetoothAdapter != null) mBluetoothAdapter.cancelDiscovery();
-
-        unregisterReceiver(mReceiver);
-
-        if (mBluetoothService != null) mBluetoothService.stop();
-    }
-
     private AdapterView.OnItemClickListener mDeviceClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             mBluetoothAdapter.cancelDiscovery();
-            sendFriendRequest();
-            // Get the MAC address which is last 17 chars in the View
+
+            // Get the MAC address
             String info = ((TextView) view).getText().toString();
-            String address = info.substring(info.length() - 17);
+            String macAddress = info.substring(info.length() - 17);
 
-            // Create the result Intent and include the MAC address
-            Intent intent = new Intent();
-            intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
-
-            // Set result and finish this Activity
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+            Intent intent = new Intent(BluetoothActivity.this, BluetoothActivity.class);
+            intent.putExtra(EXTRA_DEVICE_ADDRESS, macAddress);
+            connectDevice(intent);
         }
     };
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_CONNECT_DEVICE:
-                if (resultCode == Activity.RESULT_OK) {
-                    connectDevice(data);
-                }
-                break;
-
-            case REQUEST_ENABLE_BT:
-                if (resultCode == Activity.RESULT_OK) {
-                    mBluetoothService = new BluetoothService(BluetoothActivity.this, mHandler);
-                    mOutStringBuffer = new StringBuffer(" ");
-                } else {
-                    Toast.makeText(BluetoothActivity.this, "Bluetooth not enabled", Toast.LENGTH_SHORT).show();
-                    BluetoothActivity.this.finish();
-                }
-        }
+    private void connectDevice(Intent data) {
+        String address = data.getExtras().getString(this.EXTRA_DEVICE_ADDRESS);
+        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+        mBluetoothService.connect(device);
     }
 
     /**
@@ -199,17 +207,36 @@ public class BluetoothActivity extends AppCompatActivity {
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            Toast.makeText(BluetoothActivity.this, msg.toString(), Toast.LENGTH_LONG).show();
+            switch (msg.what) {
+                case BluetoothService.Constants.MESSAGE_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case BluetoothService.Constants.STATE_CONNECTED:
+                            Toast.makeText(BluetoothActivity.this, "CONNECTED", Toast.LENGTH_SHORT).show();
+                            break;
+
+                        case BluetoothService.Constants.STATE_CONNECTING:
+                            Toast.makeText(BluetoothActivity.this, "CONNECTING", Toast.LENGTH_SHORT).show();
+                            break;
+
+                        case BluetoothService.Constants.STATE_LISTEN:
+                        case BluetoothService.Constants.STATE_NONE:
+                            Toast.makeText(BluetoothActivity.this, "NOT CONNECTED", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                    break;
+
+                case BluetoothService.Constants.MESSAGE_DEVICE_NAME:
+                    // save the connected device's name
+                    mConnectedDeviceName = msg.getData().getString(BluetoothService.Constants.NAME);
+                    if (null != BluetoothActivity.this) {
+                        Toast.makeText(BluetoothActivity.this, "Connected to "
+                                + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+
+            }
         }
     };
-
-
-    private void connectDevice(Intent data) {
-        String address = data.getExtras().getString(this.EXTRA_DEVICE_ADDRESS);
-        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-        mBluetoothService.connect(device);
-    }
 
     private void sendFriendRequest() {
         if (mBluetoothService.getState() != BluetoothService.Constants.STATE_CONNECTED) {
