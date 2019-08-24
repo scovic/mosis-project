@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
         haveAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+            Intent i = new Intent(RegisterActivity.this, LogInActivity.class);
             startActivity(i);
             }
         });
@@ -77,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if(RegisterActivity.this.userDao.getQuerySuccess() == true) {
                             Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_SHORT).show();
                             RegisterActivity.this.userDao.setQuerySuccess(false);
-                            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                            Intent i = new Intent(RegisterActivity.this, LogInActivity.class);
                             startActivity(i);
                         } else {
                             Toast.makeText(getApplicationContext(), "Failed to register", Toast.LENGTH_SHORT).show();

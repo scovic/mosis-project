@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="com.google.android.things.permission.MANAGE_BLUETOOTH" />
 
     <application
         android:allowBackup="true"
@@ -15,14 +18,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.BluetoothActivity"
+            android:label="Discovered Devices"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+
         <activity
             android:name=".activities.FriendListActivity"
             android:label="@string/title_activity_friend_list"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.MainEmptyActivity"
             android:theme="@android:style/Theme.NoDisplay">
@@ -32,40 +43,48 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.LogOutActivity"
             android:label=""
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
+
         <activity
             android:name=".activities.LeaderboardActivity"
             android:label="@string/title_activity_leaderboard"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.AddClueActivity"
-            android:label="@string/title_activity_add_clue"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
+
         <activity
             android:name=".activities.NewHuntActivity"
             android:label="@string/title_activity_new_hunt"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.HuntActivity"
             android:label="@string/title_activity_hunt"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.UserProfileActivity"
             android:label="@string/title_activity_user_profile"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.RegisterActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activities.LoginActivity"
-            android:windowSoftInputMode="adjustPan" />
-    </application>
 
+        <activity
+            android:name=".activities.LogInActivity"
+            android:windowSoftInputMode="adjustPan" />
+
+    </application>
 </manifest>

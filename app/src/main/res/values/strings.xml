@@ -29,11 +29,14 @@
     <string name="button_my_location">My Location</string>
     <string name="button_cancel">Cancel</string>
     <string name="join_hunt">Join hunt</string>
-    <string name="title_activity_leaderboard">LeaderboardActivity</string>
+    <string name="title_activity_leaderboard">Leaderboard</string>
     <string name="global">Global</string>
     <string name="friends">Friends</string>
     <string name="title_activity_log_out">Leaving?</string>
     <string name="button_yes">Yes</string>
-    <string name="title_activity_friend_list">FriendListActivity</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_friend_list">Friends</string>
+    <string name="title_activity_bluetooth">Bluetooth</string>
+    <string name="none_paired">There are no paired devices</string>
+    <string name="none_found">No devices found</string>
 </resources>
