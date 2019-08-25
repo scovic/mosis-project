@@ -88,10 +88,7 @@
                         android:layout_toRightOf="@id/lbl_hunts_completed"
                         android:layout_marginLeft="8dp"
                         android:textSize="16sp"
-                        android:text="@{@string/profile_completed_hunts(
-                        String.valueOf(user.numOfCompletedHunts),
-                        String.valueOf(user.numOfJoinedHunts)
-                        )}"/>
+                        android:text="@{@string/profile_completed_hunts(String.valueOf(user.numOfCompletedHunts), String.valueOf(user.numOfJoinedHunts))}"/>
 
                     <TextView
                         android:id="@+id/lbl_hunts_created"
