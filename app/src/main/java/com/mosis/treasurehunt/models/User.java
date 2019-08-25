@@ -112,6 +112,11 @@ public class User {
 
     public int getNumOfJoinedHunts() { return this.joinedHunts.size(); }
 
+    public int getNumOfCompletedHunts() {
+        // TODO:
+        return 5;
+    }
+
    public List<User> getFriendList() { return this.friendList; }
 
    public void setCurrentLocation(Location loc) { this.currentLocation = loc; }

@@ -1,6 +1,7 @@
 package com.mosis.treasurehunt.activities;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +16,11 @@ import android.widget.Spinner;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.HuntAdapter;
+import com.mosis.treasurehunt.databinding.ActivityUserProfileBinding;
 import com.mosis.treasurehunt.models.Hunt;
+import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.repositories.UserRepository;
+import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import java.util.ArrayList;
 
@@ -27,10 +32,22 @@ public class UserProfileActivity extends AppCompatActivity {
     private ListView mHuntsList;
     private HuntAdapter mHuntsAdapter;
 
+    ActivityUserProfileBinding mBinding;
+    private User mUser; // logged in user
+    UserRepository mUserRepo;
+    SharedPreferencesWrapper mSharedPrefWrapper;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_user_profile);
+        mUserRepo = UserRepository.getInstance();
+        mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
+
+        mUser = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
+        mBinding.setUser(mUser);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
