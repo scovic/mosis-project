@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         ));
         feedslist.add(new Feed(
                 new User("Nevena", "Colic", "nensiiika"),
-                new Hunt("Hunt1"),
+                new Hunt("Hunt2"),
                 Feed.Type.CREATE
         ));
 

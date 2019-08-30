@@ -36,7 +36,7 @@ public class Feed {
     public String getText() {
         return mType == Type.CREATE
                 ? "created a new hunt"
-                : "successfuly completed the hunt";
+                : "successfully completed the hunt";
     }
 
     public String getKey() { return this.mKey; }
