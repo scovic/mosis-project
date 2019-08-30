@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.HuntAdapter;
@@ -45,7 +46,23 @@ public class UserProfileActivity extends AppCompatActivity {
         mUserRepo = UserRepository.getInstance();
         mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
 
-        mUser = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
+        String username = "";
+
+        try {
+            Intent listIntent = getIntent();
+            Bundle indexBundle = listIntent.getExtras();
+            username = indexBundle.getString("state");
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        if (!username.equals("")) {
+            mUser = mUserRepo.getUserByUsername(username);
+        } else {
+            mUser = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
+        }
+
         mBinding.setUser(mUser);
 
         Toolbar toolbar = findViewById(R.id.toolbar);

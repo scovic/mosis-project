@@ -45,14 +45,14 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         mFeedsList = findViewById(R.id.feeds_list);
-        List<Feed> feedslist = new ArrayList<>();
+        final List<Feed> feedslist = new ArrayList<>();
         feedslist.add(new Feed(
-                new User("Stefan", "Covic", "scovic996@gmail.com"),
+                new User("Stefan", "Covic", "scovic"),
                 new Hunt("Hunt1"),
                 Feed.Type.FINISH
         ));
         feedslist.add(new Feed(
-                new User("Nevena", "Colic", "scovic996@gmail.com"),
+                new User("Nevena", "Colic", "nensiiika"),
                 new Hunt("Hunt1"),
                 Feed.Type.CREATE
         ));
@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(HomeActivity.this, UserProfileActivity.class);
-                intent.putExtra("friendProfile", i);
+                intent.putExtra("state", feedslist.get(i).getOwner().getUsername());
                 startActivity(intent);
             }
         });
