@@ -53,14 +53,10 @@ public class UserRepository {
         return data;
     }
 
-    public ArrayList<User> getFriendArrayList (User user) {
+    public List<User> getFriendArrayList (User user) {
         mDataSet = this.mUserDao.getAll();
-        ArrayList<User> result = new ArrayList<>();
-        for (User u : this.mUserDao.getAll()) {
-            if (user.getFriendList().indexOf(u.getUsername()) != -1
-                    && !user.getUsername().equals(u.getUsername()))
-                result.add(u);
-        }
+        List<User> result = user.getFriendList();
+
 
 //        MutableLiveData<List<User>> data = new MutableLiveData<>();
 //        data.setValue(result);
