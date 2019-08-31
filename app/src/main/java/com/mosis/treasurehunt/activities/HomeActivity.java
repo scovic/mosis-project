@@ -16,6 +16,7 @@ import com.mosis.treasurehunt.adapters.FeedAdapter;
 import com.mosis.treasurehunt.models.Feed;
 import com.mosis.treasurehunt.models.Hunt;
 import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.services.LocationTrackerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,12 @@ public class HomeActivity extends AppCompatActivity {
                 new Hunt("Hunt1"),
                 Feed.Type.CREATE
         ));
+
+        Intent locationTrackerService = new Intent(this, LocationTrackerService.class);
+        startService(locationTrackerService);
+//        Intent locationTracker = new Intent(this, LocationTrackerService2.class);
+//        locationTracker.setAction(LocationTrackerService2.ACTION_TRACK_USER_LOCATION);
+//        startService(locationTracker);
 
         mFeedsAdapter = new FeedAdapter(this, feedslist);
         mFeedsList.setAdapter(mFeedsAdapter);

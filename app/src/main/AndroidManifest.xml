@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mosis.treasurehunt">
-    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="com.google.android.things.permission.MANAGE_BLUETOOTH" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps"
@@ -28,12 +18,10 @@
             android:name=".activities.BluetoothActivity"
             android:label="Discovered Devices"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-
         <activity
             android:name=".activities.FriendListActivity"
             android:label="@string/title_activity_friend_list"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.MainEmptyActivity"
             android:theme="@android:style/Theme.NoDisplay">
@@ -43,48 +31,63 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.LogOutActivity"
             android:label=""
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-
         <activity
             android:name=".activities.LeaderboardActivity"
             android:label="@string/title_activity_leaderboard"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.AddClueActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-
         <activity
             android:name=".activities.NewHuntActivity"
             android:label="@string/title_activity_new_hunt"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.HuntActivity"
             android:label="@string/title_activity_hunt"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.UserProfileActivity"
             android:label="@string/title_activity_user_profile"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.RegisterActivity"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.LogInActivity"
             android:windowSoftInputMode="adjustPan" />
+        <service
+            android:name=".services.LocationTrackerService"
+            android:enabled="true"
+            android:exported="true"></service>
 
+        <service
+            android:name=".services.MyIntentService"
+            android:exported="false" />
+        <service
+            android:name=".services.LocationTrackerService2"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="false" />
     </application>
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="com.google.android.things.permission.MANAGE_BLUETOOTH" />
+
 </manifest>

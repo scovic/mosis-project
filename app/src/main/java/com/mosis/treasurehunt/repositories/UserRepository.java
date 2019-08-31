@@ -38,6 +38,12 @@ public class UserRepository {
         mDataSet = this.mUserDao.getAll();
     }
 
+    public void update () {
+        if (instance != null) {
+            mDataSet = this.mUserDao.getAll();
+        }
+    }
+
     public MutableLiveData<List<User>> getUsers() {
 //        mDataSet = this.mUserDao.getAll();
         MutableLiveData<List<User>> data = new MutableLiveData<>();

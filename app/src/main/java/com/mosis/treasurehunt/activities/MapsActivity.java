@@ -85,14 +85,6 @@ public class MapsActivity extends AppCompatActivity {
                                         if (location != null) {
                                             double lat = location.getLatitude();
                                             double lon = location.getLongitude();
-//                                            userrepo = UserRepository.getInstance();
-//                                            com.mosis.treasurehunt.models.Location locc = new com.mosis.treasurehunt.models.Location(lat, lon);
-//                                            double latTest = locc.getLatitude();
-//                                            double lonTest = locc.getLongitude();
-//                                            String username = SharedPreferencesWrapper.getInstance().getUsername();
-//                                            User me = userrepo.getUserByUsername(username);
-//                                            me.setCurrentLocation(locc);
-//                                            userrepo.updateUser(me);
                                             Intent myLocationIntent = new Intent();
                                             myLocationIntent.putExtra("lat", Double.toString(lat));
                                             myLocationIntent.putExtra("lon", Double.toString(lon));
@@ -130,6 +122,13 @@ public class MapsActivity extends AppCompatActivity {
             setupMap();
             setMyLocationOverlay();
             setOnMapClickOverlay();
+        }
+
+        mapController = map.getController();
+        if (mapController != null) {
+            mapController.setZoom(15.0);
+            GeoPoint startPoint = new GeoPoint(43.3209, 21.8958);
+            mapController.setCenter(startPoint);
         }
     }
 
