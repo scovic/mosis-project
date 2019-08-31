@@ -25,7 +25,7 @@
         android:icon="@drawable/show_friends_icon"
         />
     <item
-        android:id="@+id/show_map"
+        android:id="@+id/show_map_home"
         android:orderInCategory="100"
         android:title="Map"
         app:showAsAction="ifRoom"

@@ -43,7 +43,7 @@ public class FeedAdapter extends ArrayAdapter<Feed> {
             user_name.setText(currentFeed.getOwner().getFullName());
 
             TextView info = listItem.findViewById(R.id.text_info);
-            info.setText("successful completed the hunt");
+            info.setText("successfully completed the hunt");
         } else {
             if (listItem == null)
                 listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_create_feed, parent, false);
@@ -68,6 +68,7 @@ public class FeedAdapter extends ArrayAdapter<Feed> {
 
             numOfClues.setText(stringBuilder.toString());
         }
+
         return listItem;
     }
 }
