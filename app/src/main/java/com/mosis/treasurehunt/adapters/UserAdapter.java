@@ -24,6 +24,7 @@ public class UserAdapter extends ArrayAdapter<User> {
     private List<User> userList = new ArrayList<>();
     private int mItemLayout;
 
+
     public UserAdapter(@NonNull Context context, List<User> list, int itemLayout) {
         super(context, 0, list);
         mContext = context;
@@ -40,8 +41,11 @@ public class UserAdapter extends ArrayAdapter<User> {
         if (listItem == null)
             listItem = LayoutInflater.from(mContext).inflate(mItemLayout, parent, false);
 
-        TextView user_name = listItem.findViewById(R.id.text_user_name);
+        TextView user_name = listItem.findViewById(R.id.text_user_full_name);
         user_name.setText(currentUser.getFullName());
+
+        TextView username = listItem.findViewById(R.id.text_user_name);
+        username.setText("@" + currentUser.getUsername());
 
         TextView points = listItem.findViewById(R.id.text_points);
         StringBuilder stringBuilder = new StringBuilder();

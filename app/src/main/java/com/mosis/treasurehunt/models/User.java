@@ -16,7 +16,6 @@ public class User {
     private int points;
     private List<Hunt> createdHunts;
     private List<Hunt> joinedHunts;
-    // Array of usernames
     private List<User> friendList;
     private Location currentLocation;
     @Exclude

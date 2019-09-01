@@ -60,6 +60,18 @@ public class HomeActivity extends AppCompatActivity {
                 Feed.Type.CREATE
         ));
 
+        feedslist.add(new Feed(
+                new User("Stefan", "Covic", "scovic"),
+                new Hunt("Hunt1"),
+                Feed.Type.FINISH
+        ));
+
+        feedslist.add(new Feed(
+                new User("Stefan", "Covic", "scovic"),
+                new Hunt("Hunt1"),
+                Feed.Type.CREATE
+        ));
+
         mFeedsAdapter = new FeedAdapter(this, feedslist);
         mFeedsList.setAdapter(mFeedsAdapter);
 
@@ -118,7 +130,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         try {
             if (resultCode == RESULT_OK) {
-                // when you logut, this should prevent user from goind on home acivity if he pres back button
+                // when chosen logout, should prevent user from going back to home acivity with
+                // back button
                 Intent i = new Intent(this, LogInActivity.class);
                 startActivity(i);
                 finish();

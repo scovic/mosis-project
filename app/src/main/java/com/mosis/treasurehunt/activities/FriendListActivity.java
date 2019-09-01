@@ -3,6 +3,7 @@ package com.mosis.treasurehunt.activities;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,10 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.UserAdapter;
+import com.mosis.treasurehunt.databinding.ActivityUserProfileBinding;
 import com.mosis.treasurehunt.models.User;
 import com.mosis.treasurehunt.viewmodels.FriendListActivityViewModel;
 
@@ -25,6 +28,7 @@ public class FriendListActivity extends AppCompatActivity {
     private FriendListActivityViewModel mFriendListActivityModelView;
     private UserAdapter mUserAdapter;
     private ListView mFriendListView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +63,18 @@ public class FriendListActivity extends AppCompatActivity {
     }
 
     public void initListView() {
-        mUserAdapter = new UserAdapter(this, mFriendListActivityModelView.getFriendList().getValue(), R.layout.item_list_friend);
+        final List<User> friends = mFriendListActivityModelView.getFriendList().getValue();
+        mUserAdapter = new UserAdapter(this, friends, R.layout.item_list_friend);
         mFriendListView = findViewById(R.id.friend_list);
         mFriendListView.setAdapter(mUserAdapter);
+
+        mFriendListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(FriendListActivity.this, UserProfileActivity.class);
+                intent.putExtra("state", friends.get(position).getUsername());
+                startActivity(intent);
+            }
+        });
     }
 }
