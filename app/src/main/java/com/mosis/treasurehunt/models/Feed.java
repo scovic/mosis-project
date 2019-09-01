@@ -1,6 +1,5 @@
 package com.mosis.treasurehunt.models;
 
-
 import com.google.firebase.database.Exclude;
 
 public class Feed {

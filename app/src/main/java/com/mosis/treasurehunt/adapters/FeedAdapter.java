@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.models.Feed;
@@ -44,7 +46,7 @@ public class FeedAdapter extends ArrayAdapter<Feed> {
 
             TextView info = listItem.findViewById(R.id.text_info);
             info.setText("successfully completed the hunt");
-        } else {
+        } else if (currentFeed.getType() == Feed.Type.CREATE) {
             if (listItem == null)
                 listItem = LayoutInflater.from(mContext).inflate(R.layout.item_list_create_feed, parent, false);
 
@@ -67,6 +69,14 @@ public class FeedAdapter extends ArrayAdapter<Feed> {
             stringBuilder.append(" clues");
 
             numOfClues.setText(stringBuilder.toString());
+
+            Button joinHuntButton = listItem.findViewById(R.id.btn_home_join_hunt);
+            joinHuntButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "kliknutooooo", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         return listItem;

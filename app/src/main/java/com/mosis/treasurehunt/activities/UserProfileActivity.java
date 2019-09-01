@@ -51,16 +51,15 @@ public class UserProfileActivity extends AppCompatActivity {
         try {
             Intent listIntent = getIntent();
             Bundle indexBundle = listIntent.getExtras();
-            username = indexBundle.getString("state");
+            if (indexBundle == null) {
+                mUser = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
+            } else {
+                username = indexBundle.getString("state");
+                mUser = mUserRepo.getUserByUsername(username);
+            }
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             finish();
-        }
-
-        if (!username.equals("")) {
-            mUser = mUserRepo.getUserByUsername(username);
-        } else {
-            mUser = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
         }
 
         mBinding.setUser(mUser);
