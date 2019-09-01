@@ -56,8 +56,8 @@ public class LogInActivity extends AppCompatActivity {
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
+                String username = usernameEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
                 ArrayList<User> registeredUsers = userDao.getAll();
 
                 for (User user : registeredUsers) {

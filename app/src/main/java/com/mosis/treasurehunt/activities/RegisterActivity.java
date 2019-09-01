@@ -54,11 +54,11 @@ public class RegisterActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String firstName = firstNameEditText.getText().toString();
-                String lastName = lastNameEditText.getText().toString();
-                String username = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                String repeatedPassword = repeatPasswordEditText.getText().toString();
+                String firstName = firstNameEditText.getText().toString().trim();
+                String lastName = lastNameEditText.getText().toString().trim();
+                String username = emailEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
+                String repeatedPassword = repeatPasswordEditText.getText().toString().trim();
 
                 ArrayList<User> users = userDao.getAll();
 
