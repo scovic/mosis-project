@@ -19,12 +19,8 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.common.collect.Maps;
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.models.Clue;
-import com.mosis.treasurehunt.models.User;
-import com.mosis.treasurehunt.repositories.UserRepository;
-import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.util.GeoPoint;

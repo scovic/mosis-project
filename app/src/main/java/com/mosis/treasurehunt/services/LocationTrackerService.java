@@ -1,28 +1,48 @@
 package com.mosis.treasurehunt.services;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.activities.HomeActivity;
+import com.mosis.treasurehunt.models.Clue;
+import com.mosis.treasurehunt.models.Hunt;
+import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.repositories.UserRepository;
+import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class LocationTrackerService extends Service {
-    public static final String CHANNEL_ID = "ForegroundServiceChannel";
+    public static final String CHANNEL_ID = "LocationTrackerService";
+    private User mUser;
+    private UserRepository mUserRepo;
     private Timer mTimer;
-    public LocationTrackerService() {
-        mTimer = new Timer();
-    }
+//    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationListener mLocationListener;
+    private LocationManager mLocationManager;
+
+    public LocationTrackerService() {}
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -34,41 +54,74 @@ public class LocationTrackerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        SharedPreferencesWrapper sharedWrapper = SharedPreferencesWrapper.getInstance();
+        mUserRepo = UserRepository.getInstance();
+        mUser =  mUserRepo.getUserByUsername(sharedWrapper.getUsername());
+        mTimer = new Timer();
+        mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i("Location changedetected", "Detected");
+                mUser.setCurrentLocation(new com.mosis.treasurehunt.models.Location(location.getLatitude(), location.getLongitude()));
+                mUserRepo.updateUser(mUser);
+                scanForNearbyObjects(location);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
+        };
+
+        mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        //noinspection MissingPermission
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000 , 0, mLocationListener);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-       Log.i("Service", "Service started");
         createNotificationChannel();
         Intent notifIntent = new Intent(this, HomeActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notifIntent, 0);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Foreground Service")
-                .setContentText("Hello friend")
-                .setSmallIcon(R.drawable.show_friends_icon)
+                .setContentTitle("Location Tracker")
+                .setSmallIcon(R.drawable.icon_location_tracker)
                 .setContentIntent(pendingIntent)
                 .build();
 
         startForeground(1, notification);
 
+//        mTimer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                scanForNearbyObjects();
+//            }
+//        }, 500, 10000);
 
-//       mTimer.scheduleAtFixedRate(new TimerTask() {
-//           @Override
-//           public void run() {
-//               Log.i("Service interval", "Working");
-//           }
-//       }, 0, 3000);
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        Log.i("Service", "Service stopped");
-//        mTimer.cancel();
-//        mTimer.purge();
+        mTimer.cancel();
+        mTimer.purge();
+        if(mLocationManager != null) {
+            mLocationManager.removeUpdates(mLocationListener);
+        }
     }
 
     private void createNotificationChannel() {
@@ -83,4 +136,51 @@ public class LocationTrackerService extends Service {
             manager.createNotificationChannel(serviceChannel);
         }
     }
+
+    private void scanForNearbyObjects(Location loc) {
+        final double lat = loc.getLatitude();
+        final double lon = loc.getLongitude();
+        final double dist = 200; // 10 meters
+        for (User u : mUser.getFriendList()) {
+            User user = mUserRepo.getUserByUsername(u.getUsername());
+            com.mosis.treasurehunt.models.Location currLoc = user.getCurrentLocation();
+            Log.i("User", user.getUsername());
+            Log.i("Location", Double.toString(measure(lat, currLoc.getLatitude(), lon, currLoc.getLongitude())));
+            if (measure(lat, currLoc.getLatitude(), lon, currLoc.getLongitude()) < dist) {
+                createFoundObjectNotification();
+            }
+        }
+
+        for (Hunt hunt : mUser.getJoinedHunst()) {
+            Clue clue = hunt.getUnansweredClue();
+            if(measure(lat, clue.getLatitude(), lon, clue.getLongitude()) < dist) {
+                createFoundObjectNotification();
+            }
+        }
+
+    }
+
+    private void createFoundObjectNotification() {
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Object found")
+                .setContentText("Friend or clue is nearby")
+                .setSmallIcon(R.drawable.show_friends_icon)
+                .build();
+
+        manager.notify(2, notification);
+    }
+
+    private double measure(double lat1, double lat2, double lon1, double lon2) {
+        final double R = 6378.137;
+        double dLat = Math.abs(lat1 * Math.PI / 180 - lat2 * Math.PI / 180);
+        double dLon = Math.abs(lon1 * Math.PI / 180 - lon2 * Math.PI / 180);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c;
+        return d * 1000;
+    }
+
 }

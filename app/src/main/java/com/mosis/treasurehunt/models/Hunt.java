@@ -64,7 +64,7 @@ public class Hunt {
         this.clues.remove(clue);
     }
 
-    // Finds first unaanswered clue and returns it
+    // Finds first unanswered clue
     public Clue getUnansweredClue() {
         Clue clue = null;
         for (Clue c : this.clues) {

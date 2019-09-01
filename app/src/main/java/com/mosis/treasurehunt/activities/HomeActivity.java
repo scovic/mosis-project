@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.FeedAdapter;
+import com.mosis.treasurehunt.helpers.ServiceHelper;
 import com.mosis.treasurehunt.models.Feed;
 import com.mosis.treasurehunt.models.Hunt;
 import com.mosis.treasurehunt.models.User;
@@ -26,6 +27,7 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity {
     private ListView mFeedsList;
     private FeedAdapter mFeedsAdapter;
+    private Intent mLocationTrackerServiceIntent;
     private TextView userTextView;
 
     @Override
@@ -58,12 +60,6 @@ public class HomeActivity extends AppCompatActivity {
                 Feed.Type.CREATE
         ));
 
-        Intent locationTrackerService = new Intent(this, LocationTrackerService.class);
-        startService(locationTrackerService);
-//        Intent locationTracker = new Intent(this, LocationTrackerService2.class);
-//        locationTracker.setAction(LocationTrackerService2.ACTION_TRACK_USER_LOCATION);
-//        startService(locationTracker);
-
         mFeedsAdapter = new FeedAdapter(this, feedslist);
         mFeedsList.setAdapter(mFeedsAdapter);
 
@@ -75,6 +71,8 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        mLocationTrackerServiceIntent = new Intent(this, LocationTrackerService.class);
     }
 
     @Override
@@ -103,6 +101,12 @@ public class HomeActivity extends AppCompatActivity {
         } else if (id == R.id.show_map_home) {
             Intent i = new Intent(this, MapsActivity.class);
             startActivity(i);
+        } else if (id == R.id.start_location_tracker) {
+            if (ServiceHelper.isServiceRunning(HomeActivity.this, LocationTrackerService.class)) {
+                stopService(mLocationTrackerServiceIntent);
+            } else {
+                startService(mLocationTrackerServiceIntent);
+            }
         }
 
 

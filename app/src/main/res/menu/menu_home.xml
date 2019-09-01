@@ -25,6 +25,13 @@
         android:icon="@drawable/show_friends_icon"
         />
     <item
+        android:id="@+id/start_location_tracker"
+        android:orderInCategory="100"
+        android:title="Location Tracker"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/location_point"
+        />
+    <item
         android:id="@+id/show_map_home"
         android:orderInCategory="100"
         android:title="Map"

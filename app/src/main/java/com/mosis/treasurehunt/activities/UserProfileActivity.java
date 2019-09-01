@@ -18,9 +18,11 @@ import android.widget.Toast;
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.HuntAdapter;
 import com.mosis.treasurehunt.databinding.ActivityUserProfileBinding;
+import com.mosis.treasurehunt.helpers.ServiceHelper;
 import com.mosis.treasurehunt.models.Hunt;
 import com.mosis.treasurehunt.models.User;
 import com.mosis.treasurehunt.repositories.UserRepository;
+import com.mosis.treasurehunt.services.LocationTrackerService;
 import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private Button btnDiscoverFriends;
     private ListView mHuntsList;
     private HuntAdapter mHuntsAdapter;
+    private Intent mLocationTrackerServiceIntent;
 
     ActivityUserProfileBinding mBinding;
     private User mUser; // logged in user
@@ -105,6 +108,8 @@ public class UserProfileActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        mLocationTrackerServiceIntent = new Intent(this, LocationTrackerService.class);
     }
 
     @Override
@@ -125,6 +130,12 @@ public class UserProfileActivity extends AppCompatActivity {
             startActivity(i);
         } else if (id == android.R.id.home) {
             finish();
+        } else if (id == R.id.start_location_tracker) {
+            if (ServiceHelper.isServiceRunning(UserProfileActivity.this, LocationTrackerService.class)) {
+                stopService(mLocationTrackerServiceIntent);
+            } else {
+                startService(mLocationTrackerServiceIntent);
+            }
         }
 
         return super.onOptionsItemSelected(item);
