@@ -33,7 +33,6 @@ public class UserRepository {
     }
 
     private UserRepository() {
-
         this.mUserDao = new UserDao();
         mDataSet = this.mUserDao.getAll();
     }
