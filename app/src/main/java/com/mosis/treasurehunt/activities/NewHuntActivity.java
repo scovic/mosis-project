@@ -19,8 +19,10 @@ import android.widget.Toast;
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.ClueAdapter;
 import com.mosis.treasurehunt.models.Clue;
+import com.mosis.treasurehunt.models.Feed;
 import com.mosis.treasurehunt.models.Hunt;
 import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.repositories.FeedRepository;
 import com.mosis.treasurehunt.repositories.UserRepository;
 import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
@@ -31,6 +33,7 @@ public class NewHuntActivity extends AppCompatActivity {
     private Button mBtnSaveHunt;
     private Hunt mHunt;
     private UserRepository mUserRepo;
+    private FeedRepository mFeedRepo;
     private SharedPreferencesWrapper mSharedPrefWrapper;
     private ClueAdapter mClueAdapter;
 
@@ -45,6 +48,7 @@ public class NewHuntActivity extends AppCompatActivity {
 
         mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
         mUserRepo = UserRepository.getInstance();
+        mFeedRepo = FeedRepository.getInstance();
         mHunt = new Hunt();
         mClueAdapter = new ClueAdapter(this, mHunt.getClues(), mHunt);
 
@@ -65,6 +69,8 @@ public class NewHuntActivity extends AppCompatActivity {
                 User user = mUserRepo.getUserByUsername(username);
                 if (mHunt.getNumberOfClues() > 0) {
                     mUserRepo.addHunt(user, mHunt);
+                    Feed feed = new Feed(user, mHunt, Feed.Type.CREATE);
+                    mFeedRepo.addFeed(feed);
                     Toast.makeText(NewHuntActivity.this, "Hunt created", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
