@@ -19,6 +19,7 @@ import com.mosis.treasurehunt.helpers.ServiceHelper;
 import com.mosis.treasurehunt.models.Feed;
 import com.mosis.treasurehunt.models.Hunt;
 import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.repositories.FeedRepository;
 import com.mosis.treasurehunt.services.LocationTrackerService;
 
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class HomeActivity extends AppCompatActivity {
     private Intent mLocationTrackerServiceIntent;
     private TextView userTextView;
 
+    private FeedRepository mFeedRepo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,8 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mFeedRepo = FeedRepository.getInstance();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,29 +53,29 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         mFeedsList = findViewById(R.id.feeds_list);
-        final List<Feed> feedslist = new ArrayList<>();
-        feedslist.add(new Feed(
-                new User("Stefan", "Covic", "scovic"),
-                new Hunt("Hunt1"),
-                Feed.Type.FINISH
-        ));
-        feedslist.add(new Feed(
-                new User("Nevena", "Colic", "nensiiika"),
-                new Hunt("Hunt2"),
-                Feed.Type.CREATE
-        ));
-
-        feedslist.add(new Feed(
-                new User("Stefan", "Covic", "scovic"),
-                new Hunt("Hunt1"),
-                Feed.Type.FINISH
-        ));
-
-        feedslist.add(new Feed(
-                new User("Stefan", "Covic", "scovic"),
-                new Hunt("Hunt1"),
-                Feed.Type.CREATE
-        ));
+        final ArrayList<Feed> feedslist =  mFeedRepo.getFeeds();
+//        feedslist.add(new Feed(
+//                new User("Stefan", "Covic", "scovic"),
+//                new Hunt("Hunt1"),
+//                Feed.Type.FINISH
+//        ));
+//        feedslist.add(new Feed(
+//                new User("Nevena", "Colic", "nensiiika"),
+//                new Hunt("Hunt2"),
+//                Feed.Type.CREATE
+//        ));
+//
+//        feedslist.add(new Feed(
+//                new User("Stefan", "Covic", "scovic"),
+//                new Hunt("Hunt1"),
+//                Feed.Type.FINISH
+//        ));
+//
+//        feedslist.add(new Feed(
+//                new User("Stefan", "Covic", "scovic"),
+//                new Hunt("Hunt1"),
+//                Feed.Type.CREATE
+//        ));
 
         mFeedsAdapter = new FeedAdapter(this, feedslist);
         mFeedsList.setAdapter(mFeedsAdapter);

@@ -20,21 +20,21 @@ public class FeedDao implements Dao<Feed> {
     private ArrayList<Feed> mFeeds;
     private DatabaseReference mDatabase;
     private static final String COLLECTION = "feeds";
-
-    public FeedDao() {
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child(COLLECTION).addChildEventListener(childEventListener);
-        mDatabase.child(COLLECTION).addValueEventListener(feedListener);
-        this.mFeeds = new ArrayList<>();
-    }
-
     ListUpdatedEventListener updateListener;
+
     public void setEventListener(ListUpdatedEventListener listener) {
         updateListener = listener;
     }
 
     public interface ListUpdatedEventListener {
         void onListUpdated();
+    }
+
+    public FeedDao() {
+        this.mFeeds = new ArrayList<>();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child(COLLECTION).addChildEventListener(childEventListener);
+        mDatabase.child(COLLECTION).addValueEventListener(feedListener);
     }
 
     ValueEventListener feedListener = new ValueEventListener() {
@@ -60,6 +60,8 @@ public class FeedDao implements Dao<Feed> {
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             Feed feed = dataSnapshot.getValue(Feed.class);
             mFeeds.add(feed);
+            if (updateListener != null)
+                updateListener.onListUpdated();
         }
 
         @Override
@@ -70,7 +72,10 @@ public class FeedDao implements Dao<Feed> {
         @Override
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
             Feed feed = dataSnapshot.getValue(Feed.class);
-            mFeeds.add(feed);
+            mFeeds.remove(feed);
+
+            if (updateListener != null)
+                updateListener.onListUpdated();
         }
 
         @Override
@@ -86,7 +91,7 @@ public class FeedDao implements Dao<Feed> {
 
     @Override
     public ArrayList<Feed> getAll() {
-        return this.mFeeds;
+        return mFeeds;
     }
 
     @Override
