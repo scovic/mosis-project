@@ -26,6 +26,7 @@ import com.mosis.treasurehunt.services.LocationTrackerService;
 import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserProfileActivity extends AppCompatActivity {
     private Spinner spinner;
@@ -142,26 +143,67 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void setHuntAdapter(String item) {
         mHuntsList = findViewById(R.id.hunts_list);
-        ArrayList<Hunt> huntsList = new ArrayList<>();
+        final List<Hunt> createdHunts = mUserRepo.getCreatedHunts(mUser) != null ? mUserRepo.getCreatedHunts(mUser) : new ArrayList<Hunt>();
+        final List<Hunt> activeHunts = mUserRepo.getActiveHunts(mUser) != null ? mUserRepo.getActiveHunts(mUser) : new ArrayList<Hunt>();
+        final List<Hunt> completedHunts = mUserRepo.getCompletedHunts(mUser) != null ? mUserRepo.getCompletedHunts(mUser) : new ArrayList<Hunt>();
 
         if (item.equals("Active Hunts")) {
-            // filter baze za huntove kod kojih je completed=false
-            huntsList.add(new Hunt("Test Active Hunt"));
-            mHuntsAdapter = new HuntAdapter(this, huntsList);
+            if (activeHunts.size() > 0) {
+                mHuntsAdapter = new HuntAdapter(this, activeHunts);
+            } else {
+                activeHunts.add(new Hunt("No active hunts currently"));
+                mHuntsAdapter = new HuntAdapter(this, activeHunts);
+            }
             mHuntsAdapter.setmFilter(HuntAdapter.FilterType.ACTIVE);
             mHuntsList.setAdapter(mHuntsAdapter);
+
+            mHuntsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent huntIntent = new Intent(UserProfileActivity.this, HuntActivity.class);
+                    huntIntent.putExtra("huntTitle", activeHunts.get(i).getTitle());
+                    huntIntent.putExtra("huntType", "active");
+                    startActivity(huntIntent);
+                }
+            });
         } else if (item.equals("Completed Hunts")) {
-            // ovde filter svih huntova kod kojih je completed=true
-            huntsList.add(new Hunt("Test Completed Hunt"));
-            mHuntsAdapter = new HuntAdapter(this, huntsList);
+            if (completedHunts.size() > 0) {
+                mHuntsAdapter = new HuntAdapter(this, completedHunts);
+            } else {
+                completedHunts.add(new Hunt("You haven't completed any hunts"));
+                mHuntsAdapter = new HuntAdapter(this, completedHunts);
+            }
             mHuntsAdapter.setmFilter(HuntAdapter.FilterType.COMPLETED);
             mHuntsList.setAdapter(mHuntsAdapter);
+
+            mHuntsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent huntIntent = new Intent(UserProfileActivity.this, HuntActivity.class);
+                    huntIntent.putExtra("huntTitle", completedHunts.get(i).getTitle());
+                    huntIntent.putExtra("huntType", "completed");
+                    startActivity(huntIntent);
+                }
+            });
         } else if (item.equals("My Hunts")) {
-            // filter gde je user == ulogovani user
-            huntsList.add(new Hunt("Test My Hunt"));
-            mHuntsAdapter = new HuntAdapter(this, huntsList);
+            if (createdHunts.size() > 0) {
+                mHuntsAdapter = new HuntAdapter(this, createdHunts);
+            } else {
+                createdHunts.add(new Hunt("You haven't created any hunts"));
+                mHuntsAdapter = new HuntAdapter(this, createdHunts);
+            }
             mHuntsAdapter.setmFilter(HuntAdapter.FilterType.MINE);
             mHuntsList.setAdapter(mHuntsAdapter);
+
+            mHuntsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent huntIntent = new Intent(UserProfileActivity.this, HuntActivity.class);
+                    huntIntent.putExtra("huntTitle", createdHunts.get(i).getTitle());
+                    huntIntent.putExtra("huntType", "created");
+                    startActivity(huntIntent);
+                }
+            });
         }
     }
 }

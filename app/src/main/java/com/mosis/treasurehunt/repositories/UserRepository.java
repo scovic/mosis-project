@@ -33,7 +33,6 @@ public class UserRepository {
     }
 
     private UserRepository() {
-
         this.mUserDao = new UserDao();
         mDataSet = this.mUserDao.getAll();
     }
@@ -145,6 +144,51 @@ public class UserRepository {
             }
         }
         return user;
+    }
+
+    public List<Hunt> getCreatedHunts(User user) {
+        List<Hunt> createdHunts = null;
+        for (User u : mDataSet) {
+            if (u.getUsername().equals(user.getUsername())) {
+                createdHunts = u.getCreatedHunts();
+                break;
+            }
+        }
+        return createdHunts;
+    }
+
+    public List<Hunt> getActiveHunts(User user) {
+        List<Hunt> activeHunts = null;
+        List<Hunt> joinedHunts = null;
+        for (User u : mDataSet) {
+            if (u.getUsername().equals(user.getUsername())) {
+                joinedHunts = u.getJoinedHunst();
+                for(Hunt joinedHunt : joinedHunts) {
+                    if (!joinedHunt.checkCompleted()) {
+                        activeHunts.add(joinedHunt);
+                    }
+                }
+                break;
+            }
+        }
+        return  activeHunts;
+    }
+
+    public List<Hunt> getCompletedHunts(User user) {
+        List<Hunt> completedHunts = null;
+        List<Hunt> joinedHunts = null;
+        for (User u : mDataSet) {
+            if (u.getUsername().equals(user.getUsername())) {
+                joinedHunts = u.getJoinedHunst();
+                for(Hunt joinedHunt : joinedHunts) {
+                    if (joinedHunt.checkCompleted()) {
+                        completedHunts.add(joinedHunt);
+                    }
+                }
+                break;
+            }
+        }
+        return  completedHunts;
     }
 
 }

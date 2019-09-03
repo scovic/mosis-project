@@ -14,13 +14,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.adapters.ClueAdapter;
 import com.mosis.treasurehunt.models.Clue;
+import com.mosis.treasurehunt.models.Feed;
 import com.mosis.treasurehunt.models.Hunt;
 import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.repositories.FeedRepository;
 import com.mosis.treasurehunt.repositories.UserRepository;
 import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
@@ -31,6 +34,7 @@ public class NewHuntActivity extends AppCompatActivity {
     private Button mBtnSaveHunt;
     private Hunt mHunt;
     private UserRepository mUserRepo;
+    private FeedRepository mFeedRepo;
     private SharedPreferencesWrapper mSharedPrefWrapper;
     private ClueAdapter mClueAdapter;
 
@@ -45,6 +49,7 @@ public class NewHuntActivity extends AppCompatActivity {
 
         mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
         mUserRepo = UserRepository.getInstance();
+//        mFeedRepo = FeedRepository.getInstance();
         mHunt = new Hunt();
         mClueAdapter = new ClueAdapter(this, mHunt.getClues(), mHunt);
 
@@ -61,10 +66,16 @@ public class NewHuntActivity extends AppCompatActivity {
         mBtnSaveHunt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TextView huntNameTextView = findViewById(R.id.et_hunt_name);
+                String huntName = huntNameTextView.getText().toString().trim();
+                mHunt.setTitle(huntName);
+
                 String username = mSharedPrefWrapper.getUsername();
                 User user = mUserRepo.getUserByUsername(username);
-                if (mHunt.getNumberOfClues() > 0) {
+                if (mHunt.getNumberOfClues() > 0 && mHunt.getTitle() != null) {
                     mUserRepo.addHunt(user, mHunt);
+//                    Feed feed = new Feed(user, mHunt, Feed.Type.CREATE);
+//                    mFeedRepo.addFeed(feed);
                     Toast.makeText(NewHuntActivity.this, "Hunt created", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -111,22 +122,13 @@ public class NewHuntActivity extends AppCompatActivity {
             }
             clue.addAnswer(answer1, isCorrect);
 
-            isCorrect = false;
-            if (correctAnswer.equals("answer2")) {
-                isCorrect = true;
-            }
+            isCorrect = correctAnswer.equals("answer2");
             clue.addAnswer(answer2, isCorrect);
-           isCorrect = false;
 
-            if (correctAnswer.equals("answer3")) {
-                isCorrect = true;
-            }
+            isCorrect = correctAnswer.equals("answer3");
             clue.addAnswer(answer3, isCorrect);
 
-            isCorrect = false;
-            if (correctAnswer.equals("answer4")) {
-                isCorrect = true;
-            }
+            isCorrect = correctAnswer.equals("answer4");
             clue.addAnswer(answer4, isCorrect);
 
             // Need to implement adding a location (:

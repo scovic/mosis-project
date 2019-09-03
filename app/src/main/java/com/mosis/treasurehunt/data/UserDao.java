@@ -99,11 +99,7 @@ public class UserDao implements Dao<User> {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            QUERY_SUCCESS = true;
-                        } else {
-                            QUERY_SUCCESS = false;
-                        }
+                        QUERY_SUCCESS = task.isSuccessful();
                     }
                 });
 
@@ -116,11 +112,7 @@ public class UserDao implements Dao<User> {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            QUERY_SUCCESS = true;
-                        } else {
-                            QUERY_SUCCESS = false;
-                        }
+                        QUERY_SUCCESS = task.isSuccessful();
                     }
                 });
 //        if (updateListener != null) updateListener.onListUpdated();
@@ -132,11 +124,7 @@ public class UserDao implements Dao<User> {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            QUERY_SUCCESS = true;
-                        } else {
-                            QUERY_SUCCESS = false;
-                        }
+                        QUERY_SUCCESS = task.isSuccessful();
                     }
                 });
 

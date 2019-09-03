@@ -170,6 +170,5 @@
                 android:divider="@null"/>
 
         </LinearLayout>
-
     </android.support.design.widget.CoordinatorLayout>
 </layout>
