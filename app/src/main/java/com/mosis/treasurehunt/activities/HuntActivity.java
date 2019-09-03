@@ -68,7 +68,7 @@ public class HuntActivity extends AppCompatActivity {
                     finish();
                 } else {
                     if (huntType.equals("active")) {
-                        userHunts = mUser.getActiveHunts();
+                        userHunts = mUser.filterActiveHunts();
                     } else if (huntType.equals("completed")) {
                         userHunts = mUser.getCompletedHunts();
                     } else userHunts = mUser.getCreatedHunts();
@@ -76,7 +76,6 @@ public class HuntActivity extends AppCompatActivity {
                     for (Hunt hunt : userHunts) {
                         if (hunt.getTitle().equals(huntTitle)) {
                             bindHunt = hunt;
-                            bindHunt.setOwner(mUser.getUsername());
                             bindHunt.setOwner(mUser.getUsername());
                             mHuntBinding.setHunt(bindHunt);
                             break;
@@ -94,8 +93,20 @@ public class HuntActivity extends AppCompatActivity {
         List<Hunt> activeHunts = mUserRepo.getActiveHunts(currentUser);
         List<Hunt> completedHunts = mUserRepo.getCompletedHunts(currentUser);
         List<Hunt> createdHunts = mUserRepo.getCreatedHunts(currentUser);
+        boolean myHunt = false;
         boolean found = false;
-        if (activeHunts != null) {
+
+        if (completedHunts != null) {
+            for (Hunt hunt : completedHunts) {
+                if (hunt.getTitle().equals(bindHunt.getTitle())) {
+                    myHunt = true;
+                    joinHuntButton.setText("Leave Hunt");
+                    break;
+                }
+            }
+        }
+
+        if (activeHunts != null && !myHunt) {
             for (Hunt hunt : activeHunts) {
                 if (hunt.getTitle().equals(bindHunt.getTitle())) {
                     found = true;
@@ -104,20 +115,13 @@ public class HuntActivity extends AppCompatActivity {
                 }
             }
         }
-        if (!found && completedHunts != null) {
-            for (Hunt hunt : completedHunts) {
-                if (hunt.getTitle().equals(bindHunt.getTitle())) {
-                    found = true;
-                    joinHuntButton.setText("Leave Hunt");
-                    break;
-                }
-            }
-        }
 
-        if (!found && createdHunts != null) {
+        if (!found && createdHunts != null && !myHunt) {
             for (Hunt hunt : createdHunts) {
                 if (hunt.getTitle().equals(bindHunt.getTitle())) {
-                    joinHuntButton.setText("Leave Hunt");
+                    joinHuntButton.setEnabled(false);
+                    joinHuntButton.setVisibility(View.GONE);
+//                    joinHuntButton.setText("Leave Hunt");
                     break;
                 }
             }
