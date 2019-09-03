@@ -69,7 +69,7 @@ public class Hunt {
     }
 
     // Finds first unanswered clue
-    public Clue getUnansweredClue() {
+    public Clue findFirstUnansweredClue() {
         Clue clue = null;
         for (Clue c : this.clues) {
             if (!c.isAnswered()) {

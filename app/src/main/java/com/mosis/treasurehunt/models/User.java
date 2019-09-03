@@ -111,7 +111,7 @@ public class User {
 
     public List<Hunt> getJoinedHunts() { return this.joinedHunts; }
 
-    public List<Hunt> getActiveHunts() {
+    public List<Hunt> filterActiveHunts() {
        List<Hunt> activeHunts = new ArrayList<>();
        for (Hunt hunt : this.joinedHunts) {
            if (!hunt.checkCompleted()) {

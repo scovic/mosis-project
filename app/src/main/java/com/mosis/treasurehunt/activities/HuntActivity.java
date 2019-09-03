@@ -76,7 +76,7 @@ public class HuntActivity extends AppCompatActivity {
                     for (Hunt hunt : userHunts) {
                         if (hunt.getTitle().equals(huntTitle)) {
                             bindHunt = hunt;
-                            bindHunt.setOwner(mUser.getUsername());
+//                            bindHunt.setOwner(mUser.getUsername());
                             mHuntBinding.setHunt(bindHunt);
                             break;
                         }

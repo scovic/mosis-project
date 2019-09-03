@@ -33,7 +33,6 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.MapEventsOverlay;
-import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
@@ -356,7 +355,7 @@ public class MapsActivity extends AppCompatActivity {
             User huntOwner = UserRepository.getInstance().getUserByUsername(hunt.getOwner());
             boolean isCompleted = hunt.isCompleted() || huntOwner.isHuntCompleted(hunt.getTitle());
             if (!isCompleted) {
-                Clue clue = hunt.getUnansweredClue();
+                Clue clue = hunt.findFirstUnansweredClue();
                 OverlayItem item = new OverlayItem(hunt.getTitle(), hunt.getOwner(), new GeoPoint(clue.getLatitude(), clue.getLongitude()));
                 item.setMarker(this.getResources().getDrawable(R.drawable.icon_clue));
                 items.add(item);

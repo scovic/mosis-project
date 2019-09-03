@@ -133,7 +133,7 @@ public class LocationTrackerService extends Service {
         }
 
         for (Hunt hunt : mUser.getJoinedHunts()) {
-            Clue clue = hunt.getUnansweredClue();
+            Clue clue = hunt.findFirstUnansweredClue();
             if(measure(lat, clue.getLatitude(), lon, clue.getLongitude()) < dist) {
                 createFoundObjectNotification();
             }
