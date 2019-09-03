@@ -21,31 +21,46 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.models.Clue;
+import com.mosis.treasurehunt.models.Hunt;
+import com.mosis.treasurehunt.models.User;
+import com.mosis.treasurehunt.repositories.UserRepository;
+import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.MapEventsOverlay;
+import org.osmdroid.views.overlay.Overlay;
+import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MapsActivity extends AppCompatActivity {
     MapView map = null;
     Clue clue = null;
-//    UserRepository userrepo;
     IMapController mapController = null;
     MyLocationNewOverlay myLocationOverlay;
+    ItemizedIconOverlay itemizedIconOverlay;
     FusedLocationProviderClient fusedLocationClient;
+    User user;
+    Timer timer;
 
     static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
 
     public static final int SHOW_MAP = 0;
-    public static final int CENTER_PLACE_ON_MAP = 1;
+    public static final int CENTER_CLUE_ON_MAP = 1;
     public static final int SELECT_COORDINATES = 2;
     public static final int SELECT_CURRENT_COORDS = 4;
     public static final int SHOW_FRIENDS = 5;
+    public static final int SHOW_CLUES = 6;
 
     private int state = 0;
     private boolean selCoordsEnabled = false;
@@ -54,13 +69,14 @@ public class MapsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        user = UserRepository.getInstance().getUserByUsername(SharedPreferencesWrapper.getInstance().getUsername());
+        timer = new Timer();
         try {
             Intent mapIntent = getIntent();
             Bundle mapBundle = mapIntent.getExtras();
             if (mapBundle != null) {
                 state = mapBundle.getInt("state");
-                if (state == CENTER_PLACE_ON_MAP) {
+                if (state == CENTER_CLUE_ON_MAP) {
                     String clueLat = mapBundle.getString("lat");
                     String clueLong = mapBundle.getString("lon");
                     String desc = mapBundle.getString("desc");
@@ -75,21 +91,21 @@ public class MapsActivity extends AppCompatActivity {
                 } else if (state == SELECT_CURRENT_COORDS) {
                     fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
                     fusedLocationClient.getLastLocation()
-                                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                                    @Override
-                                    public void onSuccess(Location location) {
-                                        if (location != null) {
-                                            double lat = location.getLatitude();
-                                            double lon = location.getLongitude();
-                                            Intent myLocationIntent = new Intent();
-                                            myLocationIntent.putExtra("lat", Double.toString(lat));
-                                            myLocationIntent.putExtra("lon", Double.toString(lon));
-                                            setResult(Activity.RESULT_OK, myLocationIntent);
+                            .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                                @Override
+                                public void onSuccess(Location location) {
+                                    if (location != null) {
+                                        double lat = location.getLatitude();
+                                        double lon = location.getLongitude();
+                                        Intent myLocationIntent = new Intent();
+                                        myLocationIntent.putExtra("lat", Double.toString(lat));
+                                        myLocationIntent.putExtra("lon", Double.toString(lon));
+                                        setResult(Activity.RESULT_OK, myLocationIntent);
 
-                                        }
-                                        finish();
                                     }
-                                });
+                                    finish();
+                                }
+                            });
                 }
             }
         } catch(Exception e) {
@@ -118,6 +134,7 @@ public class MapsActivity extends AppCompatActivity {
             setupMap();
             setMyLocationOverlay();
             setOnMapClickOverlay();
+
         }
 
         mapController = map.getController();
@@ -138,6 +155,16 @@ public class MapsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         map.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (timer != null) {
+            timer.purge();
+            timer.cancel();
+        }
+
     }
 
     private void setMyLocationOverlay() {
@@ -180,10 +207,14 @@ public class MapsActivity extends AppCompatActivity {
     }
 
     private void setupMap() {
+        if (state != SHOW_FRIENDS && timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+
         switch(state) {
             case SHOW_MAP: {
                 setMyLocationOverlay();
-//                showMyPlaces();
                 break;
             }
             case SELECT_COORDINATES: {
@@ -195,8 +226,25 @@ public class MapsActivity extends AppCompatActivity {
                 setMyLocationOverlay();
                 break;
             }
-            case CENTER_PLACE_ON_MAP: {
-//                showPlace();
+//            case CENTER_CLUE_ON_MAP: {
+////                showPlace();
+//                break;
+//            }
+            case SHOW_FRIENDS: {
+                timer = new Timer();
+                timer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        showFriends();
+                        Log.i("Timer", "Runs baby");
+                    }
+                }, 0, 5000);
+
+                break;
+            }
+            case SHOW_CLUES: {
+//                setMyLocationOverlay();
+                showClues();
                 break;
             }
             default: {
@@ -241,6 +289,20 @@ public class MapsActivity extends AppCompatActivity {
             if (id == R.id.new_hunt_item) {
                 Intent i = new Intent(this, NewHuntActivity.class);
                 startActivity(i);
+            } else if (id == R.id.show_friends_on_map) {
+//               Intent i = new Intent(this, this.getClass());
+//               i.putExtra("state", SHOW_FRIENDS);
+//               startActivity(i);
+//               finish();
+                this.state = SHOW_FRIENDS;
+                this.setupMap();
+            } else if (id == R.id.show_clues_on_map) {
+//                Intent i = new Intent(this, this.getClass());
+//                i.putExtra("state", SHOW_CLUES);
+//                startActivity(i);
+//                finish();
+                this.state = SHOW_CLUES;
+                setupMap();
             } else if (id == android.R.id.home) {
                 finish();
             }
@@ -249,12 +311,104 @@ public class MapsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    private void showMyClues() {
-//        if (myLocationOverlay != null) {
-//            this.map.getOverlays().remove(myLocationOverlay);
-//        }
-//    }
 
+    public void showFriends() {
+        if (myLocationOverlay != null) {
+            this.map.getOverlays().remove(myLocationOverlay);
+        }
+
+        UserRepository.getInstance().update(user);
+        user = UserRepository.getInstance().getUserByUsername(SharedPreferencesWrapper.getInstance().getUsername());
+
+        final List<OverlayItem> items = new ArrayList<>();
+        for (User u : user.getFriendList()) {
+            User us = UserRepository.getInstance().getUserByUsername(u.getUsername());
+            com.mosis.treasurehunt.models.Location location = us.getCurrentLocation();
+            OverlayItem item  = new OverlayItem(us.getUsername(), us.getFullName(), new GeoPoint(location.getLatitude(), location.getLongitude()));
+            item.setMarker(this.getResources().getDrawable(R.drawable.icon_user_map));
+            items.add(item);
+        }
+
+        if (itemizedIconOverlay != null) {
+            this.map.getOverlays().remove(itemizedIconOverlay);
+        }
+
+        itemizedIconOverlay = new ItemizedIconOverlay(items,
+                new ItemizedIconOverlay.OnItemGestureListener() {
+                    @Override
+                    public boolean onItemSingleTapUp(int index, Object item) {
+                        OverlayItem overlayItem = (OverlayItem) item;
+                        String username = overlayItem.getTitle();
+                        Intent i = new Intent(MapsActivity.this, UserProfileActivity.class);
+                        i.putExtra("state", username);
+                        startActivity(i);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onItemLongPress(int index, Object item) {
+                        return false;
+                    }
+                }, getApplicationContext());
+        this.map.getOverlays().add(itemizedIconOverlay);
+    }
+
+    public void showClues() {
+        if (myLocationOverlay != null) {
+            this.map.getOverlays().remove(myLocationOverlay);
+        }
+
+        final List<OverlayItem> items = new ArrayList<>();
+        for (Hunt hunt : user.getCreatedHunts()) {
+            Clue clue = hunt.getUnansweredClue();
+            OverlayItem item = new OverlayItem(hunt.getTitle(), clue.getQuestion(),new GeoPoint(clue.getLatitude(), clue.getLongitude()));
+            item.setMarker(this.getResources().getDrawable(R.drawable.icon_clue));
+            items.add(item);
+        }
+
+        if (itemizedIconOverlay != null) {
+            this.map.getOverlays().remove(itemizedIconOverlay);
+        }
+
+        itemizedIconOverlay = new ItemizedIconOverlay(items,
+                new ItemizedIconOverlay.OnItemGestureListener() {
+                    @Override
+                    public boolean onItemSingleTapUp(int index, Object item) {
+                        OverlayItem o = (OverlayItem) item;
+                        GeoPoint gp = (GeoPoint) o.getPoint();
+                        GeoPoint lastKnownLocation = myLocationOverlay.getMyLocation();
+                        if (lastKnownLocation != null) {
+                            double distance = measure(gp.getLatitude(), lastKnownLocation.getLatitude(), gp.getLongitude(), lastKnownLocation.getLongitude());
+                            if (distance > 100) {
+                                Toast.makeText(MapsActivity.this, "You are too far away from clue", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // TODO: Implement starting activity for answering
+                            }
+                        } else {
+                            Toast.makeText(MapsActivity.this, "No last know location", Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onItemLongPress(int index, Object item) {
+                        return false;
+                    }
+                }, getApplicationContext());
+        this.map.getOverlays().add(itemizedIconOverlay);
+    }
+
+    private double measure(double lat1, double lat2, double lon1, double lon2) {
+        final double R = 6378.137;
+        double dLat = Math.abs(lat1 * Math.PI / 180 - lat2 * Math.PI / 180);
+        double dLon = Math.abs(lon1 * Math.PI / 180 - lon2 * Math.PI / 180);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c;
+        return d * 1000;
+    }
 }
 
 

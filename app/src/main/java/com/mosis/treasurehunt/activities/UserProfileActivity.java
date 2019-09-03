@@ -50,10 +50,10 @@ public class UserProfileActivity extends AppCompatActivity {
         mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
 
         String username = "";
-
         try {
             Intent listIntent = getIntent();
             Bundle indexBundle = listIntent.getExtras();
+            int position = indexBundle.getInt("position");
             if (indexBundle == null) {
                 mUser = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
             } else {

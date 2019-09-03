@@ -1,6 +1,5 @@
 package com.mosis.treasurehunt.services;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -8,7 +7,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -19,9 +17,6 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.activities.HomeActivity;
 import com.mosis.treasurehunt.models.Clue;
@@ -30,15 +25,10 @@ import com.mosis.treasurehunt.models.User;
 import com.mosis.treasurehunt.repositories.UserRepository;
 import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class LocationTrackerService extends Service {
     public static final String CHANNEL_ID = "LocationTrackerService";
     private User mUser;
     private UserRepository mUserRepo;
-    private Timer mTimer;
-//    private FusedLocationProviderClient mFusedLocationClient;
     private LocationListener mLocationListener;
     private LocationManager mLocationManager;
 
@@ -57,7 +47,6 @@ public class LocationTrackerService extends Service {
         SharedPreferencesWrapper sharedWrapper = SharedPreferencesWrapper.getInstance();
         mUserRepo = UserRepository.getInstance();
         mUser =  mUserRepo.getUserByUsername(sharedWrapper.getUsername());
-        mTimer = new Timer();
         mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -104,12 +93,6 @@ public class LocationTrackerService extends Service {
 
         startForeground(1, notification);
 
-//        mTimer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                scanForNearbyObjects();
-//            }
-//        }, 500, 10000);
 
         return START_STICKY;
     }
@@ -117,8 +100,6 @@ public class LocationTrackerService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mTimer.cancel();
-        mTimer.purge();
         if(mLocationManager != null) {
             mLocationManager.removeUpdates(mLocationListener);
         }
@@ -140,7 +121,7 @@ public class LocationTrackerService extends Service {
     private void scanForNearbyObjects(Location loc) {
         final double lat = loc.getLatitude();
         final double lon = loc.getLongitude();
-        final double dist = 200; // 10 meters
+        final double dist = 200; // 100 meters
         for (User u : mUser.getFriendList()) {
             User user = mUserRepo.getUserByUsername(u.getUsername());
             com.mosis.treasurehunt.models.Location currLoc = user.getCurrentLocation();

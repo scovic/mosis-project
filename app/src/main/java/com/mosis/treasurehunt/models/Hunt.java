@@ -68,7 +68,7 @@ public class Hunt {
     public Clue getUnansweredClue() {
         Clue clue = null;
         for (Clue c : this.clues) {
-            if (c.isAnswered()) {
+            if (!c.isAnswered()) {
                 clue = c;
                 break;
             }
