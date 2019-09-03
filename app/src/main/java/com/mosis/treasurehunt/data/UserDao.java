@@ -115,7 +115,7 @@ public class UserDao implements Dao<User> {
                         QUERY_SUCCESS = task.isSuccessful();
                     }
                 });
-//        if (updateListener != null) updateListener.onListUpdated();
+        if (updateListener != null) updateListener.onListUpdated();
     }
 
     @Override

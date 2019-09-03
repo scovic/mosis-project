@@ -290,17 +290,9 @@ public class MapsActivity extends AppCompatActivity {
                 Intent i = new Intent(this, NewHuntActivity.class);
                 startActivity(i);
             } else if (id == R.id.show_friends_on_map) {
-//               Intent i = new Intent(this, this.getClass());
-//               i.putExtra("state", SHOW_FRIENDS);
-//               startActivity(i);
-//               finish();
                 this.state = SHOW_FRIENDS;
                 this.setupMap();
             } else if (id == R.id.show_clues_on_map) {
-//                Intent i = new Intent(this, this.getClass());
-//                i.putExtra("state", SHOW_CLUES);
-//                startActivity(i);
-//                finish();
                 this.state = SHOW_CLUES;
                 setupMap();
             } else if (id == android.R.id.home) {
