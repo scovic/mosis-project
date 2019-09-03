@@ -75,7 +75,7 @@ public class LocationTrackerService extends Service {
 
         mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         //noinspection MissingPermission
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000 , 0, mLocationListener);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000 , 0, mLocationListener);
     }
 
     @Override

@@ -209,6 +209,7 @@ public class MapsActivity extends AppCompatActivity {
     private void setupMap() {
         if (state != SHOW_FRIENDS && timer != null) {
             timer.cancel();
+            timer.purge();
             timer = null;
         }
 
@@ -236,7 +237,6 @@ public class MapsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         showFriends();
-                        Log.i("Timer", "Runs baby");
                     }
                 }, 0, 5000);
 
@@ -350,12 +350,17 @@ public class MapsActivity extends AppCompatActivity {
             this.map.getOverlays().remove(myLocationOverlay);
         }
 
+
         final List<OverlayItem> items = new ArrayList<>();
-        for (Hunt hunt : user.getCreatedHunts()) {
-            Clue clue = hunt.getUnansweredClue();
-            OverlayItem item = new OverlayItem(hunt.getTitle(), clue.getQuestion(),new GeoPoint(clue.getLatitude(), clue.getLongitude()));
-            item.setMarker(this.getResources().getDrawable(R.drawable.icon_clue));
-            items.add(item);
+        for (Hunt hunt : user.getJoinedHunst()) {
+            User huntOwner = UserRepository.getInstance().getUserByUsername(hunt.getOwner());
+            boolean isCompleted = hunt.isCompleted() || huntOwner.isHuntCompleted(hunt.getTitle());
+            if (!isCompleted) {
+                Clue clue = hunt.getUnansweredClue();
+                OverlayItem item = new OverlayItem(hunt.getTitle(), hunt.getOwner(), new GeoPoint(clue.getLatitude(), clue.getLongitude()));
+                item.setMarker(this.getResources().getDrawable(R.drawable.icon_clue));
+                items.add(item);
+            }
         }
 
         if (itemizedIconOverlay != null) {
@@ -374,8 +379,16 @@ public class MapsActivity extends AppCompatActivity {
                             if (distance > 100) {
                                 Toast.makeText(MapsActivity.this, "You are too far away from clue", Toast.LENGTH_SHORT).show();
                             } else {
-                                // TODO: Implement starting activity for answering
-                            }
+                               String huntTitle = o.getTitle();
+                               String huntOwnerUsername = o.getSnippet();
+                               if (!UserRepository.getInstance().getUserByUsername(huntOwnerUsername).isHuntCompleted(huntTitle)) {
+                                   Intent i = new Intent(MapsActivity.this, AnswerClueActivity.class);
+                                   i.putExtra("hunt_title", huntTitle);
+                                   startActivity(i);
+                               } else {
+                                   Toast.makeText(MapsActivity.this, "Sorry, someone has already completed that hunt", Toast.LENGTH_SHORT).show();
+                               }
+                           }
                         } else {
                             Toast.makeText(MapsActivity.this, "No last know location", Toast.LENGTH_SHORT).show();
                         }

@@ -7,6 +7,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 @IgnoreExtraProperties
 public class User {
     private String firstName;
@@ -123,6 +125,24 @@ public class User {
             }
         }
         return completedHunts;
+    }
+
+    @Nullable
+    public Hunt getHunt(String title) {
+        for (Hunt h : joinedHunts) {
+            if (title.equals(h.getTitle())) {
+                return h;
+            }
+        }
+        return null;
+    }
+
+    public boolean isHuntCompleted(String title) {
+        Hunt hunt = this.getHunt(title);
+        if (hunt != null) {
+            return hunt.isCompleted();
+        }
+        return true; // there is no hunt
     }
 
     public void joinHunt(Hunt hunt) { this.joinedHunts.add(hunt); }
