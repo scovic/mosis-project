@@ -148,10 +148,14 @@
                 android:layout_height="wrap_content"
                 android:textSize="22sp"
                 android:layout_marginTop="25dp"
-                android:layout_marginBottom="25dp"
+                android:layout_marginBottom="5dp"
                 android:text="Hunters"
                 />
 
+            <ListView
+                android:id="@+id/lv_hunters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

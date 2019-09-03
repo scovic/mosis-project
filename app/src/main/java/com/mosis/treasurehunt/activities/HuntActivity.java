@@ -10,21 +10,27 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
+import com.mosis.treasurehunt.adapters.UserAdapter;
 import com.mosis.treasurehunt.databinding.ActivityHuntBinding;
 import com.mosis.treasurehunt.models.Hunt;
 import com.mosis.treasurehunt.models.User;
 import com.mosis.treasurehunt.repositories.UserRepository;
 import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HuntActivity extends AppCompatActivity {
 
     Button joinHuntButton;
+    ListView mUserListView;
+    UserAdapter mUserAdapter;
 
     ActivityHuntBinding mHuntBinding;
     SharedPreferencesWrapper mSharedPrefWrapper;
@@ -39,6 +45,7 @@ public class HuntActivity extends AppCompatActivity {
         mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
         mUserRepo = UserRepository.getInstance();
 
+        mUserListView = findViewById(R.id.lv_hunters);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -90,7 +97,7 @@ public class HuntActivity extends AppCompatActivity {
         boolean found = false;
         if (activeHunts != null) {
             for (Hunt hunt : activeHunts) {
-                if (hunt == bindHunt) {
+                if (hunt.getTitle().equals(bindHunt.getTitle())) {
                     found = true;
                     joinHuntButton.setText("Leave Hunt");
                     break;
@@ -99,7 +106,7 @@ public class HuntActivity extends AppCompatActivity {
         }
         if (!found && completedHunts != null) {
             for (Hunt hunt : completedHunts) {
-                if (hunt == bindHunt) {
+                if (hunt.getTitle().equals(bindHunt.getTitle())) {
                     found = true;
                     joinHuntButton.setText("Leave Hunt");
                     break;
@@ -109,7 +116,7 @@ public class HuntActivity extends AppCompatActivity {
 
         if (!found && createdHunts != null) {
             for (Hunt hunt : createdHunts) {
-                if (hunt == bindHunt) {
+                if (hunt.getTitle().equals(bindHunt.getTitle())) {
                     joinHuntButton.setText("Leave Hunt");
                     break;
                 }
@@ -120,9 +127,37 @@ public class HuntActivity extends AppCompatActivity {
         joinHuntButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUserRepo.joinHunt(currentUser, huntToAdd);
-                joinHuntButton.setText("Leave Hunt");
-                Toast.makeText(HuntActivity.this, "Welcome! Enjoy the hunt!", Toast.LENGTH_SHORT).show();
+                if (joinHuntButton.getText().equals("Join Hunt")) {
+                    mUserRepo.joinHunt(currentUser, huntToAdd);
+                    joinHuntButton.setText("Leave Hunt");
+                    Toast.makeText(HuntActivity.this, "Welcome! Enjoy the hunt!", Toast.LENGTH_SHORT).show();
+                } else {
+                    mUserRepo.leaveHunt(currentUser, huntToAdd);
+                    joinHuntButton.setText("Join Hunt");
+                    Toast.makeText(HuntActivity.this, "Bye bye birdie!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        List<User> usersList = mUserRepo.getUsers1();
+        final List<User> hunters = new ArrayList<>();
+        for (User user : usersList) {
+            List<Hunt> active = mUserRepo.getActiveHunts(user);
+            for (Hunt joinedHunt : active) {
+                if (joinedHunt.getTitle().equals(bindHunt.getTitle())) {
+                    hunters.add(user);
+                }
+            }
+        }
+        mUserAdapter = new UserAdapter(HuntActivity.this, hunters, R.layout.item_list_user);
+        mUserListView.setAdapter(mUserAdapter);
+
+        mUserListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(HuntActivity.this, UserProfileActivity.class);
+                i.putExtra("state", hunters.get(position).getUsername());
+                startActivity(i);
             }
         });
     }
