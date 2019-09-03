@@ -105,6 +105,26 @@ public class User {
 
     public List<Hunt> getJoinedHunst() { return this.joinedHunts; }
 
+    public List<Hunt> getActiveHunts() {
+       List<Hunt> activeHunts = new ArrayList<>();
+       for (Hunt hunt : this.joinedHunts) {
+           if (!hunt.checkCompleted()) {
+               activeHunts.add(hunt);
+           }
+       }
+       return activeHunts;
+    }
+
+    public List<Hunt> getCompletedHunts() {
+        List<Hunt> completedHunts = new ArrayList<>();
+        for (Hunt hunt : this.joinedHunts) {
+            if (hunt.checkCompleted()) {
+                completedHunts.add(hunt);
+            }
+        }
+        return completedHunts;
+    }
+
     public void joinHunt(Hunt hunt) { this.joinedHunts.add(hunt); }
 
     public int getNumOfCreatedHunts() { return  this.createdHunts.size(); }
@@ -112,8 +132,14 @@ public class User {
     public int getNumOfJoinedHunts() { return this.joinedHunts.size(); }
 
     public int getNumOfCompletedHunts() {
-        // TODO:
-        return 5;
+        int counter = 0;
+        for (Hunt hunt : this.joinedHunts) {
+            if (hunt.checkCompleted()) {
+                counter++;
+            }
+        }
+
+        return counter;
     }
 
    public List<User> getFriendList() { return this.friendList; }

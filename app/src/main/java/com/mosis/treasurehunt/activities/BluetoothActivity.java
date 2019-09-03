@@ -201,7 +201,7 @@ public class BluetoothActivity extends AppCompatActivity {
     };
 
     private void connectDevice(Intent data) {
-        String address = data.getExtras().getString(this.EXTRA_DEVICE_ADDRESS);
+        String address = data.getExtras().getString(EXTRA_DEVICE_ADDRESS);
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         mBluetoothService.connect(device);
     }
