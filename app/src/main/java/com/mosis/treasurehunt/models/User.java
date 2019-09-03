@@ -133,7 +133,7 @@ public class User {
 
     @Nullable
     public Hunt getHunt(String title) {
-        for (Hunt h : joinedHunts) {
+        for (Hunt h : createdHunts) {
             if (title.equals(h.getTitle())) {
                 return h;
             }

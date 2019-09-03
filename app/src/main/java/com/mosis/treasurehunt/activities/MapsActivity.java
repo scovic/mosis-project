@@ -352,7 +352,7 @@ public class MapsActivity extends AppCompatActivity {
 
 
         final List<OverlayItem> items = new ArrayList<>();
-        for (Hunt hunt : user.getJoinedHunst()) {
+        for (Hunt hunt : user.getJoinedHunts()) {
             User huntOwner = UserRepository.getInstance().getUserByUsername(hunt.getOwner());
             boolean isCompleted = hunt.isCompleted() || huntOwner.isHuntCompleted(hunt.getTitle());
             if (!isCompleted) {
