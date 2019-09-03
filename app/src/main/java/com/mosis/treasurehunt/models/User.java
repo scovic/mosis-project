@@ -112,8 +112,14 @@ public class User {
     public int getNumOfJoinedHunts() { return this.joinedHunts.size(); }
 
     public int getNumOfCompletedHunts() {
-        // TODO:
-        return 5;
+        int counter = 0;
+        for (Hunt hunt : this.joinedHunts) {
+            if (hunt.checkCompleted()) {
+                counter++;
+            }
+        }
+
+        return counter;
     }
 
    public List<User> getFriendList() { return this.friendList; }

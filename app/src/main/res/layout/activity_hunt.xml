@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="hunt"
+            type="com.mosis.treasurehunt.models.Hunt" />
+    </data>
+<android.support.design.widget.CoordinatorLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,6 +26,128 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_hunt" />
+<!--    <include layout="@layout/content_hunt" />-->
 
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".activities.HuntActivity"
+        tools:showIn="@layout/activity_hunt"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="172dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_hunt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="150dp"
+                    android:gravity="center_horizontal"
+                    android:text="@{hunt.title}"
+                    android:textSize="22sp"
+                    android:layout_marginBottom="3dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_hunt_creator_name"
+                    android:layout_below="@id/tv_hunt_name"
+                    android:layout_marginLeft="190dp"
+                    android:text="@{hunt.owner}"
+                    android:textSize="18sp"/>
+
+
+                <TextView
+                    android:id="@+id/lbl_clues"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_hunt_creator_name"
+                    android:layout_alignParentLeft="true"
+                    android:text="Clues: "
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/tv_clues"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_hunt_creator_name"
+                    android:layout_toRightOf="@id/lbl_clues"
+                    android:text="@{String.valueOf(hunt.getNumberOfClues())}"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/lbl_hunters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lbl_clues"
+                    android:layout_alignParentLeft="true"
+                    android:text="Hunters: "
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/tv_hunters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_clues"
+                    android:layout_toRightOf="@id/lbl_hunters"
+                    android:text="@{String.valueOf(hunt.getNumberOfHunters())}"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/lbl_points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lbl_hunters"
+                    android:layout_alignParentLeft="true"
+                    android:text="Points: "
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/tv_points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_hunters"
+                    android:layout_toRightOf="@id/lbl_points"
+                    android:text="@{String.valueOf(hunt.points)}"
+                    android:textSize="18sp"/>
+
+                <Button
+                    android:id="@+id/btn_hunt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:text="Join Hunt"
+                    android:layout_marginRight="15dp"
+                    android:layout_below="@id/tv_points"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/round_button_profile"
+                    android:layout_alignParentRight="true"
+                    />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/lbl_hunters_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:text="Hunters"
+            />
+
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
+</layout>

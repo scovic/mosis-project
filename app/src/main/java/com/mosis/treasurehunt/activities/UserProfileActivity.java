@@ -143,40 +143,67 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void setHuntAdapter(String item) {
         mHuntsList = findViewById(R.id.hunts_list);
-        List<Hunt> createdHunts = mUserRepo.getCreatedHunts(mUser);
-        List<Hunt> activeHunts = mUserRepo.getActiveHunts(mUser);
-        List<Hunt> completedHunts = mUserRepo.getCompletedHunts(mUser);
+        final List<Hunt> createdHunts = mUserRepo.getCreatedHunts(mUser).size() > 0 ? mUserRepo.getCreatedHunts(mUser) : new ArrayList<Hunt>();
+        final List<Hunt> activeHunts = mUserRepo.getActiveHunts(mUser).size() > 0 ? mUserRepo.getActiveHunts(mUser) : new ArrayList<Hunt>();
+        final List<Hunt> completedHunts = mUserRepo.getCompletedHunts(mUser).size() > 0 ? mUserRepo.getCompletedHunts(mUser) : new ArrayList<Hunt>();
 
         if (item.equals("Active Hunts")) {
             if (activeHunts != null) {
                 mHuntsAdapter = new HuntAdapter(this, activeHunts);
             } else {
-                activeHunts = new ArrayList<>();
                 activeHunts.add(new Hunt("No active hunts currently"));
                 mHuntsAdapter = new HuntAdapter(this, activeHunts);
             }
             mHuntsAdapter.setmFilter(HuntAdapter.FilterType.ACTIVE);
             mHuntsList.setAdapter(mHuntsAdapter);
+
+            mHuntsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent huntIntent = new Intent(UserProfileActivity.this, HuntActivity.class);
+                    huntIntent.putExtra("huntTitle", activeHunts.get(i).getTitle());
+                    huntIntent.putExtra("huntType", "active");
+                    startActivity(huntIntent);
+                }
+            });
         } else if (item.equals("Completed Hunts")) {
             if (completedHunts != null) {
                 mHuntsAdapter = new HuntAdapter(this, completedHunts);
             } else {
-                completedHunts = new ArrayList<>();
                 completedHunts.add(new Hunt("You haven't completed any hunts"));
                 mHuntsAdapter = new HuntAdapter(this, completedHunts);
             }
             mHuntsAdapter.setmFilter(HuntAdapter.FilterType.COMPLETED);
             mHuntsList.setAdapter(mHuntsAdapter);
+
+            mHuntsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent huntIntent = new Intent(UserProfileActivity.this, HuntActivity.class);
+                    huntIntent.putExtra("huntTitle", completedHunts.get(i).getTitle());
+                    huntIntent.putExtra("huntType", "completed");
+                    startActivity(huntIntent);
+                }
+            });
         } else if (item.equals("My Hunts")) {
             if (createdHunts != null) {
                 mHuntsAdapter = new HuntAdapter(this, createdHunts);
             } else {
-                createdHunts = new ArrayList<>();
                 createdHunts.add(new Hunt("You haven't created any hunts"));
                 mHuntsAdapter = new HuntAdapter(this, createdHunts);
             }
             mHuntsAdapter.setmFilter(HuntAdapter.FilterType.MINE);
             mHuntsList.setAdapter(mHuntsAdapter);
+
+            mHuntsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent huntIntent = new Intent(UserProfileActivity.this, HuntActivity.class);
+                    huntIntent.putExtra("huntTitle", createdHunts.get(i).getTitle());
+                    huntIntent.putExtra("huntType", "created");
+                    startActivity(huntIntent);
+                }
+            });
         }
     }
 }
