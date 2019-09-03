@@ -74,7 +74,7 @@ public class FeedAdapter extends ArrayAdapter<Feed> {
             joinHuntButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "kliknutooooo", Toast.LENGTH_SHORT).show();
+
                 }
             });
         }

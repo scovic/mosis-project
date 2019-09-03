@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
@@ -22,6 +23,8 @@ import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 import java.util.List;
 
 public class HuntActivity extends AppCompatActivity {
+
+    Button joinHuntButton;
 
     ActivityHuntBinding mHuntBinding;
     SharedPreferencesWrapper mSharedPrefWrapper;
@@ -40,6 +43,7 @@ public class HuntActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        Hunt bindHunt = null;
         try {
             Intent listIntent = getIntent();
             Bundle indexBundle = listIntent.getExtras();
@@ -51,7 +55,7 @@ public class HuntActivity extends AppCompatActivity {
                 User user = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
                 List<Hunt> userHunts;
                 if (huntTitle.equals("No active hunts currently") || huntTitle.equals("You haven't completed any hunts") || huntTitle.equals("You haven't created any hunts")) {
-                    Toast.makeText(this, "Play a little, nothing to show here :(", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Play a little, nothing to show here :(", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     if (huntType.equals("active")) {
@@ -62,7 +66,7 @@ public class HuntActivity extends AppCompatActivity {
 
                     for (Hunt hunt : userHunts) {
                         if (hunt.getTitle().equals(huntTitle)) {
-                            Hunt bindHunt = hunt;
+                            bindHunt = hunt;
                             bindHunt.setOwner(user);
                             mHuntBinding.setHunt(bindHunt);
                             break;
@@ -75,6 +79,39 @@ public class HuntActivity extends AppCompatActivity {
             finish();
         }
 
+        joinHuntButton = findViewById(R.id.btn_hunt);
+        User currentUser = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
+        List<Hunt> activeHunts = mUserRepo.getActiveHunts(currentUser);
+        List<Hunt> completedHunts = mUserRepo.getCompletedHunts(currentUser);
+        List<Hunt> createdHunts = mUserRepo.getCreatedHunts(currentUser);
+        boolean found = false;
+        if (activeHunts != null) {
+            for (Hunt hunt : activeHunts) {
+                if (hunt == bindHunt) {
+                    found = true;
+                    joinHuntButton.setText("Leave Hunt");
+                    break;
+                }
+            }
+        }
+        if (!found && completedHunts != null) {
+            for (Hunt hunt : completedHunts) {
+                if (hunt == bindHunt) {
+                    found = true;
+                    joinHuntButton.setText("Leave Hunt");
+                    break;
+                }
+            }
+        }
+
+        if (!found && createdHunts != null) {
+            for (Hunt hunt : createdHunts) {
+                if (hunt == bindHunt) {
+                    joinHuntButton.setText("Leave Hunt");
+                    break;
+                }
+            }
+        }
     }
 
     @Override

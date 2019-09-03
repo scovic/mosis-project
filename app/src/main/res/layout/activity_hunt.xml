@@ -131,6 +131,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:text="Join Hunt"
+                        android:padding="5dp"
                         android:layout_marginRight="15dp"
                         android:layout_below="@id/tv_points"
                         android:textColor="@color/colorWhite"
