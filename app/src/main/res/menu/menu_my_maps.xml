@@ -17,5 +17,12 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/show_friends_icon"
         />
+    <item
+        android:id="@+id/show_clues_on_map"
+        android:orderInCategory="100"
+        android:title="Show Clues"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/icon_show_clues"
+        />
 
 </menu>

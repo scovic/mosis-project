@@ -37,9 +37,30 @@ public class UserRepository {
         mDataSet = this.mUserDao.getAll();
     }
 
+    /**
+     * Fetches updated user list from server.
+     **/
     public void update () {
         if (instance != null) {
             mDataSet = this.mUserDao.getAll();
+        }
+    }
+
+    /**
+     * Fetches updated user list from server,
+     * and also updates friend list of the user.
+     **/
+    public void update (User user) {
+        if (instance != null) {
+            mDataSet = this.mUserDao.getAll();
+            List<User> updatedUserList = new ArrayList<>();
+            for (User u : user.getFriendList()) {
+                updatedUserList.add(this.getUserByUsername(u.getUsername()));
+            }
+
+            user.setFriendList(updatedUserList);
+            this.updateUser(user);
+
         }
     }
 
@@ -101,6 +122,11 @@ public class UserRepository {
                 break;
             }
         }
+    }
+
+
+    public User getFriend(User user, int position) {
+        return  user.getFriend(position);
     }
 
 

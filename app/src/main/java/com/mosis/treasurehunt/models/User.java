@@ -144,6 +144,8 @@ public class User {
 
    public List<User> getFriendList() { return this.friendList; }
 
+   public void setFriendList(List<User> list) { this.friendList = list; }
+
    public void setCurrentLocation(Location loc) { this.currentLocation = loc; }
 
    public Location getCurrentLocation() { return this.currentLocation; }
@@ -151,4 +153,6 @@ public class User {
    public void addFriend(User friend) {
         this.friendList.add(friend);
    }
+
+   public User getFriend(int position) { return this.friendList.get(position); }
 }
