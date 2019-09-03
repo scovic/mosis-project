@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
     private Intent mLocationTrackerServiceIntent;
     private TextView userTextView;
 
-    private FeedRepository mFeedRepo;
+//    private FeedRepository mFeedRepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mFeedRepo = FeedRepository.getInstance();
+//        mFeedRepo = FeedRepository.getInstance();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,29 +53,29 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         mFeedsList = findViewById(R.id.feeds_list);
-        final ArrayList<Feed> feedslist =  mFeedRepo.getFeeds();
-//        feedslist.add(new Feed(
-//                new User("Stefan", "Covic", "scovic"),
-//                new Hunt("Hunt1"),
-//                Feed.Type.FINISH
-//        ));
-//        feedslist.add(new Feed(
-//                new User("Nevena", "Colic", "nensiiika"),
-//                new Hunt("Hunt2"),
-//                Feed.Type.CREATE
-//        ));
-//
-//        feedslist.add(new Feed(
-//                new User("Stefan", "Covic", "scovic"),
-//                new Hunt("Hunt1"),
-//                Feed.Type.FINISH
-//        ));
-//
-//        feedslist.add(new Feed(
-//                new User("Stefan", "Covic", "scovic"),
-//                new Hunt("Hunt1"),
-//                Feed.Type.CREATE
-//        ));
+        final ArrayList<Feed> feedslist =  new ArrayList<>();
+        feedslist.add(new Feed(
+                new User("Stefan", "Covic", "scovic"),
+                new Hunt("Hunt1"),
+                Feed.Type.FINISH
+        ));
+        feedslist.add(new Feed(
+                new User("Nevena", "Colic", "nensiiika"),
+                new Hunt("Hunt2"),
+                Feed.Type.CREATE
+        ));
+
+        feedslist.add(new Feed(
+                new User("Stefan", "Covic", "scovic"),
+                new Hunt("Hunt1"),
+                Feed.Type.FINISH
+        ));
+
+        feedslist.add(new Feed(
+                new User("Stefan", "Covic", "scovic"),
+                new Hunt("Hunt1"),
+                Feed.Type.CREATE
+        ));
 
         mFeedsAdapter = new FeedAdapter(this, feedslist);
         mFeedsList.setAdapter(mFeedsAdapter);
