@@ -112,6 +112,28 @@ public class UserRepository {
         }
     }
 
+    public void joinHunt(User user, Hunt hunt) {
+        String username = user.getUsername();
+        for (User u : this.mDataSet) {
+            if (u.getUsername().equals(username)) {
+                u.joinHunt(hunt);
+                mUserDao.update(u);
+                break;
+            }
+        }
+    }
+
+    public void leaveHunt(User user, Hunt hunt) {
+        String username = user.getUsername();
+        for (User u : this.mDataSet) {
+            if (u.getUsername().equals(username)) {
+                u.leaveHunt(hunt);
+                mUserDao.update(u);
+                break;
+            }
+        }
+    }
+
     public void addFriend (User friend) {
         mSharedPref = SharedPreferencesWrapper.getInstance();
         String username = mSharedPref.getUsername();
@@ -158,11 +180,11 @@ public class UserRepository {
     }
 
     public List<Hunt> getActiveHunts(User user) {
-        List<Hunt> activeHunts = null;
-        List<Hunt> joinedHunts = null;
+        List<Hunt> activeHunts = new ArrayList<>();
+        List<Hunt> joinedHunts;
         for (User u : mDataSet) {
             if (u.getUsername().equals(user.getUsername())) {
-                joinedHunts = u.getJoinedHunst();
+                joinedHunts = u.getJoinedHunts();
                 for(Hunt joinedHunt : joinedHunts) {
                     if (!joinedHunt.checkCompleted()) {
                         activeHunts.add(joinedHunt);
@@ -175,11 +197,11 @@ public class UserRepository {
     }
 
     public List<Hunt> getCompletedHunts(User user) {
-        List<Hunt> completedHunts = null;
-        List<Hunt> joinedHunts = null;
+        List<Hunt> completedHunts = new ArrayList<>();
+        List<Hunt> joinedHunts;
         for (User u : mDataSet) {
             if (u.getUsername().equals(user.getUsername())) {
-                joinedHunts = u.getJoinedHunst();
+                joinedHunts = u.getJoinedHunts();
                 for(Hunt joinedHunt : joinedHunts) {
                     if (joinedHunt.checkCompleted()) {
                         completedHunts.add(joinedHunt);

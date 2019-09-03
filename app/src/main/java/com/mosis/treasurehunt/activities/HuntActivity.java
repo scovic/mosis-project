@@ -10,25 +10,32 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
+import com.mosis.treasurehunt.adapters.UserAdapter;
 import com.mosis.treasurehunt.databinding.ActivityHuntBinding;
 import com.mosis.treasurehunt.models.Hunt;
 import com.mosis.treasurehunt.models.User;
 import com.mosis.treasurehunt.repositories.UserRepository;
 import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HuntActivity extends AppCompatActivity {
 
     Button joinHuntButton;
+    ListView mUserListView;
+    UserAdapter mUserAdapter;
 
     ActivityHuntBinding mHuntBinding;
     SharedPreferencesWrapper mSharedPrefWrapper;
     UserRepository mUserRepo;
+    User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,7 @@ public class HuntActivity extends AppCompatActivity {
         mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
         mUserRepo = UserRepository.getInstance();
 
+        mUserListView = findViewById(R.id.lv_hunters);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -53,22 +61,23 @@ public class HuntActivity extends AppCompatActivity {
                 String huntTitle = indexBundle.getString("huntTitle");
                 String huntType = indexBundle.getString("huntType");
                 String username = indexBundle.getString("username");
-                User user = mUserRepo.getUserByUsername(username);
+                mUser = mUserRepo.getUserByUsername(username);
                 List<Hunt> userHunts;
                 if (huntTitle.equals("No active hunts currently") || huntTitle.equals("You haven't completed any hunts") || huntTitle.equals("You haven't created any hunts")) {
                     Toast.makeText(this, "Play a little, nothing to show here :(", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     if (huntType.equals("active")) {
-                        userHunts = user.getActiveHunts();
+                        userHunts = mUser.getActiveHunts();
                     } else if (huntType.equals("completed")) {
-                        userHunts = user.getCompletedHunts();
-                    } else userHunts = user.getCreatedHunts();
+                        userHunts = mUser.getCompletedHunts();
+                    } else userHunts = mUser.getCreatedHunts();
 
                     for (Hunt hunt : userHunts) {
                         if (hunt.getTitle().equals(huntTitle)) {
                             bindHunt = hunt;
-                            bindHunt.setOwner(user.getUsername());
+                            bindHunt.setOwner(mUser.getUsername());
+                            bindHunt.setOwner(mUser.getUsername());
                             mHuntBinding.setHunt(bindHunt);
                             break;
                         }
@@ -81,14 +90,14 @@ public class HuntActivity extends AppCompatActivity {
         }
 
         joinHuntButton = findViewById(R.id.btn_hunt);
-        User currentUser = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
+        final User currentUser = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
         List<Hunt> activeHunts = mUserRepo.getActiveHunts(currentUser);
         List<Hunt> completedHunts = mUserRepo.getCompletedHunts(currentUser);
         List<Hunt> createdHunts = mUserRepo.getCreatedHunts(currentUser);
         boolean found = false;
         if (activeHunts != null) {
             for (Hunt hunt : activeHunts) {
-                if (hunt == bindHunt) {
+                if (hunt.getTitle().equals(bindHunt.getTitle())) {
                     found = true;
                     joinHuntButton.setText("Leave Hunt");
                     break;
@@ -97,7 +106,7 @@ public class HuntActivity extends AppCompatActivity {
         }
         if (!found && completedHunts != null) {
             for (Hunt hunt : completedHunts) {
-                if (hunt == bindHunt) {
+                if (hunt.getTitle().equals(bindHunt.getTitle())) {
                     found = true;
                     joinHuntButton.setText("Leave Hunt");
                     break;
@@ -107,12 +116,50 @@ public class HuntActivity extends AppCompatActivity {
 
         if (!found && createdHunts != null) {
             for (Hunt hunt : createdHunts) {
-                if (hunt == bindHunt) {
+                if (hunt.getTitle().equals(bindHunt.getTitle())) {
                     joinHuntButton.setText("Leave Hunt");
                     break;
                 }
             }
         }
+
+        final Hunt huntToAdd = bindHunt;
+        joinHuntButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (joinHuntButton.getText().equals("Join Hunt")) {
+                    mUserRepo.joinHunt(currentUser, huntToAdd);
+                    joinHuntButton.setText("Leave Hunt");
+                    Toast.makeText(HuntActivity.this, "Welcome! Enjoy the hunt!", Toast.LENGTH_SHORT).show();
+                } else {
+                    mUserRepo.leaveHunt(currentUser, huntToAdd);
+                    joinHuntButton.setText("Join Hunt");
+                    Toast.makeText(HuntActivity.this, "Bye bye birdie!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        List<User> usersList = mUserRepo.getUsers1();
+        final List<User> hunters = new ArrayList<>();
+        for (User user : usersList) {
+            List<Hunt> active = mUserRepo.getActiveHunts(user);
+            for (Hunt joinedHunt : active) {
+                if (joinedHunt.getTitle().equals(bindHunt.getTitle())) {
+                    hunters.add(user);
+                }
+            }
+        }
+        mUserAdapter = new UserAdapter(HuntActivity.this, hunters, R.layout.item_list_user);
+        mUserListView.setAdapter(mUserAdapter);
+
+        mUserListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(HuntActivity.this, UserProfileActivity.class);
+                i.putExtra("state", hunters.get(position).getUsername());
+                startActivity(i);
+            }
+        });
     }
 
     @Override
