@@ -29,6 +29,7 @@ public class HuntActivity extends AppCompatActivity {
     ActivityHuntBinding mHuntBinding;
     SharedPreferencesWrapper mSharedPrefWrapper;
     UserRepository mUserRepo;
+    User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,22 +54,23 @@ public class HuntActivity extends AppCompatActivity {
                 String huntTitle = indexBundle.getString("huntTitle");
                 String huntType = indexBundle.getString("huntType");
                 String username = indexBundle.getString("username");
-                User user = mUserRepo.getUserByUsername(username);
+                mUser = mUserRepo.getUserByUsername(username);
                 List<Hunt> userHunts;
                 if (huntTitle.equals("No active hunts currently") || huntTitle.equals("You haven't completed any hunts") || huntTitle.equals("You haven't created any hunts")) {
                     Toast.makeText(this, "Play a little, nothing to show here :(", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     if (huntType.equals("active")) {
-                        userHunts = user.getActiveHunts();
+                        userHunts = mUser.getActiveHunts();
                     } else if (huntType.equals("completed")) {
-                        userHunts = user.getCompletedHunts();
-                    } else userHunts = user.getCreatedHunts();
+                        userHunts = mUser.getCompletedHunts();
+                    } else userHunts = mUser.getCreatedHunts();
 
                     for (Hunt hunt : userHunts) {
                         if (hunt.getTitle().equals(huntTitle)) {
                             bindHunt = hunt;
-                            bindHunt.setOwner(user.getUsername());
+                            bindHunt.setOwner(mUser.getUsername());
+                            bindHunt.setOwner(mUser.getUsername());
                             mHuntBinding.setHunt(bindHunt);
                             break;
                         }
@@ -81,7 +83,7 @@ public class HuntActivity extends AppCompatActivity {
         }
 
         joinHuntButton = findViewById(R.id.btn_hunt);
-        User currentUser = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
+        final User currentUser = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
         List<Hunt> activeHunts = mUserRepo.getActiveHunts(currentUser);
         List<Hunt> completedHunts = mUserRepo.getCompletedHunts(currentUser);
         List<Hunt> createdHunts = mUserRepo.getCreatedHunts(currentUser);
@@ -113,6 +115,16 @@ public class HuntActivity extends AppCompatActivity {
                 }
             }
         }
+
+        final Hunt huntToAdd = bindHunt;
+        joinHuntButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUserRepo.joinHunt(currentUser, huntToAdd);
+                joinHuntButton.setText("Leave Hunt");
+                Toast.makeText(HuntActivity.this, "Welcome! Enjoy the hunt!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

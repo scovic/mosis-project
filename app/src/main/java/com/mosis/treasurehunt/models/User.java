@@ -103,7 +103,11 @@ public class User {
 
     public void addHunt(Hunt hunt) { this.createdHunts.add(hunt); }
 
-    public List<Hunt> getJoinedHunst() { return this.joinedHunts; }
+    public void leaveHunt(Hunt hunt) {
+        this.joinedHunts.remove(hunt);
+    }
+
+    public List<Hunt> getJoinedHunts() { return this.joinedHunts; }
 
     public List<Hunt> getActiveHunts() {
        List<Hunt> activeHunts = new ArrayList<>();
