@@ -19,25 +19,26 @@ import com.mosis.treasurehunt.models.User;
 import com.mosis.treasurehunt.repositories.UserRepository;
 import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
+import java.util.List;
+
 public class HuntActivity extends AppCompatActivity {
 
-    ActivityHuntBinding mBinding;
+    ActivityHuntBinding mHuntBinding;
     SharedPreferencesWrapper mSharedPrefWrapper;
     UserRepository mUserRepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_hunt);
-        mSharedPrefWrapper.getInstance();
+        setContentView(R.layout.activity_hunt);
+        mHuntBinding = DataBindingUtil.setContentView(this, R.layout.activity_hunt);
+        mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
         mUserRepo = UserRepository.getInstance();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-       Hunt hunt;
 
         try {
             Intent listIntent = getIntent();
@@ -48,13 +49,31 @@ public class HuntActivity extends AppCompatActivity {
                 String huntTitle = indexBundle.getString("huntTitle");
                 String huntType = indexBundle.getString("huntType");
                 User user = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
-                // u userovim huntovima nadji po huntTitle & type
+                List<Hunt> userHunts;
+                if (huntTitle.equals("No active hunts currently") || huntTitle.equals("You haven't completed any hunts") || huntTitle.equals("You haven't created any hunts")) {
+                    Toast.makeText(this, "Play a little, nothing to show here :(", Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    if (huntType.equals("active")) {
+                        userHunts = user.getActiveHunts();
+                    } else if (huntType.equals("completed")) {
+                        userHunts = user.getCompletedHunts();
+                    } else userHunts = user.getCreatedHunts();
+
+                    for (Hunt hunt : userHunts) {
+                        if (hunt.getTitle().equals(huntTitle)) {
+                            Hunt bindHunt = hunt;
+                            bindHunt.setOwner(user);
+                            mHuntBinding.setHunt(bindHunt);
+                            break;
+                        }
+                    }
+                }
             }
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             finish();
         }
-        mBinding.setHunt(hunt);
 
     }
 

@@ -122,22 +122,13 @@ public class NewHuntActivity extends AppCompatActivity {
             }
             clue.addAnswer(answer1, isCorrect);
 
-            isCorrect = false;
-            if (correctAnswer.equals("answer2")) {
-                isCorrect = true;
-            }
+            isCorrect = correctAnswer.equals("answer2");
             clue.addAnswer(answer2, isCorrect);
-           isCorrect = false;
 
-            if (correctAnswer.equals("answer3")) {
-                isCorrect = true;
-            }
+            isCorrect = correctAnswer.equals("answer3");
             clue.addAnswer(answer3, isCorrect);
 
-            isCorrect = false;
-            if (correctAnswer.equals("answer4")) {
-                isCorrect = true;
-            }
+            isCorrect = correctAnswer.equals("answer4");
             clue.addAnswer(answer4, isCorrect);
 
             // Need to implement adding a location (:

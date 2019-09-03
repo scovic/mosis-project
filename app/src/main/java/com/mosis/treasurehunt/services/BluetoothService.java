@@ -29,20 +29,20 @@ public class BluetoothService {
 
 
     public interface Constants {
-        public static final int MESSAGE_RECEIVED = 0;
-        public static final int MESSAGE_SENT = 1;
-        public static final int MESSAGE_TOAST = 2;
-        public static final int MESSAGE_DEVICE_NAME = 3;
-        public static final int MESSAGE_STATE_CHANGE = 4;
-        public static final int STATE_NONE = 0;       // we're doing nothing
-        public static final int STATE_LISTEN = 1;     // now listening for incoming connections
-        public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
-        public static final int STATE_CONNECTED = 3;  // now connected to a remote device
+        int MESSAGE_RECEIVED = 0;
+        int MESSAGE_SENT = 1;
+        int MESSAGE_TOAST = 2;
+        int MESSAGE_DEVICE_NAME = 3;
+        int MESSAGE_STATE_CHANGE = 4;
+        int STATE_NONE = 0;       // we're doing nothing
+        int STATE_LISTEN = 1;     // now listening for incoming connections
+        int STATE_CONNECTING = 2; // now initiating an outgoing connection
+        int STATE_CONNECTED = 3;  // now connected to a remote device
 
 
-        public static final String NAME = "TreasureHunt";
-        public static final String TOAST = "toast";
-        public static final UUID MY_UUID = UUID.fromString("6e668c84-b6de-4a6c-9796-9ae3a9046d9b");
+        String NAME = "TreasureHunt";
+        String TOAST = "toast";
+        UUID MY_UUID = UUID.fromString("6e668c84-b6de-4a6c-9796-9ae3a9046d9b");
     }
 
     public BluetoothService(Context ctx, Handler handler) {

@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".AnswerClueActivity"
+            android:name=".activities.AnswerClueActivity"
             android:label="@string/title_activity_answer_clue"
             android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
         <activity

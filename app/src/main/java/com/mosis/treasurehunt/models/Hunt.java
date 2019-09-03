@@ -42,6 +42,10 @@ public class Hunt {
 
     public User getOwner() { return this.owner; }
 
+    public String getOwnerUsername() {
+        return this.owner.getUsername();
+    }
+
     public void setOwner(User owner) { this.owner = owner; }
 
     public int getPoints() { return this.points; }

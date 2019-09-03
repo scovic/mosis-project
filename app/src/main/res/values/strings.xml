@@ -42,4 +42,5 @@
     <string name="profile_completed_hunts">%1$s/%2$s</string>
     <string name="title_activity_answer_clue">Answer Clue</string>
     <string name="btn_submit_answer">Submit answer</string>
+    <string name="lbl_hunt_createdby">%1$s</string>
 </resources>

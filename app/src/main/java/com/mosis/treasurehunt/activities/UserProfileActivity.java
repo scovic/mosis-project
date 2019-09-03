@@ -143,12 +143,12 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void setHuntAdapter(String item) {
         mHuntsList = findViewById(R.id.hunts_list);
-        final List<Hunt> createdHunts = mUserRepo.getCreatedHunts(mUser).size() > 0 ? mUserRepo.getCreatedHunts(mUser) : new ArrayList<Hunt>();
-        final List<Hunt> activeHunts = mUserRepo.getActiveHunts(mUser).size() > 0 ? mUserRepo.getActiveHunts(mUser) : new ArrayList<Hunt>();
-        final List<Hunt> completedHunts = mUserRepo.getCompletedHunts(mUser).size() > 0 ? mUserRepo.getCompletedHunts(mUser) : new ArrayList<Hunt>();
+        final List<Hunt> createdHunts = mUserRepo.getCreatedHunts(mUser) != null ? mUserRepo.getCreatedHunts(mUser) : new ArrayList<Hunt>();
+        final List<Hunt> activeHunts = mUserRepo.getActiveHunts(mUser) != null ? mUserRepo.getActiveHunts(mUser) : new ArrayList<Hunt>();
+        final List<Hunt> completedHunts = mUserRepo.getCompletedHunts(mUser) != null ? mUserRepo.getCompletedHunts(mUser) : new ArrayList<Hunt>();
 
         if (item.equals("Active Hunts")) {
-            if (activeHunts != null) {
+            if (activeHunts.size() > 0) {
                 mHuntsAdapter = new HuntAdapter(this, activeHunts);
             } else {
                 activeHunts.add(new Hunt("No active hunts currently"));
@@ -167,7 +167,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             });
         } else if (item.equals("Completed Hunts")) {
-            if (completedHunts != null) {
+            if (completedHunts.size() > 0) {
                 mHuntsAdapter = new HuntAdapter(this, completedHunts);
             } else {
                 completedHunts.add(new Hunt("You haven't completed any hunts"));
@@ -186,7 +186,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             });
         } else if (item.equals("My Hunts")) {
-            if (createdHunts != null) {
+            if (createdHunts.size() > 0) {
                 mHuntsAdapter = new HuntAdapter(this, createdHunts);
             } else {
                 createdHunts.add(new Hunt("You haven't created any hunts"));

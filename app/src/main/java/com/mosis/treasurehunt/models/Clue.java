@@ -75,11 +75,7 @@ public class Clue {
         }
 
         Clue clue = (Clue) o;
-        if (question.equals(clue.getQuestion())) {
-            return true;
-        }
-
-        return false;
+        return question.equals(clue.getQuestion());
     }
 
 }

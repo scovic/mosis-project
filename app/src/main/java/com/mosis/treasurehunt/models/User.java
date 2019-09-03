@@ -105,6 +105,26 @@ public class User {
 
     public List<Hunt> getJoinedHunst() { return this.joinedHunts; }
 
+    public List<Hunt> getActiveHunts() {
+       List<Hunt> activeHunts = new ArrayList<>();
+       for (Hunt hunt : this.joinedHunts) {
+           if (!hunt.checkCompleted()) {
+               activeHunts.add(hunt);
+           }
+       }
+       return activeHunts;
+    }
+
+    public List<Hunt> getCompletedHunts() {
+        List<Hunt> completedHunts = new ArrayList<>();
+        for (Hunt hunt : this.joinedHunts) {
+            if (hunt.checkCompleted()) {
+                completedHunts.add(hunt);
+            }
+        }
+        return completedHunts;
+    }
+
     public void joinHunt(Hunt hunt) { this.joinedHunts.add(hunt); }
 
     public int getNumOfCreatedHunts() { return  this.createdHunts.size(); }
