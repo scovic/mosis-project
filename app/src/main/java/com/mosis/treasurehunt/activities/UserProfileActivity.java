@@ -38,7 +38,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private Intent mLocationTrackerServiceIntent;
 
     ActivityUserProfileBinding mBinding;
-    private User mUser; // logged in user
+    private User mUser;
     UserRepository mUserRepo;
     SharedPreferencesWrapper mSharedPrefWrapper;
 
@@ -162,6 +162,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     Intent huntIntent = new Intent(UserProfileActivity.this, HuntActivity.class);
                     huntIntent.putExtra("huntTitle", activeHunts.get(i).getTitle());
                     huntIntent.putExtra("huntType", "active");
+                    huntIntent.putExtra("username", mUser.getUsername());
                     startActivity(huntIntent);
                 }
             });
@@ -181,6 +182,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     Intent huntIntent = new Intent(UserProfileActivity.this, HuntActivity.class);
                     huntIntent.putExtra("huntTitle", completedHunts.get(i).getTitle());
                     huntIntent.putExtra("huntType", "completed");
+                    huntIntent.putExtra("username", mUser.getUsername());
                     startActivity(huntIntent);
                 }
             });
@@ -200,6 +202,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     Intent huntIntent = new Intent(UserProfileActivity.this, HuntActivity.class);
                     huntIntent.putExtra("huntTitle", createdHunts.get(i).getTitle());
                     huntIntent.putExtra("huntType", "created");
+                    huntIntent.putExtra("username", mUser.getUsername());
                     startActivity(huntIntent);
                 }
             });

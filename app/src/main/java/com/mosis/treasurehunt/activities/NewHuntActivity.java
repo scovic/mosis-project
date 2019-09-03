@@ -51,6 +51,7 @@ public class NewHuntActivity extends AppCompatActivity {
         mUserRepo = UserRepository.getInstance();
 //        mFeedRepo = FeedRepository.getInstance();
         mHunt = new Hunt();
+        mHunt.setOwner(mSharedPrefWrapper.getUsername());
         mClueAdapter = new ClueAdapter(this, mHunt.getClues(), mHunt);
 
         mBtnAddClue = findViewById(R.id.btn_add_clue);

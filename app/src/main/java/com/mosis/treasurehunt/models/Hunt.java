@@ -8,9 +8,9 @@ public class Hunt {
     private String title;
     private boolean completed;
     private int points;
-    private User owner;
+    private String owner;
     public ArrayList<Clue> clues;
-    public ArrayList<User> hunters;
+    public ArrayList<String> hunters;
     @Exclude
     private String key;
 
@@ -25,7 +25,7 @@ public class Hunt {
         hunters = new ArrayList<>();
     }
 
-    public Hunt(String title, User owner) {
+    public Hunt(String title, String owner) {
         this.title = title;
         this.owner = owner;
         clues = new ArrayList<>();
@@ -40,13 +40,13 @@ public class Hunt {
 
     public void setmCompleted() { this.completed = true; }
 
-    public User getOwner() { return this.owner; }
+    public String getOwner() { return this.owner; }
 
     public String getOwnerUsername() {
-        return this.owner.getUsername();
+        return this.owner;
     }
 
-    public void setOwner(User owner) { this.owner = owner; }
+    public void setOwner(String owner) { this.owner = owner; }
 
     public int getPoints() { return this.points; }
 

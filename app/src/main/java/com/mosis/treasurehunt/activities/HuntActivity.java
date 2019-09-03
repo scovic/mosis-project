@@ -52,7 +52,8 @@ public class HuntActivity extends AppCompatActivity {
             } else {
                 String huntTitle = indexBundle.getString("huntTitle");
                 String huntType = indexBundle.getString("huntType");
-                User user = mUserRepo.getUserByUsername(mSharedPrefWrapper.getUsername());
+                String username = indexBundle.getString("username");
+                User user = mUserRepo.getUserByUsername(username);
                 List<Hunt> userHunts;
                 if (huntTitle.equals("No active hunts currently") || huntTitle.equals("You haven't completed any hunts") || huntTitle.equals("You haven't created any hunts")) {
                     Toast.makeText(this, "Play a little, nothing to show here :(", Toast.LENGTH_SHORT).show();
@@ -67,7 +68,7 @@ public class HuntActivity extends AppCompatActivity {
                     for (Hunt hunt : userHunts) {
                         if (hunt.getTitle().equals(huntTitle)) {
                             bindHunt = hunt;
-                            bindHunt.setOwner(user);
+                            bindHunt.setOwner(user.getUsername());
                             mHuntBinding.setHunt(bindHunt);
                             break;
                         }
