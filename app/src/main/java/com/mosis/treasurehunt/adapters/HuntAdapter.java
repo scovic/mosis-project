@@ -24,9 +24,9 @@ public class HuntAdapter extends ArrayAdapter<Hunt> {
 
     private FilterType mFilter;
     private Context mContext;
-    private List<Hunt> huntList = new ArrayList<>();
+    private List<Hunt> huntList;
 
-    public HuntAdapter(@NonNull Context context, ArrayList<Hunt> list) {
+    public HuntAdapter(@NonNull Context context, List<Hunt> list) {
         super(context, 0, list);
         mContext = context;
         huntList = list;

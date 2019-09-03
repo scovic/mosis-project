@@ -14,6 +14,8 @@ public class Feed {
     @Exclude
     private String mKey;
 
+    public Feed() {}
+
     public Feed (User user, Hunt hunt, Type type) {
         this.mOwner = user;
         this.mHunt = hunt;

@@ -26,6 +26,7 @@ import com.mosis.treasurehunt.services.LocationTrackerService;
 import com.mosis.treasurehunt.wrappers.SharedPreferencesWrapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserProfileActivity extends AppCompatActivity {
     private Spinner spinner;
@@ -142,24 +143,38 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void setHuntAdapter(String item) {
         mHuntsList = findViewById(R.id.hunts_list);
-        ArrayList<Hunt> huntsList = new ArrayList<>();
+        List<Hunt> createdHunts = mUserRepo.getCreatedHunts(mUser);
+        List<Hunt> activeHunts = mUserRepo.getActiveHunts(mUser);
+        List<Hunt> completedHunts = mUserRepo.getCompletedHunts(mUser);
 
         if (item.equals("Active Hunts")) {
-            // filter baze za huntove kod kojih je completed=false
-            huntsList.add(new Hunt("Test Active Hunt"));
-            mHuntsAdapter = new HuntAdapter(this, huntsList);
+            if (activeHunts != null) {
+                mHuntsAdapter = new HuntAdapter(this, activeHunts);
+            } else {
+                activeHunts = new ArrayList<>();
+                activeHunts.add(new Hunt("No active hunts currently"));
+                mHuntsAdapter = new HuntAdapter(this, activeHunts);
+            }
             mHuntsAdapter.setmFilter(HuntAdapter.FilterType.ACTIVE);
             mHuntsList.setAdapter(mHuntsAdapter);
         } else if (item.equals("Completed Hunts")) {
-            // ovde filter svih huntova kod kojih je completed=true
-            huntsList.add(new Hunt("Test Completed Hunt"));
-            mHuntsAdapter = new HuntAdapter(this, huntsList);
+            if (completedHunts != null) {
+                mHuntsAdapter = new HuntAdapter(this, completedHunts);
+            } else {
+                completedHunts = new ArrayList<>();
+                completedHunts.add(new Hunt("You haven't completed any hunts"));
+                mHuntsAdapter = new HuntAdapter(this, completedHunts);
+            }
             mHuntsAdapter.setmFilter(HuntAdapter.FilterType.COMPLETED);
             mHuntsList.setAdapter(mHuntsAdapter);
         } else if (item.equals("My Hunts")) {
-            // filter gde je user == ulogovani user
-            huntsList.add(new Hunt("Test My Hunt"));
-            mHuntsAdapter = new HuntAdapter(this, huntsList);
+            if (createdHunts != null) {
+                mHuntsAdapter = new HuntAdapter(this, createdHunts);
+            } else {
+                createdHunts = new ArrayList<>();
+                createdHunts.add(new Hunt("You haven't created any hunts"));
+                mHuntsAdapter = new HuntAdapter(this, createdHunts);
+            }
             mHuntsAdapter.setmFilter(HuntAdapter.FilterType.MINE);
             mHuntsList.setAdapter(mHuntsAdapter);
         }

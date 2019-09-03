@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mosis.treasurehunt.R;
@@ -48,7 +49,7 @@ public class NewHuntActivity extends AppCompatActivity {
 
         mSharedPrefWrapper = SharedPreferencesWrapper.getInstance();
         mUserRepo = UserRepository.getInstance();
-        mFeedRepo = FeedRepository.getInstance();
+//        mFeedRepo = FeedRepository.getInstance();
         mHunt = new Hunt();
         mClueAdapter = new ClueAdapter(this, mHunt.getClues(), mHunt);
 
@@ -65,12 +66,16 @@ public class NewHuntActivity extends AppCompatActivity {
         mBtnSaveHunt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TextView huntNameTextView = findViewById(R.id.et_hunt_name);
+                String huntName = huntNameTextView.getText().toString().trim();
+                mHunt.setTitle(huntName);
+
                 String username = mSharedPrefWrapper.getUsername();
                 User user = mUserRepo.getUserByUsername(username);
-                if (mHunt.getNumberOfClues() > 0) {
+                if (mHunt.getNumberOfClues() > 0 && mHunt.getTitle() != null) {
                     mUserRepo.addHunt(user, mHunt);
-                    Feed feed = new Feed(user, mHunt, Feed.Type.CREATE);
-                    mFeedRepo.addFeed(feed);
+//                    Feed feed = new Feed(user, mHunt, Feed.Type.CREATE);
+//                    mFeedRepo.addFeed(feed);
                     Toast.makeText(NewHuntActivity.this, "Hunt created", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
