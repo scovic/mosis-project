@@ -38,7 +38,7 @@ public class Hunt {
 
     public boolean checkCompleted() { return this.completed; }
 
-    public void setmCompleted() { this.completed = true; }
+    public void setCompleted() { this.completed = true; }
 
     public String getOwner() { return this.owner; }
 
@@ -68,6 +68,13 @@ public class Hunt {
         this.clues.remove(clue);
     }
 
+    public void answerClue(Clue clue) {
+        int index = this.clues.indexOf(clue);
+        this.clues.get(index).setAnswered();
+        if (this.findFirstUnansweredClue() == null) {
+            this.setCompleted();
+        }
+    }
     // Finds first unanswered clue
     public Clue findFirstUnansweredClue() {
         Clue clue = null;
@@ -81,15 +88,16 @@ public class Hunt {
     }
 
     public boolean isCompleted() {
-        boolean isCompleted = true;
-        for(Clue clue: this.clues) {
-            if (!clue.isAnswered()) {
-                isCompleted = false;
-                break;
-            }
-        }
-
-        return  isCompleted;
+        return  this.completed;
+//        boolean isCompleted = true;
+//        for(Clue clue: this.clues) {
+//            if (!clue.isAnswered()) {
+//                isCompleted = false;
+//                break;
+//            }
+//        }
+//
+//        return  isCompleted;
     }
 
 }

@@ -78,4 +78,7 @@ public class Clue {
         return question.equals(clue.getQuestion());
     }
 
+    public HashMap<String, Boolean> getAnswers() {
+        return answers;
+    }
 }

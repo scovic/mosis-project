@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -60,6 +61,8 @@ public class MapsActivity extends AppCompatActivity {
     public static final int SELECT_CURRENT_COORDS = 4;
     public static final int SHOW_FRIENDS = 5;
     public static final int SHOW_CLUES = 6;
+
+    public static final String CLUE_TITLE = "hunt_title";
 
     private int state = 0;
     private boolean selCoordsEnabled = false;
@@ -382,8 +385,8 @@ public class MapsActivity extends AppCompatActivity {
                                String huntOwnerUsername = o.getSnippet();
                                if (!UserRepository.getInstance().getUserByUsername(huntOwnerUsername).isHuntCompleted(huntTitle)) {
                                    Intent i = new Intent(MapsActivity.this, AnswerClueActivity.class);
-                                   i.putExtra("hunt_title", huntTitle);
-                                   startActivity(i);
+                                   i.putExtra(CLUE_TITLE, huntTitle);
+                                   startActivityForResult(i, 1);
                                } else {
                                    Toast.makeText(MapsActivity.this, "Sorry, someone has already completed that hunt", Toast.LENGTH_SHORT).show();
                                }
@@ -412,6 +415,15 @@ public class MapsActivity extends AppCompatActivity {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double d = R * c;
         return d * 1000;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            UserRepository.getInstance().update();
+            showClues();
+        }
     }
 }
 

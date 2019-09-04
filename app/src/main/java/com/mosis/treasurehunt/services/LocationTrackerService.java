@@ -19,6 +19,7 @@ import android.util.Log;
 
 import com.mosis.treasurehunt.R;
 import com.mosis.treasurehunt.activities.HomeActivity;
+import com.mosis.treasurehunt.activities.MapsActivity;
 import com.mosis.treasurehunt.models.Clue;
 import com.mosis.treasurehunt.models.Hunt;
 import com.mosis.treasurehunt.models.User;
@@ -31,6 +32,9 @@ public class LocationTrackerService extends Service {
     private UserRepository mUserRepo;
     private LocationListener mLocationListener;
     private LocationManager mLocationManager;
+
+    public static final String CLUE = "clue";
+    public static final String FRIEND = "friend";
 
     public LocationTrackerService() {}
 
@@ -128,25 +132,35 @@ public class LocationTrackerService extends Service {
             Log.i("User", user.getUsername());
             Log.i("Location", Double.toString(measure(lat, currLoc.getLatitude(), lon, currLoc.getLongitude())));
             if (measure(lat, currLoc.getLatitude(), lon, currLoc.getLongitude()) < dist) {
-                createFoundObjectNotification();
+                createFoundObjectNotification(FRIEND);
             }
         }
 
         for (Hunt hunt : mUser.getJoinedHunts()) {
             Clue clue = hunt.findFirstUnansweredClue();
             if(measure(lat, clue.getLatitude(), lon, clue.getLongitude()) < dist) {
-                createFoundObjectNotification();
+                createFoundObjectNotification(CLUE);
             }
         }
 
     }
 
-    private void createFoundObjectNotification() {
+    private void createFoundObjectNotification(String objectType) {
+        String title = objectType.equals(FRIEND) ? "Friend" : "Clue";
+        String contentText = objectType.equals(FRIEND) ? "Friend is nearby" : "Clue is nearby";
+        createNotificationChannel();
+        Intent notifIntent = new Intent(this, MapsActivity.class);
+        int state = objectType.equals(FRIEND) ? MapsActivity.SHOW_FRIENDS : MapsActivity.SHOW_CLUES;
+        notifIntent.putExtra("state", state);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0, notifIntent, 0);
+
         NotificationManager manager = getSystemService(NotificationManager.class);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Object found")
-                .setContentText("Friend or clue is nearby")
-                .setSmallIcon(R.drawable.show_friends_icon)
+                .setContentTitle(title)
+                .setContentText(contentText)
+                .setSmallIcon(objectType.equals(FRIEND) ? R.drawable.show_friends_icon : R.drawable.icon_show_clues)
+                .setContentIntent(pendingIntent)
                 .build();
 
         manager.notify(2, notification);

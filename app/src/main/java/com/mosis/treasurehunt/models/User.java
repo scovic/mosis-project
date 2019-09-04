@@ -86,6 +86,8 @@ public class User {
 
     public void setPoints(int points) { this.points = points; }
 
+    public void addPoints(int points) { this.points += points; }
+
     public int getPoints() { return this.points; }
 
     public void setPassword(String password) {
@@ -110,6 +112,19 @@ public class User {
     }
 
     public List<Hunt> getJoinedHunts() { return this.joinedHunts; }
+
+    @Nullable
+    public Hunt getJoinedHunt(String title) {
+        Hunt hunt = null;
+        for (Hunt h : joinedHunts) {
+            if (h.getTitle().equals(title)) {
+                hunt = h;
+                break;
+            }
+        }
+
+        return hunt;
+    }
 
     public List<Hunt> filterActiveHunts() {
        List<Hunt> activeHunts = new ArrayList<>();
@@ -179,4 +194,13 @@ public class User {
    }
 
    public User getFriend(int position) { return this.friendList.get(position); }
+
+   public void completeHunt(String title) {
+        for (Hunt hunt : createdHunts) {
+            if (hunt.getTitle().equals(title)) {
+                hunt.setCompleted();
+                break;
+            }
+        }
+   }
 }

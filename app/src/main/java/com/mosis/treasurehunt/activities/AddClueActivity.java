@@ -128,7 +128,7 @@ public class AddClueActivity extends AppCompatActivity {
                 correctAnswer = null;
         }
 
-        return  correctAnswer;
+        return correctAnswer;
     }
 
     @Override
